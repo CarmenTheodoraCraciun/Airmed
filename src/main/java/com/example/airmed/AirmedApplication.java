@@ -11,13 +11,14 @@ import javax.swing.text.Style;
 public class AirmedApplication {
     public static void main(String[] args) {
         SpringApplication.run(AirmedApplication.class, args);
+        System.out.println("Take care of your mental health!");
     }
 
-    @Bean
-    ApplicationRunner applicationRunner(){
-        return args ->{
-            System.out.println("Take care of your mental health!");
-        };
-    }
+//    @Bean
+//    ApplicationRunner applicationRunner(){
+//        return args ->{
+//
+//        };
+//    }
 
 }

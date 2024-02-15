@@ -1,11 +1,15 @@
+# Defining Docker services
 services:
+  # MySQL container service
   mysql:
     image: 'mysql:latest'
     container_name: airmed_db
+    # Configuring environment variables for MySQL
     environment:
       - 'MYSQL_DATABASE=airmed'
       - 'MYSQL_PASSWORD=airmed'
       - 'MYSQL_ROOT_PASSWORD=airmed'
       - 'MYSQL_USER=airmed_db'
+    # Mapping ports between host:container
     ports:
       - "3306:3306"
