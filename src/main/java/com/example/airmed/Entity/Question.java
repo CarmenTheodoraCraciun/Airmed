@@ -15,6 +15,6 @@ public class Question {
     @Column(name = "id", nullable = false, updatable = false)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 9999999)
     private String content;
 }

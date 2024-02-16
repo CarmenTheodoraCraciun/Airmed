@@ -32,11 +32,8 @@ public class Patient {
     @Column(nullable = false)
     private String password;
 
-    @Column
-    private String gender;
-
     @ManyToOne
-    @JoinColumn(name = "psychiatrist_id", nullable = false)
+    @JoinColumn(name = "psychiatrist", nullable = false)
     private Psychiatrist psychiatrist;
 
     @ManyToOne
