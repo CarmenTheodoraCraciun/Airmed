@@ -51,6 +51,7 @@ public class Psychotherapist {
     @Column(nullable = false)
     private int priceConsultation;
 
+    // this column is default false when a row is created
     @Column(columnDefinition = "boolean default false")
     private boolean online;
 

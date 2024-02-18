@@ -24,10 +24,10 @@ public class InfoContent {
     private String tags;
 
     @ManyToOne
-    @JoinColumn(name = "specialist", nullable = false)
+    @JoinColumn(name = "psychiatrist", nullable = false)
     private Psychiatrist psychiatrist;
 
     @ManyToOne
-    @JoinColumn(name = "specialist", nullable = false)
+    @JoinColumn(name = "psychotherapist", nullable = false)
     private Psychotherapist psychotherapist;
 }

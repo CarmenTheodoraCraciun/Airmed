@@ -1,4 +1,9 @@
 package com.example.airmed.Repository;
 
-public interface InfoContentRepo {
+import com.example.airmed.Entity.InfoContent;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface InfoContentRepo extends JpaRepository<InfoContent,Long> {
 }

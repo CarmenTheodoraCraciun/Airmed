@@ -24,14 +24,14 @@ public class Note {
     private boolean sharedAll;
 
     @ManyToOne
-    @JoinColumn(name = "from")
+    @JoinColumn(name = "psychotherapist")
     private Psychotherapist psychotherapist;
 
     @ManyToOne
-    @JoinColumn(name = "from")
+    @JoinColumn(name = "psychiatrist")
     private Psychiatrist psychiatrist;
 
     @ManyToOne
-    @JoinColumn(name = "about", nullable = false)
+    @JoinColumn(name = "pacient", nullable = false)
     private Patient patient;
 }

@@ -9,48 +9,60 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+// Service implementation for the Patient entity
 @Service
 public class PatientServImpl implements PatientServ {
-    private final PatientRepo patientRepository;
+    // Injecting the PatientRepo dependency using constructor injection
+    private final PatientRepo patientRepo;
 
     @Autowired
     public PatientServImpl(PatientRepo patientRepository) {
-        this.patientRepository = patientRepository;
+        this.patientRepo = patientRepository;
     }
 
+    // Method to save or update a patient in the database
     @Override
     public Patient savePatient(Patient patient) {
-        return patientRepository.save(patient);
+        return patientRepo.save(patient);
     }
 
+    // Method to retrieve a patient by their unique identifier (ID)
+    // Return the patient data or null if not exist
     @Override
     public Patient getPatientById(Long id) {
-        return patientRepository.findById(id).orElse(null);
+        return patientRepo.findById(id)
+                .orElse(null);
     }
 
+    // Method to retrieve a patient by their Personal Numeric Code (PNC)
     @Override
-    public Optional<Patient> getPatientByPNC(String pnc) {
-        return patientRepository.findByPNC(pnc);
+    public Patient getPatientByPNC(String pnc) {
+        return patientRepo.findByPNC(pnc)
+                .orElse(null);
     }
 
+    // Method to retrieve a patient by their email address
     @Override
-    public Optional<Patient> getPatientByMailAndPassword(String mail, String password) {
-        return patientRepository.findByMailAndPassword(mail, password);
+    public Patient getPatientByMail(String mail) {
+        return patientRepo.findByMail(mail)
+                .orElse(null);
     }
 
+    // Method to retrieve a list of patients associated with a Psychiatrist
     @Override
     public List<Patient> getPatientsByPsychiatrist(Psychiatrist psychiatrist) {
-        return patientRepository.findByPsychiatrist(psychiatrist);
+        return patientRepo.findByPsychiatrist(psychiatrist);
     }
 
+    // Method to retrieve a list of patients associated with a Psychotherapist
     @Override
     public List<Patient> getPatientsByPsychotherapist(Psychotherapist psychotherapist) {
-        return patientRepository.findByPsychotherapist(psychotherapist);
+        return patientRepo.findByPsychotherapist(psychotherapist);
     }
 
+    // Method to delete a patient by their unique identifier (ID)
     @Override
     public void deletePatient(Long id) {
-        patientRepository.deleteById(id);
+        patientRepo.deleteById(id);
     }
 }

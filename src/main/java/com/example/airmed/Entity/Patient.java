@@ -4,18 +4,23 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+// Declaring the entity class for 'Patient'
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 public class Patient {
+    // Declaring primary key field with auto-generation strategy
     @Id
-    @GeneratedValue(strategy =  GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, updatable = false)
     private Long id;
 
+    // Declaring columns for various patient attributes with constraints
+    // nullable = false - this attribute can't be null
+    // unique = true - this attribute has unique values for all of this records
     @Column(nullable = false, unique = true)
-    private String PNC;
+    private String PNC; // Personal Numeric Code
 
     @Column(nullable = false)
     private String firstName;
@@ -32,10 +37,12 @@ public class Patient {
     @Column(nullable = false)
     private String password;
 
+    // Establishing many-to-one relationship with a Psychiatrist entity
     @ManyToOne
     @JoinColumn(name = "psychiatrist", nullable = false)
     private Psychiatrist psychiatrist;
 
+    // Establishing many-to-one relationship with a Psychotherapist entity
     @ManyToOne
     @JoinColumn(name = "psychotherapist", nullable = false)
     private Psychotherapist psychotherapist;

@@ -1,4 +1,7 @@
 package com.example.airmed.Repository;
 
-public interface QuestionRepo {
+import com.example.airmed.Entity.Question;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface QuestionRepo extends JpaRepository<Question,Long> {
 }
