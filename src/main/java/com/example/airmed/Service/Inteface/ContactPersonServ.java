@@ -9,5 +9,6 @@ public interface ContactPersonServ {
     ContactPerson saveContactPerson(ContactPerson contactPerson);
     ContactPerson getContactPersonById(Long id);
     List<ContactPerson> getContactPersonByPatient(Patient patient);
+    ContactPerson updateContactPerson(ContactPerson old,ContactPerson newContact);
     void deletePatient(Long id);
 }

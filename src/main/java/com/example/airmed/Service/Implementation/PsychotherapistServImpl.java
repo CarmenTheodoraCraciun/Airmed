@@ -19,7 +19,7 @@ public class PsychotherapistServImpl implements PsychotherapistServ {
         return psychotherapistRepo.save(psychotherapist);
     }
     @Override
-    public List<Psychotherapist> getAll(){
+    public List<Psychotherapist> getAllPsychotherapists(){
         return psychotherapistRepo.findAll();
     }
     @Override
@@ -37,6 +37,37 @@ public class PsychotherapistServImpl implements PsychotherapistServ {
         return psychotherapistRepo.findByMail(mail)
                 .orElse(null);
     }
+    @Override
+    public Psychotherapist updatePsychotherapist(Psychotherapist old, Psychotherapist newPsychotherapist) {
+        if(old != null && psychotherapistRepo.existsById(old.getId())){
+            if(newPsychotherapist.getFirstName() != null)
+                old.setFirstName(newPsychotherapist.getFirstName());
+            if(newPsychotherapist.getLastName() != null)
+                old.setLastName(newPsychotherapist.getLastName());
+            if(newPsychotherapist.getMail() != null)
+                old.setMail(newPsychotherapist.getMail());
+            if(newPsychotherapist.getPhone() != null)
+                old.setPhone(newPsychotherapist.getPhone());
+            if(newPsychotherapist.getPassword() != null)
+                old.setPassword(newPsychotherapist.getPassword());
+            if(newPsychotherapist.getCountry() != null)
+                old.setCountry(newPsychotherapist.getCountry());
+            if(newPsychotherapist.getLocality() != null)
+                old.setLocality(newPsychotherapist.getLocality());
+            if(newPsychotherapist.getCabinetLocation() != null)
+                old.setCabinetLocation(newPsychotherapist.getCabinetLocation());
+            if(newPsychotherapist.getLinkLocation() != null)
+                old.setLinkLocation(newPsychotherapist.getLinkLocation());
+            old.setPriceConsult(newPsychotherapist.getPriceConsult());
+            old.setPriceConsultation(newPsychotherapist.getPriceConsultation());
+            old.setOnline(newPsychotherapist.isOnline());
+            old.setCNAS(newPsychotherapist.isCNAS());
+
+            return psychotherapistRepo.save(old);
+        }
+        return null;
+    }
+
     @Override
     public void deletePsychotherapist(Long id){
         psychotherapistRepo.deleteById(id);

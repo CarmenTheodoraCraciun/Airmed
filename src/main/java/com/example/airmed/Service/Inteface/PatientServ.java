@@ -25,6 +25,21 @@ public interface PatientServ {
     // Method to retrieve a list of patients associated with a Psychotherapist
     List<Patient> getPatientsByPsychotherapist(Psychotherapist psychotherapist);
 
+    // Method to update the date about an existing patient
+    Patient updatePatient(Patient old, Patient newPatient);
+
+    // Method to update the psychiatrist of the patient
+    Patient updatePsychiatristInPatient(Patient patient,Psychiatrist psychiatrist);
+
+    // Method to remove the psychiatrist of the patient
+    Patient removePsychiatristInPatient(Patient patient);
+
+    // Method to update the psychotherapist of the patient
+    Patient updatePsychotherapistInPatient(Patient patient,Psychotherapist psychotherapist);
+
+    // Method to remove the psychotherapist of the patient
+    Patient removePsychotherapistInPatient(Patient patient);
+
     // Method to delete a patient by their unique identifier (ID)
     void deletePatient(Long id);
 }

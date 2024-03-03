@@ -1,3 +1,4 @@
+version: "3.7"
 # Defining Docker services
 services:
   # MySQL container service
@@ -9,7 +10,7 @@ services:
       - 'MYSQL_DATABASE=airmed'
       - 'MYSQL_PASSWORD=airmed'
       - 'MYSQL_ROOT_PASSWORD=airmed'
-      - 'MYSQL_USER=airmed_db'
+      - 'MYSQL_USER=airmed'
     # Mapping ports between host:container
     ports:
       - "3306:3306"

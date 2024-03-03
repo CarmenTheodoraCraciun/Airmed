@@ -1,0 +1,116 @@
+Question
+{
+    "id": 1,
+    "content": "'Azi am fost depirimat/ -a.'"
+}
+-------------
+Psychiatrist/ Psychotherapist
+{
+  "medicalNumber": "123456",
+  "firstName": "John",
+  "lastName": "Doe",
+  "mail": "john.doe@example.com",
+  "phone": "0777139622",
+  "password": "securePassword",
+  "country": "YourCountry",
+  "locality": "YourLocality",
+  "cabinetLocation": "Optional Cabinet Location",
+  "linkLocation": "Optional Link Location",
+  "priceConsult": 50,
+  "priceConsultation": 80,
+  "online": true,
+  "CNAS": true
+}
+----------------------------
+Pacient
+{
+  "PNC": "1234567890123",
+  "firstName": "Jane",
+  "lastName": "Doe",
+  "mail": "jane.doe@example.com",
+  "phone": "0777139622",
+  "password": "securePassword",
+  "psychiatrist": {
+    "medicalNumber": "123456",
+    "firstName": "John",
+    "lastName": "Psychiatrist",
+    "mail": "john.psychiatrist@example.com",
+    "phone": "0777139622",
+    "password": "psychiatristPassword",
+    "country": "PsychiatristCountry",
+    "locality": "PsychiatristLocality",
+    "cabinetLocation": "PsychiatristCabinet",
+    "linkLocation": "PsychiatristLink",
+    "priceConsult": 100,
+    "priceConsultation": 150,
+    "online": false,
+    "CNAS": false
+  },
+  "psychotherapist": {
+    "medicalNumber": "654321",
+    "firstName": "Bob",
+    "lastName": "Psychotherapist",
+    "mail": "bob.psychotherapist@example.com",
+    "phone": "0777139622",
+    "password": "psychotherapistPassword",
+    "country": "PsychotherapistCountry",
+    "locality": "PsychotherapistLocality",
+    "cabinetLocation": "PsychotherapistCabinet",
+    "linkLocation": "PsychotherapistLink",
+    "priceConsult": 75,
+    "priceConsultation": 120,
+    "online": true,
+    "CNAS": true
+  }
+}
+---------------
+Answer
+{
+    "id": 1,
+    "date": "01/03/2024",
+    "answer": 2,
+    "question": {
+        "id": 1,
+        "content": "'Azi am fost depirimat/ -a.'"
+    },
+    "patient": {
+         "PNC": "1234567890123",
+         "firstName": "Jane",
+         "lastName": "Doe",
+         "mail": "jane.doe@example.com",
+         "phone": "0777139622",
+         "password": "securePassword",
+         "psychiatrist":{
+            "medicalNumber": "123456",
+            "firstName": "John",
+            "lastName": "Psychiatrist",
+            "mail": "john.psychiatrist@example.com",
+            "phone": "0777139622",
+            "password": "psychiatristPassword",
+            "country": "PsychiatristCountry",
+            "locality": "PsychiatristLocality",
+            "cabinetLocation": "PsychiatristCabinet",
+            "linkLocation": "PsychiatristLink",
+            "priceConsult": 100,
+            "priceConsultation": 150,
+            "online": false,
+            "CNAS": false
+         },
+         "psychotherapist": {
+           "medicalNumber": "654321",
+           "firstName": "Bob",
+           "lastName": "Psychotherapist",
+           "mail": "bob.psychotherapist@example.com",
+           "phone": "0777139622",
+           "password": "psychotherapistPassword",
+           "country": "PsychotherapistCountry",
+           "locality": "PsychotherapistLocality",
+           "cabinetLocation": "PsychotherapistCabinet",
+           "linkLocation": "PsychotherapistLink",
+           "priceConsult": 75,
+           "priceConsultation": 120,
+           "online": true,
+           "CNAS": true
+         }
+   }
+}

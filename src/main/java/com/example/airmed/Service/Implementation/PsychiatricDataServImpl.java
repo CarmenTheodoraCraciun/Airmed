@@ -34,6 +34,21 @@ public class PsychiatricDataServImpl implements PsychiatricDataServ {
     }
 
     @Override
+    public PsychiatricData update(PsychiatricData old, PsychiatricData newPsychiatric) {
+        if(old != null && psychiatricDataRepo.existsById(old.getId())){
+            old.setDiagnostics(newPsychiatric.getDiagnostics());
+            old.setHospitalization(newPsychiatric.isHospitalization());
+            old.setAntidepressant(newPsychiatric.getAntidepressant());
+            old.setMoodStabilizers(newPsychiatric.getMoodStabilizers());
+            old.setAntipsychotics(newPsychiatric.getAntipsychotics());
+            old.setSuicideThoughts(newPsychiatric.getSuicideThoughts());
+
+            return psychiatricDataRepo.save(old);
+        }
+        return null;
+    }
+
+    @Override
     public void deletePsychiatricData(Long id) {
         psychiatricDataRepo.deleteById(id);
     }

@@ -33,6 +33,24 @@ public class MedicalDataServImpl implements MedicalDataServ {
     }
 
     @Override
+    public MedicalData updateMedicalData(MedicalData old, MedicalData newMedicalData) {
+        if(old != null && medicalDataRepo.existsById(old.getId())){
+            if(newMedicalData.getAllergies() != null)
+                old.setAllergies(newMedicalData.getAllergies());
+            if(newMedicalData.getWeight() != null)
+                old.setWeight(newMedicalData.getWeight());
+            if(newMedicalData.getHeight() != null)
+                old.setHeight(newMedicalData.getHeight());
+            old.setDiseases(newMedicalData.getDiseases());
+            old.setMedecamentation(newMedicalData.getMedecamentation());
+            old.setPregnant(newMedicalData.isPregnant());
+
+            return medicalDataRepo.save(old);
+        }
+        return null;
+    }
+
+    @Override
     public void deleteMedicalData(Long id) {
         medicalDataRepo.deleteById(id);
     }

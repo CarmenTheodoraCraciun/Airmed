@@ -4,17 +4,20 @@ import com.example.airmed.Entity.Patient;
 import com.example.airmed.Entity.Psychiatrist;
 import com.example.airmed.Entity.Psychotherapist;
 import com.example.airmed.Repository.PatientRepo;
+import com.example.airmed.Repository.PsychiatristRepo;
 import com.example.airmed.Service.Inteface.PatientServ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 // Service implementation for the Patient entity
 @Service
 public class PatientServImpl implements PatientServ {
     // Injecting the PatientRepo dependency using constructor injection
     private final PatientRepo patientRepo;
-
+    @Autowired
+    private PsychiatristRepo psychiatristRepo;
     @Autowired
     public PatientServImpl(PatientRepo patientRepository) {
         this.patientRepo = patientRepository;
@@ -59,6 +62,64 @@ public class PatientServImpl implements PatientServ {
     public List<Patient> getPatientsByPsychotherapist(Psychotherapist psychotherapist) {
         return patientRepo.findByPsychotherapist(psychotherapist);
     }
+
+    @Override
+    public Patient updatePatient(Patient old, Patient newPatient) {
+        if(old != null && patientRepo.existsById(old.getId())){
+            // Actualizează atributele pacientului
+            if(newPatient.getPNC() != null)
+                old.setPNC(newPatient.getPNC());
+            if(newPatient.getFirstName() != null)
+                old.setFirstName(newPatient.getFirstName());
+            if(newPatient.getLastName() != null)
+                old.setLastName(newPatient.getLastName());
+            if(newPatient.getMail() != null)
+                old.setMail(newPatient.getMail());
+            if(newPatient.getPhone() != null)
+                old.setPhone(newPatient.getPhone());
+            if(newPatient.getPassword() != null)
+                old.setPassword(newPatient.getPassword());
+            return patientRepo.save(old);
+        }
+        return null;
+    }
+
+    @Override
+    public Patient updatePsychiatristInPatient(Patient patient, Psychiatrist psychiatrist) {
+        if(patient != null && patientRepo.existsById(patient.getId())){
+            patient.setPsychiatrist(psychiatrist);
+            return patientRepo.save(patient);
+        }
+        return null;
+    }
+
+    @Override
+    public Patient removePsychiatristInPatient(Patient patient) {
+        if(patient != null && patientRepo.existsById(patient.getId())){
+            patient.setPsychiatrist(null);
+            return patientRepo.save(patient);
+        }
+        return null;
+    }
+
+    @Override
+    public Patient updatePsychotherapistInPatient(Patient patient, Psychotherapist psychotherapist) {
+        if(patient != null && patientRepo.existsById(patient.getId())){
+            patient.setPsychotherapist(psychotherapist);
+            return patientRepo.save(patient);
+        }
+        return null;
+    }
+
+    @Override
+    public Patient removePsychotherapistInPatient(Patient patient) {
+        if(patient != null && patientRepo.existsById(patient.getId())){
+            patient.setPsychotherapist(null);
+            return patientRepo.save(patient);
+        }
+        return null;
+    }
+
 
     // Method to delete a patient by their unique identifier (ID)
     @Override

@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface QuestionServ {
     Question saveQuestion(Question question);
-    List<Question> getAll();
+    List<Question> getQuestionsAll();
     Question getQuestionById(Long id);
-    void deleteQuestion(Long id);
+    void deleteQuestionAndAnswers(Long id);
 }

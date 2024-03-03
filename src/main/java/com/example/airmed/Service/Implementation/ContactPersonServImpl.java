@@ -34,6 +34,23 @@ public class ContactPersonServImpl implements ContactPersonServ {
     }
 
     @Override
+    public ContactPerson updateContactPerson(ContactPerson old, ContactPerson newContact) {
+        if(old != null && contactPersonRepo.existsById(old.getId())){
+            if(newContact.getFirstName() != null)
+                old.setFirstName(newContact.getFirstName());
+            if(newContact.getLastName() != null)
+                old.setLastName(newContact.getLastName());
+            if(newContact.getPhone() != null)
+                old.setPhone(newContact.getPhone());
+            if(newContact.getRelationship() != null)
+                old.setRelationship(newContact.getRelationship());
+
+            return contactPersonRepo.save(old);
+        }
+        return null;
+    }
+
+    @Override
     public void deletePatient(Long id) {
         contactPersonRepo.deleteById(id);
     }

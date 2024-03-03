@@ -6,9 +6,12 @@ import java.util.List;
 
 public interface PsychotherapistServ {
     Psychotherapist savePsychotherapist(Psychotherapist psychotherapist);
-    List<Psychotherapist> getAll();
+    List<Psychotherapist> getAllPsychotherapists();
     Psychotherapist getPsychotherapistById(Long id);
     Psychotherapist getPsychotherapistByMedicalNumber(String medicalNumber);
     Psychotherapist getPsychotherapistByMail(String mail);
+
+    Psychotherapist updatePsychotherapist(Psychotherapist old, Psychotherapist newPsychotherapist);
+
     void deletePsychotherapist(Long id);
 }

@@ -2,7 +2,9 @@ package com.example.airmed.Service.Implementation;
 
 import com.example.airmed.Entity.Answer;
 import com.example.airmed.Entity.Patient;
+import com.example.airmed.Entity.Question;
 import com.example.airmed.Repository.AnswerRepo;
+import com.example.airmed.Repository.PatientRepo;
 import com.example.airmed.Service.Inteface.AnswerServ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,8 +15,11 @@ import java.util.List;
 public class AnswerServImpl implements AnswerServ {
     private final AnswerRepo answerRepo;
     @Autowired
-    public AnswerServImpl(AnswerRepo answerRepo) {
+    private final PatientRepo patientRepo;
+    @Autowired
+    public AnswerServImpl(AnswerRepo answerRepo, PatientRepo patientRepo) {
         this.answerRepo = answerRepo;
+        this.patientRepo = patientRepo;
     }
 
     @Override
@@ -31,6 +36,10 @@ public class AnswerServImpl implements AnswerServ {
     @Override
     public List<Answer> getAnswerByPatient(Patient patient) {
         return answerRepo.findByPatient(patient);
+    }
+    @Override
+    public List<Answer> getAnswerByQuestion(Question question) {
+        return answerRepo.findByQuestion(question);
     }
 
     @Override

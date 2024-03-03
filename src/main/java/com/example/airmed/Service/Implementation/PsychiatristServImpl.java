@@ -20,7 +20,7 @@ public class PsychiatristServImpl implements PsychiatristServ {
         return psychiatristRepo.save(psychiatrist);
     }
     @Override
-    public List<Psychiatrist> getAll(){
+    public List<Psychiatrist> getAllPsychiatists(){
         return psychiatristRepo.findAll();
     }
     @Override
@@ -38,6 +38,38 @@ public class PsychiatristServImpl implements PsychiatristServ {
         return psychiatristRepo.findByMail(mail)
                 .orElse(null);
     }
+
+    @Override
+    public Psychiatrist updatePsychiatrist(Psychiatrist old, Psychiatrist newPsychiatrist) {
+        if(old != null && psychiatristRepo.existsById(old.getId())){
+            if(newPsychiatrist.getFirstName() != null)
+                old.setFirstName(newPsychiatrist.getFirstName());
+            if(newPsychiatrist.getLastName() != null)
+                old.setLastName(newPsychiatrist.getLastName());
+            if(newPsychiatrist.getMail() != null)
+                old.setMail(newPsychiatrist.getMail());
+            if(newPsychiatrist.getPhone() != null)
+                old.setPhone(newPsychiatrist.getPhone());
+            if(newPsychiatrist.getPassword() != null)
+                old.setPassword(newPsychiatrist.getPassword());
+            if(newPsychiatrist.getCountry() != null)
+                old.setCountry(newPsychiatrist.getCountry());
+            if(newPsychiatrist.getLocality() != null)
+                old.setLocality(newPsychiatrist.getLocality());
+            if(newPsychiatrist.getCabinetLocation() != null)
+                old.setCabinetLocation(newPsychiatrist.getCabinetLocation());
+            if(newPsychiatrist.getLinkLocation() != null)
+                old.setLinkLocation(newPsychiatrist.getLinkLocation());
+            old.setPriceConsult(newPsychiatrist.getPriceConsult());
+            old.setPriceConsultation(newPsychiatrist.getPriceConsultation());
+            old.setOnline(newPsychiatrist.isOnline());
+            old.setCNAS(newPsychiatrist.isCNAS());
+
+            return psychiatristRepo.save(old);
+        }
+        return null;
+    }
+
     @Override
     public void deletePsychiatrist(Long id){
         psychiatristRepo.deleteById(id);

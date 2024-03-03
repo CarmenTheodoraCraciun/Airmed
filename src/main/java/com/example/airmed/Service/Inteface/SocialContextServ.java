@@ -5,6 +5,7 @@ import com.example.airmed.Entity.SocialContext;
 public interface SocialContextServ {
     SocialContext saveSocialContext(SocialContext socialContext);
     SocialContext getSocialConetextById(Long id);
-    SocialContext findByPatient(Patient patient);
+    SocialContext findSocialContextByPatient(Patient patient);
+    SocialContext updateSocialContext(SocialContext oldSocialContext, SocialContext newSocialContext);
     void deleteSocialContext(Long id);
 }

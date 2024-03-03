@@ -1,0 +1,16 @@
+Patient
+[
+  {
+    "id": 1,
+    "pnc": 3022002022002,
+    "firstName": "Ana",
+    "lastName": "Popescu",
+    "mail": "ana.popescu@gmail.com",
+    "password": "njnew",
+    "phone": "0770770770",
+    "psychiatrist": [{
+    }],
+    "psychotherapist": [{
+    }]
+  }
+]
