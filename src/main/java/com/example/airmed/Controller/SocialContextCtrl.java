@@ -26,7 +26,7 @@ public class SocialContextCtrl {
     // link: baseURL + "/socialContext", body: json
     // receive: 201
     @PostMapping("/socialContext")
-    public ResponseEntity<SocialContext> saveQuestion(@Validated @RequestBody SocialContext socialContext){
+    public ResponseEntity<SocialContext> saveSocialContext(@Validated @RequestBody SocialContext socialContext){
         return new ResponseEntity<>(socialContextServ.saveSocialContext(socialContext), HttpStatus.CREATED);
     }
 
@@ -34,7 +34,7 @@ public class SocialContextCtrl {
     // link: baseURL + "/socialContext/" + id
     // receive: json + 302 or 404
     @GetMapping("/socialContext/{id}")
-    public ResponseEntity<SocialContext> getQuestionById(@PathVariable("id") Long id){
+    public ResponseEntity<SocialContext> getSocialContextById(@PathVariable("id") Long id){
         SocialContext context = socialContextServ.getSocialConetextById(id);
         if(context != null)
             return  new ResponseEntity<>(context, HttpStatus.FOUND);
@@ -44,7 +44,7 @@ public class SocialContextCtrl {
     // link: baseURL + "/socialContext?patient=" + patientId
     // receive: json list + 302 or 404
     @GetMapping("/socialContext")
-    public ResponseEntity<SocialContext> getAnswerByPatient(@RequestParam("patient") Long id){
+    public ResponseEntity<SocialContext> getSocialContextByPatient(@RequestParam("patient") Long id){
         Patient patient = patientServ.getPatientById(id);
         if(patient != null){
             SocialContext socialContexts = socialContextServ.findSocialContextByPatient(patient);
@@ -55,8 +55,10 @@ public class SocialContextCtrl {
     }
 
     // method: PUT
+    // link: baseURL + "/socialContext/" + id
+    // receive: json + 302 or 404
     @PutMapping("/socialContext/{id}")
-    public ResponseEntity<SocialContext> updateSocialCOntext(@Validated @RequestBody SocialContext newSocialContext,@PathVariable("id") Long id){
+    public ResponseEntity<SocialContext> updateSocialContext(@Validated @RequestBody SocialContext newSocialContext,@PathVariable("id") Long id){
         SocialContext oldSocialContext = socialContextServ.getSocialConetextById(id);
         if(oldSocialContext != null)
             return new ResponseEntity<>(socialContextServ.updateSocialContext(oldSocialContext,newSocialContext),HttpStatus.OK);

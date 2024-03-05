@@ -1,4 +1,97 @@
 package com.example.airmed.Controller;
 
+import com.example.airmed.Entity.Psychotherapist;
+import com.example.airmed.Service.Inteface.PsychotherapistServ;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@CrossOrigin(origins = "http://localhost:5173")
+@RestController
 public class PsychotherapistCtrl {
+    @Autowired
+    PsychotherapistServ psychotherapistServ;
+
+    // method: POST
+    // link: baseURL + "/psychotherapist", body: psychotherapist as json
+    // receive: 201
+    @PostMapping("/psychotherapist")
+    public ResponseEntity<Psychotherapist> savePsychotherapist(@Validated @RequestBody Psychotherapist psychotherapist){
+        return new ResponseEntity<>(psychotherapistServ.savePsychotherapist(psychotherapist), HttpStatus.CREATED);
+    }
+
+    // method: GET
+    // link: baseURL + "/psychotherapist/all"
+    // receive: json list + 302
+    @GetMapping("/psychotherapist/all")
+    public ResponseEntity<List<Psychotherapist>> getAllPsychotherapists(){
+        return  new ResponseEntity<>(psychotherapistServ.getAllPsychotherapists(), HttpStatus.FOUND);
+    }
+
+    // method: GET
+    // link: baseURL + "/psychotherapist/" + id
+    // receive: json + 302 or 404
+    @GetMapping("/psychotherapist/{id}")
+    public ResponseEntity<Psychotherapist> getPsychotherapistById(@PathVariable("id") Long id){
+        Psychotherapist psychotherapist = psychotherapistServ.getPsychotherapistById(id);
+        if(psychotherapist != null)
+            return  new ResponseEntity<>(psychotherapist, HttpStatus.FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    // method: GET
+    // link: baseURL + "/psychotherapist?medicalNumber=" + medicalNumber
+    // receive: json + 302 or 404
+    @GetMapping("/psychotherapist")
+    public ResponseEntity<Psychotherapist> getPsychotherapistByMedicalNumber(@PathVariable("id") String medicalNumber){
+        Psychotherapist psychotherapist = psychotherapistServ.getPsychotherapistByMedicalNumber(medicalNumber);
+        if(psychotherapist != null)
+            return  new ResponseEntity<>(psychotherapist, HttpStatus.FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    // method: GET
+    // link: baseURL + "/psychotherapist?mail=" + mail + "&password=" + password
+    // receive: json + 200 - mail and password good
+    //          json + 302 - mail good, password don't
+    //                 404 - mail not good
+    @GetMapping("/psychotherapist")
+    public ResponseEntity<Psychotherapist> getPsychotherapistByMailAndPassword(@RequestParam("mail")String mail,@RequestParam("password")String password){
+        Psychotherapist psychotherapist = psychotherapistServ.getPsychotherapistByMail(mail);
+        if(psychotherapist != null){
+            if(psychotherapist.getPassword().equals(password))
+                return new ResponseEntity<>(psychotherapist,HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    // method: PUT
+    // link: baseURL + "/psychotherapist/" + id
+    // receive: json + 302 or 404
+    @PutMapping("/psychotherapist/{id}")
+    public ResponseEntity<Psychotherapist> updatePsychotherapist(@Validated @RequestBody Psychotherapist newPsychotherapist, @PathVariable("id") Long id){
+        Psychotherapist old = psychotherapistServ.getPsychotherapistById(id);
+        if(old != null)
+            return new ResponseEntity<>(psychotherapistServ.updatePsychotherapist(old,newPsychotherapist),HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    // method: DELETE
+    // link: baseURL + "/psychotherapist/" + psychotherapistId
+    // receive: 200 or 500
+    @DeleteMapping("/psychotherapist/{id}")
+    public ResponseEntity<String> deletePsychotherapist(@PathVariable("id") Long id) {
+        try {
+            psychotherapistServ.deletePsychotherapist(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            String errorMessage = "Error deleting question and answers: " + e.getMessage();
+            return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

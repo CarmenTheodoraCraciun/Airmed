@@ -45,11 +45,8 @@ public class AnswerCtrl {
     @GetMapping("/answer")
     public ResponseEntity<List<Answer>> getAnswerByPatient(@RequestParam("patient") Long id){
         Patient patient = patientServ.getPatientById(id);
-        if(patient != null){
-            List<Answer> answers = answerServ.getAnswerByPatient(patient);
-            if(!answers.isEmpty())
-                return new ResponseEntity<>(answers,HttpStatus.FOUND);
-        }
+        if(patient != null)
+            return new ResponseEntity<>(answerServ.getAnswerByPatient(patient),HttpStatus.FOUND);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

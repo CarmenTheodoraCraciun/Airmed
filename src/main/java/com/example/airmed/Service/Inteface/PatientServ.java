@@ -35,6 +35,7 @@ public interface PatientServ {
     Patient removePsychiatristInPatient(Patient patient);
 
     // Method to update the psychotherapist of the patient
+    // aka  to  CHANGE it, not update the data from there
     Patient updatePsychotherapistInPatient(Patient patient,Psychotherapist psychotherapist);
 
     // Method to remove the psychotherapist of the patient

@@ -1,7 +1,6 @@
 package com.example.airmed.Controller;
 
 import com.example.airmed.Entity.Question;
-import com.example.airmed.Service.Inteface.AnswerServ;
 import com.example.airmed.Service.Inteface.QuestionServ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 public class QuestionCtrl {
     @Autowired
     private QuestionServ questionServ;
+
     // method: POST
     // link: baseURL + "/question", body: json
     // receive: 201
@@ -46,5 +46,4 @@ public class QuestionCtrl {
             return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 }

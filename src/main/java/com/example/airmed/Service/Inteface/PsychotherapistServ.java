@@ -10,8 +10,6 @@ public interface PsychotherapistServ {
     Psychotherapist getPsychotherapistById(Long id);
     Psychotherapist getPsychotherapistByMedicalNumber(String medicalNumber);
     Psychotherapist getPsychotherapistByMail(String mail);
-
     Psychotherapist updatePsychotherapist(Psychotherapist old, Psychotherapist newPsychotherapist);
-
     void deletePsychotherapist(Long id);
 }

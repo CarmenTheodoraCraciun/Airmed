@@ -29,7 +29,7 @@ public class QuestionServImpl implements QuestionServ {
         return questionRepo.save(question);
     }
     @Override
-    public List<Question> getQuestionsAll(){
+    public List<Question> getAllQuestions(){
         return questionRepo.findAll();
     }
     @Override

@@ -9,6 +9,6 @@ public interface PsychiatricDataServ  {
     PsychiatricData savePsychiatricData(PsychiatricData psychiatricData);
     PsychiatricData getPsychiatricDataById(Long id);
     List<PsychiatricData> getPsychiatricDataByPatient(Patient patient);
-    PsychiatricData update(PsychiatricData old, PsychiatricData newPsychiatric);
+    PsychiatricData updatePsychiatricData(PsychiatricData old, PsychiatricData newPsychiatric);
     void deletePsychiatricData(Long id);
 }

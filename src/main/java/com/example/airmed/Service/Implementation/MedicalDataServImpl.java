@@ -16,7 +16,7 @@ public class MedicalDataServImpl implements MedicalDataServ {
     }
 
     @Override
-    public MedicalData save(MedicalData medicalData) {
+    public MedicalData saveMedicalData(MedicalData medicalData) {
         return medicalDataRepo.save(medicalData);
     }
 

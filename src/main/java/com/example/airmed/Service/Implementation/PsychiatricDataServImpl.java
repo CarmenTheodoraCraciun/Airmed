@@ -34,7 +34,7 @@ public class PsychiatricDataServImpl implements PsychiatricDataServ {
     }
 
     @Override
-    public PsychiatricData update(PsychiatricData old, PsychiatricData newPsychiatric) {
+    public PsychiatricData updatePsychiatricData(PsychiatricData old, PsychiatricData newPsychiatric) {
         if(old != null && psychiatricDataRepo.existsById(old.getId())){
             old.setDiagnostics(newPsychiatric.getDiagnostics());
             old.setHospitalization(newPsychiatric.isHospitalization());

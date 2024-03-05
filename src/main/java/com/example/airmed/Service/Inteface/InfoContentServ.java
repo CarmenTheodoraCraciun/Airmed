@@ -7,10 +7,10 @@ import com.example.airmed.Entity.Psychotherapist;
 import java.util.List;
 
 public interface InfoContentServ {
-    InfoContent saveInfoContact(InfoContent infoContent);
-    List<InfoContent> getAllInfoContact();
-    InfoContent getInfoContactById(Long id);
-    List<InfoContent> getInfoContactByPsychiatrist(Psychiatrist psychiatrist);
-    List<InfoContent> getInfoContactByPsychotherapist(Psychotherapist psychotherapist);
-    void deleteInfoContactById(Long id);
+    InfoContent saveInfoContent(InfoContent infoContent);
+    List<InfoContent> getAllInfoContent();
+    InfoContent getInfoContentById(Long id);
+    List<InfoContent> getInfoContentByPsychiatrist(Psychiatrist psychiatrist);
+    List<InfoContent> getInfoContentByPsychotherapist(Psychotherapist psychotherapist);
+    void deleteInfoContentById(Long id);
 }

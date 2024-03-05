@@ -41,12 +41,10 @@ public class Patient {
     @ManyToOne
     @JoinColumn(name = "psychiatrist")
     private Psychiatrist psychiatrist;
+    // TODO: try only with the id
 
     // Establishing many-to-one relationship with a Psychotherapist entity
     @ManyToOne
     @JoinColumn(name = "psychotherapist")
     private Psychotherapist psychotherapist;
-    public Patient getPatient() {
-        return this;
-    }
 }

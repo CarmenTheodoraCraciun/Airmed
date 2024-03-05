@@ -51,7 +51,7 @@ public class ContactPersonServImpl implements ContactPersonServ {
     }
 
     @Override
-    public void deletePatient(Long id) {
+    public void deleteContactPerson(Long id) {
         contactPersonRepo.deleteById(id);
     }
 }

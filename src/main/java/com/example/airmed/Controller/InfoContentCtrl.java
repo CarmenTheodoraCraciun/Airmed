@@ -30,7 +30,7 @@ public class InfoContentCtrl {
     // receive: 201
     @PostMapping("/infoContent")
     public ResponseEntity<InfoContent> addInfoContent(@Validated @RequestBody InfoContent infoContent){
-        return new ResponseEntity<>(infoContentServ.saveInfoContact(infoContent), HttpStatus.CREATED);
+        return new ResponseEntity<>(infoContentServ.saveInfoContent(infoContent), HttpStatus.CREATED);
     }
 
     // method: GET
@@ -38,7 +38,7 @@ public class InfoContentCtrl {
     // receive: json list + 302
     @GetMapping("/infoContent/all")
     public ResponseEntity<List<InfoContent>> getInfoContent(){
-        return new ResponseEntity<>(infoContentServ.getAllInfoContact(),HttpStatus.FOUND);
+        return new ResponseEntity<>(infoContentServ.getAllInfoContent(),HttpStatus.FOUND);
     }
 
     // method: GET
@@ -46,50 +46,44 @@ public class InfoContentCtrl {
     // receive: json + 302 or 404
     @GetMapping("/infoContent/{id}")
     public ResponseEntity<InfoContent> getInfoContentById(@PathVariable("id") Long id){
-        InfoContent infoContent = infoContentServ.getInfoContactById(id);
+        InfoContent infoContent = infoContentServ.getInfoContentById(id);
         if(infoContent != null)
             return new ResponseEntity<>(infoContent,HttpStatus.FOUND);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     // method: GET
-    // link: baseURL + "/infoContact?psychiatrist=" + psychiatristId
+    // link: baseURL + "/infoContent?psychiatrist=" + psychiatristId
     // receive: json list + 302 or 404
-    @GetMapping("/infoContact")
-    public ResponseEntity<List<InfoContent>> getInfoContactByPsychiatrist(@RequestParam("psychiatrist") Long id){
+    @GetMapping("/infoContent")
+    public ResponseEntity<List<InfoContent>> getInfoContentByPsychiatrist(@RequestParam("psychiatrist") Long id){
         Psychiatrist psychiatrist = psychiatristServ.getPsychiatristById(id);
-        if(psychiatrist != null){
-            List<InfoContent> infoContents = infoContentServ.getInfoContactByPsychiatrist(psychiatrist);
-            if(!infoContents.isEmpty())
-                return new ResponseEntity<>(infoContents,HttpStatus.FOUND);
-        }
+        if(psychiatrist != null)
+            return new ResponseEntity<>(infoContentServ.getInfoContentByPsychiatrist(psychiatrist),HttpStatus.FOUND);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     // method: GET
-    // link: baseURL + "/infoContact?psychotherapist=" + psychiatristId
+    // link: baseURL + "/infoContent?psychotherapist=" + psychiatristId
     // receive: json list + 302 or 404
-    @GetMapping("/infoContact")
-    public ResponseEntity<List<InfoContent>> getInfoContactByPsychotherapist(@RequestParam("psychotherapist") Long id){
+    @GetMapping("/infoContent")
+    public ResponseEntity<List<InfoContent>> getInfoContentByPsychotherapist(@RequestParam("psychotherapist") Long id){
         Psychotherapist psychotherapist = psychotherapistServ.getPsychotherapistById(id);
-        if(psychotherapist != null){
-            List<InfoContent> infoContents = infoContentServ.getInfoContactByPsychotherapist(psychotherapist);
-            if(!infoContents.isEmpty())
-                return new ResponseEntity<>(infoContents,HttpStatus.FOUND);
-        }
+        if(psychotherapist != null)
+            return new ResponseEntity<>(infoContentServ.getInfoContentByPsychotherapist(psychotherapist),HttpStatus.FOUND);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    // method: DELETE, also deleting all the answers
-    // link: baseURL + "/infoContact/" + infoContactId
+    // method: DELETE
+    // link: baseURL + "/infoContent/" + infoContentId
     // receive: 200 or 500
-    @DeleteMapping("/infoContact/{id}")
-    public ResponseEntity<String> deleteInfoContact(@PathVariable("id") Long id){
+    @DeleteMapping("/infoContent/{id}")
+    public ResponseEntity<String> deleteInfoContent(@PathVariable("id") Long id){
         try{
-            infoContentServ.deleteInfoContactById(id);
+            infoContentServ.deleteInfoContentById(id);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e){
-            String errorMessage = "Error deleting question and answers: " + e.getMessage();
+            String errorMessage = "Error deleting info content: " + e.getMessage();
             return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

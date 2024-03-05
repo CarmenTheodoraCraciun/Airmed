@@ -19,33 +19,33 @@ public class InfoContentServImpl implements InfoContentServ {
     }
 
     @Override
-    public InfoContent saveInfoContact(InfoContent infoContent) {
+    public InfoContent saveInfoContent(InfoContent infoContent) {
         return infoContentRepo.save(infoContent);
     }
 
     @Override
-    public List<InfoContent> getAllInfoContact() {
+    public List<InfoContent> getAllInfoContent() {
         return infoContentRepo.findAll();
     }
 
     @Override
-    public InfoContent getInfoContactById(Long id) {
+    public InfoContent getInfoContentById(Long id) {
         return infoContentRepo.findById(id)
                 .orElse(null);
     }
 
     @Override
-    public List<InfoContent> getInfoContactByPsychiatrist(Psychiatrist psychiatrist) {
+    public List<InfoContent> getInfoContentByPsychiatrist(Psychiatrist psychiatrist) {
         return infoContentRepo.findByPsychiatrist(psychiatrist);
     }
 
     @Override
-    public List<InfoContent> getInfoContactByPsychotherapist(Psychotherapist psychotherapist) {
+    public List<InfoContent> getInfoContentByPsychotherapist(Psychotherapist psychotherapist) {
         return infoContentRepo.findByPsychotherapist(psychotherapist);
     }
 
     @Override
-    public void deleteInfoContactById(Long id) {
+    public void deleteInfoContentById(Long id) {
         infoContentRepo.deleteById(id);
     }
 }
