@@ -47,7 +47,7 @@ public class SocialContextCtrl {
     public ResponseEntity<SocialContext> getSocialContextByPatient(@RequestParam("patient") Long id){
         Patient patient = patientServ.getPatientById(id);
         if(patient != null){
-            SocialContext socialContexts = socialContextServ.findSocialContextByPatient(patient);
+            SocialContext socialContexts = socialContextServ.getSocialContextByPatient(patient);
             if(socialContexts != null)
                 return new ResponseEntity<>(socialContexts,HttpStatus.FOUND);
         }

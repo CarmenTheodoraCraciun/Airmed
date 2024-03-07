@@ -25,7 +25,7 @@ public class SocialContextServImpl implements SocialContextServ {
     }
 
     @Override
-    public SocialContext findSocialContextByPatient(Patient patient) {
+    public SocialContext getSocialContextByPatient(Patient patient) {
         return socialContextRepo.findByPatient(patient)
                 .orElse(null);
     }

@@ -18,6 +18,9 @@ public class Request {
     @Column(columnDefinition = "boolean default false")
     private boolean status;
 
+    @Column(nullable = false)
+    private String type;
+
     @ManyToOne
     @JoinColumn(name = "psychiatrist")
     private Psychiatrist psychiatrist;

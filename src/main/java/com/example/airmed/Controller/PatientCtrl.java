@@ -81,16 +81,65 @@ public class PatientCtrl {
     }
 
     // method: PUT
-    // link: baseURL + "/patient/" + id
+    // link: baseURL + "/patient/" + id + json patient
     // receive: json + 302 or 404
     @PutMapping("/patient/{id}")
-    public ResponseEntity<Patient> updatePsychotherapist(@Validated @RequestBody Patient newPatient, @PathVariable("id") Long id){
+    public ResponseEntity<Patient> updatePatient(@Validated @RequestBody Patient newPatient, @PathVariable("id") Long id){
         Patient old = patientServ.getPatientById(id);
         if(old != null)
             return new ResponseEntity<>(patientServ.updatePatient(old,newPatient),HttpStatus.OK);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    // TODO: change his medic
-    // TODO: delete, also deleting the medical file
+    // method: PUT
+    // link: baseURL + "/patient/psychiatrist/" + id + json psychiatrist or null
+    // receive: json + 302, 200 or 404
+    @PutMapping("/patient/psychiatrist/{id}")
+    public ResponseEntity<Patient> updatePsychiatristInPatient(@Validated @RequestBody(required = false) Psychiatrist psychiatrist, @PathVariable("id") Long id) {
+        Patient patient = patientServ.getPatientById(id);
+        if (patient != null) {
+            if (psychiatrist != null)
+                return new ResponseEntity<>(patientServ.updatePsychiatristInPatient(patient, psychiatrist), HttpStatus.OK);
+            else {
+                if (patient.getPsychiatrist() != null)
+                    return new ResponseEntity<>(patientServ.removePsychiatristInPatient(patient), HttpStatus.OK);
+                else
+                    return new ResponseEntity<>(HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    // method: PUT
+    // link: baseURL + "/patient/psychotherapist/" + id + json psychotherapist or null
+    // receive: json + 302, 200 or 404
+    @PutMapping("/patient/psychotherapist/{id}")
+    public ResponseEntity<Patient> updatePsychotherapistInPatient(@Validated @RequestBody(required = false) Psychotherapist psychotherapist, @PathVariable("id") Long id) {
+        Patient patient = patientServ.getPatientById(id);
+        if (patient != null) {
+            if (psychotherapist != null)
+                return new ResponseEntity<>(patientServ.updatePsychotherapistInPatient(patient, psychotherapist), HttpStatus.OK);
+            else {
+                if (patient.getPsychiatrist() != null)
+                    return new ResponseEntity<>(patientServ.removePsychotherapistInPatient(patient), HttpStatus.OK);
+                else
+                    return new ResponseEntity<>(HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    // method: DELETE, also deleting all the history of the patient
+    // link: baseURL + "/patient/" + id
+    // receive: 200 or 500
+    @DeleteMapping("/patient/{id}")
+    public ResponseEntity<String> deletePatient(@PathVariable("id") Long id) {
+        try {
+            patientServ.deletePatient(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            String errorMessage = "Error deleting the patient data: " + e.getMessage();
+            return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

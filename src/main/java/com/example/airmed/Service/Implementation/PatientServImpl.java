@@ -1,11 +1,8 @@
 package com.example.airmed.Service.Implementation;
 
-import com.example.airmed.Entity.Patient;
-import com.example.airmed.Entity.Psychiatrist;
-import com.example.airmed.Entity.Psychotherapist;
-import com.example.airmed.Repository.PatientRepo;
-import com.example.airmed.Repository.PsychiatristRepo;
-import com.example.airmed.Service.Inteface.PatientServ;
+import com.example.airmed.Entity.*;
+import com.example.airmed.Repository.*;
+import com.example.airmed.Service.Inteface.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +14,20 @@ public class PatientServImpl implements PatientServ {
     // Injecting the PatientRepo dependency using constructor injection
     private final PatientRepo patientRepo;
     @Autowired
-    private PsychiatristRepo psychiatristRepo;
+    private AnswerServ answerServ;
+    @Autowired
+    private ContactPersonServ contactPersonServ;
+    @Autowired
+    private MedicalDataServ medicalDataServ;
+    @Autowired
+    private NoteServ noteServ;
+    @Autowired
+    private PsychiatricDataServ psychiatricDataServ;
+    @Autowired
+    private RequestServ requestServ;
+    @Autowired
+    private SocialContextServ socialContextServ;
+
     @Autowired
     public PatientServImpl(PatientRepo patientRepository) {
         this.patientRepo = patientRepository;
@@ -66,7 +76,7 @@ public class PatientServImpl implements PatientServ {
     @Override
     public Patient updatePatient(Patient old, Patient newPatient) {
         if(old != null && patientRepo.existsById(old.getId())){
-            // Actualizează atributele pacientului
+            // Updating the
             if(newPatient.getPNC() != null)
                 old.setPNC(newPatient.getPNC());
             if(newPatient.getFirstName() != null)
@@ -124,6 +134,36 @@ public class PatientServImpl implements PatientServ {
     // Method to delete a patient by their unique identifier (ID)
     @Override
     public void deletePatient(Long id) {
-        patientRepo.deleteById(id);
+        Patient patient = getPatientById(id);
+        if(patient != null){
+            // deleting all data associated with the patient
+            List<Answer> answers = answerServ.getAnswerByPatient(patient);
+            for(Answer answer : answers)
+                answerServ.deleteAnswer(answer.getId());
+
+            List<ContactPerson> contactPeople = contactPersonServ.getContactPersonByPatient(patient);
+            for(ContactPerson contactPerson: contactPeople)
+                contactPersonServ.deleteContactPerson(contactPerson.getId());
+
+            MedicalData medicalData = medicalDataServ.getMedicalDataByPatient(patient);
+            medicalDataServ.deleteMedicalData(medicalData.getId());
+
+            List<Note> notes = noteServ.getNoteByPatient(patient);
+            for(Note note: notes)
+                noteServ.deleteNote(note.getId());
+
+            List<PsychiatricData> psychiatricData = psychiatricDataServ.getPsychiatricDataByPatient(patient);
+            for(PsychiatricData pData: psychiatricData)
+                psychiatricDataServ.deletePsychiatricData(pData.getId());
+
+            List<Request> requests = requestServ.getRequestByPatient(patient);
+            for(Request request: requests)
+                requestServ.deleteRequest(request.getId());
+
+            SocialContext socialContext = socialContextServ.getSocialContextByPatient(patient);
+            socialContextServ.deleteSocialContext(socialContext.getId());
+
+            patientRepo.deleteById(id);
+        }
     }
 }

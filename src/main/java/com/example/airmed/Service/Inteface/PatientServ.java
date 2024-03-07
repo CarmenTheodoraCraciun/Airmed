@@ -42,5 +42,6 @@ public interface PatientServ {
     Patient removePsychotherapistInPatient(Patient patient);
 
     // Method to delete a patient by their unique identifier (ID)
+    // Aslo deleting all his history (medical file)
     void deletePatient(Long id);
 }

@@ -1,8 +1,10 @@
 package com.example.airmed.Service.Implementation;
 
 import com.example.airmed.Entity.Psychiatrist;
+import com.example.airmed.Entity.Request;
 import com.example.airmed.Repository.PsychiatristRepo;
 import com.example.airmed.Service.Inteface.PsychiatristServ;
+import com.example.airmed.Service.Inteface.RequestServ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,8 @@ import java.util.List;
 @Service
 public class PsychiatristServImpl implements PsychiatristServ {
     private final PsychiatristRepo psychiatristRepo;
+    @Autowired
+    private RequestServ requestServ;
     @Autowired
     public PsychiatristServImpl(PsychiatristRepo psychiatristRepo){
         this.psychiatristRepo = psychiatristRepo;
@@ -72,6 +76,14 @@ public class PsychiatristServImpl implements PsychiatristServ {
 
     @Override
     public void deletePsychiatrist(Long id){
-        psychiatristRepo.deleteById(id);
+        Psychiatrist psychiatrist = getPsychiatristById(id);
+        if(psychiatrist != null){
+            List<Request> requests = requestServ.getRequestByPsychiatrist(psychiatrist);
+            for(Request request: requests)
+                requestServ.deleteRequest(request.getId());
+
+            psychiatristRepo.deleteById(id);
+        }
+
     }
 }
