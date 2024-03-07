@@ -41,9 +41,9 @@ public class PsychiatricDataCtrl {
     }
 
     // method: GET
-    // link: baseURL + "/psychiatricData?patient=" + patientId
+    // link: baseURL + "/psychiatricData/patient?patient=" + patientId
     // receive: json list + 302 or 404
-    @GetMapping("/psychiatricData")
+    @GetMapping("/psychiatricData/patient")
     public ResponseEntity<List<PsychiatricData>> getContactPersonByPatient(@RequestParam("patient") Long id){
         Patient patient = patientServ.getPatientById(id);
         if(patient != null)

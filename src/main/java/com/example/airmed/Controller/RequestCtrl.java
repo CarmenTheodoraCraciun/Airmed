@@ -45,9 +45,9 @@ public class RequestCtrl {
     }
 
     // method: GET
-    // link: baseURL + "/request/" + patientId
+    // link: baseURL + "/request/patient?patient=" + patientId
     // receive: json list + 302 or 404
-    @GetMapping("/request")
+    @GetMapping("/request/patient")
     public ResponseEntity<List<Request>> getRequestByPatient(@PathVariable("patient") Long id){
         Patient patient = patientServ.getPatientById(id);
         if(patient != null)
@@ -56,9 +56,9 @@ public class RequestCtrl {
     }
 
     // method: GET
-    // link: baseURL + "/request/" + psychiatrisId
+    // link: baseURL + "/request/psychiatrist?psychiatrist=" + psychiatristId
     // receive: json list + 302 or 404
-    @GetMapping("/request")
+    @GetMapping("/request/psychiatrist")
     public ResponseEntity<List<Request>> getRequestByPsychiatrist(@PathVariable("psychiatrist") Long id){
         Psychiatrist psychiatrist = psychiatristServ.getPsychiatristById(id);
         if(psychiatrist != null)
@@ -67,9 +67,9 @@ public class RequestCtrl {
     }
 
     // method: GET
-    // link: baseURL + "/request/" + psychtherapistId
+    // link: baseURL + "/request/psychotherapist?psychotherapist=" + psychotherapistId
     // receive: json list + 302 or 404
-    @GetMapping("/request")
+    @GetMapping("/request/psychotherapist")
     public ResponseEntity<List<Request>> getRequestByPsychotherapist(@PathVariable("psychotherapist") Long id){
         Psychotherapist psychotherapist = psychotherapistServ.getPsychotherapistById(id);
         if(psychotherapist != null)

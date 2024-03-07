@@ -53,20 +53,20 @@ public class InfoContentCtrl {
     }
 
     // method: GET
-    // link: baseURL + "/infoContent?psychiatrist=" + psychiatristId
+    // link: baseURL + "/infoContent/psychiatrist?psychiatrist=" + psychiatristId
     // receive: json list + 302 or 404
-    @GetMapping("/infoContent")
+    @GetMapping("/infoContent/psychiatrist")
     public ResponseEntity<List<InfoContent>> getInfoContentByPsychiatrist(@RequestParam("psychiatrist") Long id){
         Psychiatrist psychiatrist = psychiatristServ.getPsychiatristById(id);
         if(psychiatrist != null)
-            return new ResponseEntity<>(infoContentServ.getInfoContentByPsychiatrist(psychiatrist),HttpStatus.FOUND);
+            return new ResponseEntity<>(infoContentServ.getInfoContentByPsychiatrist(psychiatrist), HttpStatus.FOUND);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     // method: GET
-    // link: baseURL + "/infoContent?psychotherapist=" + psychiatristId
+    // link: baseURL + "/infoContent/psychotherapist?psychotherapist=" + psychiatristId
     // receive: json list + 302 or 404
-    @GetMapping("/infoContent")
+    @GetMapping("/infoContent/psychotherapist")
     public ResponseEntity<List<InfoContent>> getInfoContentByPsychotherapist(@RequestParam("psychotherapist") Long id){
         Psychotherapist psychotherapist = psychotherapistServ.getPsychotherapistById(id);
         if(psychotherapist != null)

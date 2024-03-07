@@ -41,9 +41,9 @@ public class SocialContextCtrl {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
     // method: GET
-    // link: baseURL + "/socialContext?patient=" + patientId
+    // link: baseURL + "/socialContext/patient?patient=" + patientId
     // receive: json list + 302 or 404
-    @GetMapping("/socialContext")
+    @GetMapping("/socialContext/patient")
     public ResponseEntity<SocialContext> getSocialContextByPatient(@RequestParam("patient") Long id){
         Patient patient = patientServ.getPatientById(id);
         if(patient != null){

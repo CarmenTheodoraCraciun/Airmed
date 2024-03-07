@@ -32,11 +32,22 @@ public class PatientCtrl {
     }
 
     // method: GET
-    // link: baseURL + "/patient?mail=" + mail + "&password=" + password
+    // link: baseURL + "/patient/" + id
+    // receive: json + 302 or 404
+    @GetMapping("/patient/{id}")
+    public ResponseEntity<Patient> getPatientById(@PathVariable("id") Long id){
+        Patient patient = patientServ.getPatientById(id);
+        if(patient != null)
+            return  new ResponseEntity<>(patient, HttpStatus.FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    // method: GET
+    // link: baseURL + "/patient/mail?mail=" + mail + "&password=" + password
     // receive: json + 200 - mail and password good
     //          json + 302 - mail good, password don't
     //                 404 - mail not good
-    @GetMapping("/patient")
+    @GetMapping("/patient/mail")
     public ResponseEntity<Patient> getPatientByMailAndPassword(@RequestParam("mail")String mail,@RequestParam("password")String password){
         Patient patient = patientServ.getPatientByMail(mail);
         if(patient != null){
@@ -48,9 +59,9 @@ public class PatientCtrl {
     }
 
     // method: GET
-    // link: baseURL + "/patient" + pnc
+    // link: baseURL + "/patient/PNC?PNC=" + pnc
     // receive: json + 200 or 404
-    @GetMapping("/patient")
+    @GetMapping("/patient/PNC")
     public ResponseEntity<Patient> getUserByPNC(@RequestParam("PNC")String pnc){
         Patient patient = patientServ.getPatientByPNC(pnc);
         if(patient != null)
@@ -59,9 +70,9 @@ public class PatientCtrl {
     }
 
     // method: GET
-    // link: baseURL + "/patient" + psychiatristId
+    // link: baseURL + "/patient/psychiatrist?psychiatrist" + psychiatristId
     // receive: json list 302 or 404
-    @GetMapping("/patient")
+    @GetMapping("/patient/psychiatrist")
     public ResponseEntity<List<Patient>> getPatientByPsychiatrist(@RequestParam("psychiatrist")Long id){
         Psychiatrist psychiatrist = psychiatristServ.getPsychiatristById(id);
         if(psychiatrist != null)
@@ -70,9 +81,9 @@ public class PatientCtrl {
     }
 
     // method: GET
-    // link: baseURL + "/patient" + psychotherapistId
+    // link: baseURL + "/patient/psychotherapist?psychotherapist" + psychotherapistId
     // receive: json list 302 or 404
-    @GetMapping("/patient")
+    @GetMapping("/patient/psychotherapist")
     public ResponseEntity<List<Patient>> getPatientByPsychotherapist(@RequestParam("psychotherapist")Long id){
         Psychotherapist psychotherapist = psychotherapistServ.getPsychotherapistById(id);
         if(psychotherapist != null)

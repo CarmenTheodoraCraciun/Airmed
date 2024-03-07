@@ -41,9 +41,9 @@ public class ContactPersonCtrl {
     }
 
     // method: GET
-    // link: baseURL + "/contactPerson?patient=" + patientId
+    // link: baseURL + "/contactPerson/patient?patient=" + patientId
     // receive: json list + 302 or 404
-    @GetMapping("/contactPerson")
+    @GetMapping("/contactPerson/patient")
     public ResponseEntity<List<ContactPerson>> getContactPersonByPatient(@RequestParam("patient") Long id){
         Patient patient = patientServ.getPatientById(id);
         if(patient != null)

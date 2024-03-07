@@ -44,9 +44,9 @@ public class PsychotherapistCtrl {
     }
 
     // method: GET
-    // link: baseURL + "/psychotherapist?medicalNumber=" + medicalNumber
+    // link: baseURL + "/psychotherapist/medicalNumber?medicalNumber=" + medicalNumber
     // receive: json + 302 or 404
-    @GetMapping("/psychotherapist")
+    @GetMapping("/psychotherapist/medicalNumber")
     public ResponseEntity<Psychotherapist> getPsychotherapistByMedicalNumber(@PathVariable("id") String medicalNumber){
         Psychotherapist psychotherapist = psychotherapistServ.getPsychotherapistByMedicalNumber(medicalNumber);
         if(psychotherapist != null)
@@ -55,11 +55,11 @@ public class PsychotherapistCtrl {
     }
 
     // method: GET
-    // link: baseURL + "/psychotherapist?mail=" + mail + "&password=" + password
+    // link: baseURL + "/psychotherapist/mail?mail=" + mail + "&password=" + password
     // receive: json + 200 - mail and password good
     //          json + 302 - mail good, password don't
     //                 404 - mail not good
-    @GetMapping("/psychotherapist")
+    @GetMapping("/psychotherapist/mail")
     public ResponseEntity<Psychotherapist> getPsychotherapistByMailAndPassword(@RequestParam("mail")String mail,@RequestParam("password")String password){
         Psychotherapist psychotherapist = psychotherapistServ.getPsychotherapistByMail(mail);
         if(psychotherapist != null){

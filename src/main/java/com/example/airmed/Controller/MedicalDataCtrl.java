@@ -28,7 +28,7 @@ public class MedicalDataCtrl {
     }
 
     // method: GET
-    // link: baseURL + "/medicalData/" + medicalDataId
+    // link: baseURL + "/medicalData/" + id
     // receive: json + 302 or 404
     @GetMapping("/medicalData/{id}")
     public ResponseEntity<MedicalData> getMedicalDataById(@PathVariable("id") Long id){
@@ -39,9 +39,9 @@ public class MedicalDataCtrl {
     }
 
     // method: GET
-    // link: baseURL + "/medicalData/" + patientId
+    // link: baseURL + "/medicalData/patient?patient=" + patientId
     // receive: json list + 302 or 404
-    @GetMapping("/medicalData")
+    @GetMapping("/medicalData/patient")
     public ResponseEntity<MedicalData> getMedicalDataByPatient(@PathVariable("patient") Long id){
         Patient patient = patientServ.getPatientById(id);
         if(patient != null) {

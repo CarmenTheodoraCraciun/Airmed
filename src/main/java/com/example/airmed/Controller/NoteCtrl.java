@@ -45,9 +45,9 @@ public class NoteCtrl {
     }
 
     // method: GET
-    // link: baseURL + "/note?patient=" + patientId
+    // link: baseURL + "/note/patient?patient=" + patientId
     // receive: json list + 302 or 404
-    @GetMapping("/note")
+    @GetMapping("/note/patient")
     public ResponseEntity<List<Note>> getNoteByPatient(@RequestParam("patient") Long id){
         Patient patient = patientServ.getPatientById(id);
         if(patient != null)
@@ -56,9 +56,9 @@ public class NoteCtrl {
     }
 
     // method: GET
-    // link: baseURL + "/note?psychiatrist=" + psychiatristId
+    // link: baseURL + "/note/psychiatrist?psychiatrist=" + psychiatristId
     // receive: json list + 302 or 404
-    @GetMapping("/note")
+    @GetMapping("/note/psychiatrist")
     public ResponseEntity<List<Note>> getNoteByPsychiatrist(@RequestParam("psychiatrist") Long id){
         Psychiatrist psychiatrist = psychiatristServ.getPsychiatristById(id);
         if(psychiatrist != null)
@@ -67,9 +67,9 @@ public class NoteCtrl {
     }
 
     // method: GET
-    // link: baseURL + "/note?patient=" + patientId
+    // link: baseURL + "/note/pychotherapist?pychotherapist=" + pychotherapistId
     // receive: json list + 302 or 404
-    @GetMapping("/note")
+    @GetMapping("/note/pychotherapist")
     public ResponseEntity<List<Note>> getNoteByPsychotherapist(@RequestParam("psychotherapist") Long id){
         Psychotherapist psychotherapist = psychotherapistServ.getPsychotherapistById(id);
         if(psychotherapist != null)
