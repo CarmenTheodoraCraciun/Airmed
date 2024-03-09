@@ -1,0 +1,16 @@
+{
+  "medicalNumber": "123456",
+  "firstName": "Ana",
+  "lastName": "Marcu",
+  "mail": "ana.marcu2@gmail.com",
+  "phone": "0777139622",
+  "password": "securePassword",
+  "country": "Timis",
+  "locality": "Ghiroda",
+  "cabinetLocation": "Ghiroda",
+  "linkLocation": "http",
+  "priceConsult": 50,
+  "priceConsultation": 80,
+  "online": true,
+  "CNAS": true
+}

@@ -1,26 +1,3 @@
-Question
-{
-    "id": 1,
-    "content": "'Azi am fost depirimat/ -a.'"
-}
--------------
-Psychiatrist/ Psychotherapist
-{
-  "medicalNumber": "123456",
-  "firstName": "John",
-  "lastName": "Doe",
-  "mail": "john.doe@example.com",
-  "phone": "0777139622",
-  "password": "securePassword",
-  "country": "YourCountry",
-  "locality": "YourLocality",
-  "cabinetLocation": "Optional Cabinet Location",
-  "linkLocation": "Optional Link Location",
-  "priceConsult": 50,
-  "priceConsultation": 80,
-  "online": true,
-  "CNAS": true
-}
 ----------------------------
 Pacient
 {

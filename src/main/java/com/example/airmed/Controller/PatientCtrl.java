@@ -3,6 +3,7 @@ package com.example.airmed.Controller;
 import com.example.airmed.Entity.Patient;
 import com.example.airmed.Entity.Psychiatrist;
 import com.example.airmed.Entity.Psychotherapist;
+import com.example.airmed.Hashed;
 import com.example.airmed.Service.Inteface.PatientServ;
 import com.example.airmed.Service.Inteface.PsychiatristServ;
 import com.example.airmed.Service.Inteface.PsychotherapistServ;
@@ -48,11 +49,13 @@ public class PatientCtrl {
     //          json + 302 - mail good, password don't
     //                 404 - mail not good
     @GetMapping("/patient/mail")
-    public ResponseEntity<Patient> getPatientByMailAndPassword(@RequestParam("mail")String mail,@RequestParam("password")String password){
+    public ResponseEntity<Patient> getPatientByMailAndPassword(@RequestParam("mail") String mail, @RequestParam("password") String password) {
         Patient patient = patientServ.getPatientByMail(mail);
-        if(patient != null){
-            if(patient.getPassword().equals(password))
-                return new ResponseEntity<>(patient,HttpStatus.OK);
+        if (patient != null) {
+            if (Hashed.verifyHashData(password,patient.getSalts().get("password"),patient.getPassword())) {
+                patient.setPassword("-");
+                return new ResponseEntity<>(patient, HttpStatus.OK);
+            }
             return new ResponseEntity<>(HttpStatus.FOUND);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);

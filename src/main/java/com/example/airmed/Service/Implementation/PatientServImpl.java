@@ -1,5 +1,6 @@
 package com.example.airmed.Service.Implementation;
 
+import com.example.airmed.Hashed;
 import com.example.airmed.Entity.*;
 import com.example.airmed.Repository.*;
 import com.example.airmed.Service.Inteface.*;
@@ -39,6 +40,11 @@ public class PatientServImpl implements PatientServ {
         return patientRepo.save(patient);
     }
 
+    @Override
+    public List<Patient> getAllPatients() {
+        return patientRepo.findAll();
+    }
+
     // Method to retrieve a patient by their unique identifier (ID)
     // Return the patient data or null if not exist
     @Override
@@ -50,14 +56,16 @@ public class PatientServImpl implements PatientServ {
     // Method to retrieve a patient by their Personal Numeric Code (PNC)
     @Override
     public Patient getPatientByPNC(String pnc) {
-        return patientRepo.findByPNC(pnc)
+        String salt = Hashed.generateSalt();
+        return patientRepo.findByPNC(Hashed.createHashData(pnc,salt))
                 .orElse(null);
     }
 
     // Method to retrieve a patient by their email address
     @Override
     public Patient getPatientByMail(String mail) {
-        return patientRepo.findByMail(mail)
+        String salt = Hashed.generateSalt();
+        return patientRepo.findByMail(Hashed.createHashData(mail,salt))
                 .orElse(null);
     }
 

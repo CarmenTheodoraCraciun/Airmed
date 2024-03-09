@@ -10,6 +10,9 @@ public interface PatientServ {
     // Method to save or update a patient in the database
     Patient savePatient(Patient patient);
 
+    // Method to retrieve a list of all the patients
+    List<Patient> getAllPatients();
+
     // Method to retrieve a patient by their unique identifier (ID)
     Patient getPatientById(Long id);
 

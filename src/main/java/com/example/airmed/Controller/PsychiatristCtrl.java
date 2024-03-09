@@ -1,10 +1,7 @@
 package com.example.airmed.Controller;
 
-import com.example.airmed.Entity.Note;
-import com.example.airmed.Entity.Patient;
+import com.example.airmed.Hashed;
 import com.example.airmed.Entity.Psychiatrist;
-import com.example.airmed.Entity.SocialContext;
-import com.example.airmed.Service.Inteface.PatientServ;
 import com.example.airmed.Service.Inteface.PsychiatristServ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,8 +39,10 @@ public class PsychiatristCtrl {
     @GetMapping("/psychiatrist/{id}")
     public ResponseEntity<Psychiatrist> getPsychiatristById(@PathVariable("id") Long id){
         Psychiatrist psychiatrist = psychiatristServ.getPsychiatristById(id);
-        if(psychiatrist != null)
-            return  new ResponseEntity<>(psychiatrist, HttpStatus.FOUND);
+        if(psychiatrist != null) {
+
+            return new ResponseEntity<>(psychiatrist, HttpStatus.FOUND);
+        }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
@@ -51,10 +50,10 @@ public class PsychiatristCtrl {
     // link: baseURL + "/psychiatrist/medicalNumber?medicalNumber=" + medicalNumber
     // receive: json + 302 or 404
     @GetMapping("/psychiatrist/medicalNumber")
-    public ResponseEntity<Psychiatrist> getPsychiatristByMedicalNumber(@PathVariable("id") String medicalNumber){
+    public ResponseEntity<Psychiatrist> getPsychiatristByMedicalNumber(@RequestParam("medicalNumber") String medicalNumber) {
         Psychiatrist psychiatrist = psychiatristServ.getPsychiatristByMedicalNumber(medicalNumber);
-        if(psychiatrist != null)
-            return  new ResponseEntity<>(psychiatrist, HttpStatus.FOUND);
+        if (psychiatrist != null)
+            return new ResponseEntity<>(psychiatrist, HttpStatus.FOUND);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
@@ -67,8 +66,10 @@ public class PsychiatristCtrl {
     public ResponseEntity<Psychiatrist> getPsychiatristByMailAndPassword(@RequestParam("mail")String mail,@RequestParam("password")String password){
         Psychiatrist psychiatrist = psychiatristServ.getPsychiatristByMail(mail);
         if(psychiatrist != null){
-            if(psychiatrist.getPassword().equals(password))
+            if(Hashed.verifyHashData(password,psychiatrist.getSalts().get("password"),psychiatrist.getPassword())){
+                psychiatrist.setPassword("-");
                 return new ResponseEntity<>(psychiatrist,HttpStatus.OK);
+            }
             return new ResponseEntity<>(HttpStatus.FOUND);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);

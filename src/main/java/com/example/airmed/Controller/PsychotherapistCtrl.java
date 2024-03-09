@@ -1,5 +1,6 @@
 package com.example.airmed.Controller;
 
+import com.example.airmed.Hashed;
 import com.example.airmed.Entity.Psychotherapist;
 import com.example.airmed.Service.Inteface.PsychotherapistServ;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,8 +64,10 @@ public class PsychotherapistCtrl {
     public ResponseEntity<Psychotherapist> getPsychotherapistByMailAndPassword(@RequestParam("mail")String mail,@RequestParam("password")String password){
         Psychotherapist psychotherapist = psychotherapistServ.getPsychotherapistByMail(mail);
         if(psychotherapist != null){
-            if(psychotherapist.getPassword().equals(password))
+            if(Hashed.verifyHashData(password,psychotherapist.getSalts().get("password"),psychotherapist.getPassword())){
+                psychotherapist.setPassword("-");
                 return new ResponseEntity<>(psychotherapist,HttpStatus.OK);
+            }
             return new ResponseEntity<>(HttpStatus.FOUND);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);

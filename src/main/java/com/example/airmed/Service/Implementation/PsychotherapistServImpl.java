@@ -1,5 +1,6 @@
 package com.example.airmed.Service.Implementation;
 
+import com.example.airmed.Hashed;
 import com.example.airmed.Entity.Psychotherapist;
 import com.example.airmed.Entity.Request;
 import com.example.airmed.Repository.PsychotherapistRepo;
@@ -33,13 +34,23 @@ public class PsychotherapistServImpl implements PsychotherapistServ {
     }
     @Override
     public Psychotherapist getPsychotherapistByMedicalNumber(String medicalNumber){
-        return psychotherapistRepo.findByMedicalNumber(medicalNumber)
-                .orElse(null);
+        List<Psychotherapist> allPsychotherapists = psychotherapistRepo.findAll();
+        for (Psychotherapist psychotherapist : allPsychotherapists) {
+            String storedSalt = psychotherapist.getSalts().get("medicalNumber");
+            if (Hashed.verifyHashData(medicalNumber,storedSalt,psychotherapist.getMedicalNumber()))
+                return psychotherapist;
+        }
+        return null;
     }
     @Override
     public Psychotherapist getPsychotherapistByMail(String mail){
-        return psychotherapistRepo.findByMail(mail)
-                .orElse(null);
+        List<Psychotherapist> allPsychotherapists = psychotherapistRepo.findAll();
+        for (Psychotherapist psychotherapist : allPsychotherapists) {
+            String storedSalt = psychotherapist.getSalts().get("mail");
+            if (Hashed.verifyHashData(mail,storedSalt,psychotherapist.getMail()))
+                return psychotherapist;
+        }
+        return null;
     }
     @Override
     public Psychotherapist updatePsychotherapist(Psychotherapist old, Psychotherapist newPsychotherapist) {

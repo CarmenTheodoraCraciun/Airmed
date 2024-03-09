@@ -1,8 +1,12 @@
 package com.example.airmed.Entity;
+import com.example.airmed.Hashed;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.HashMap;
+import java.util.Map;
 
 // Declaring the entity class for 'Patient'
 @Entity
@@ -34,17 +38,62 @@ public class Patient {
     @Column(nullable = false, unique = true)
     private String phone;
 
-    @Column(nullable = false)
+    @Column
     private String password;
 
     // Establishing many-to-one relationship with a Psychiatrist entity
     @ManyToOne
     @JoinColumn(name = "psychiatrist")
     private Psychiatrist psychiatrist;
-    // TODO: try only with the id
 
     // Establishing many-to-one relationship with a Psychotherapist entity
     @ManyToOne
     @JoinColumn(name = "psychotherapist")
     private Psychotherapist psychotherapist;
+
+    // Map of salts associated with the entity
+    @ElementCollection
+    private Map<String,String> salts = new HashMap<>();
+
+    // Hash and set the Personal Numeric Code (PNC) with a generated salt
+    public void setPNC(String PNC) {
+        String salt = Hashed.generateSalt();
+        this.salts.put("pnc", salt);
+        this.PNC = Hashed.createHashData(PNC, salt);
+    }
+
+    // Hash and set the first name with a generated salt
+    public void setFirstName(String firstName) {
+        String salt = Hashed.generateSalt();
+        this.salts.put("firstName", salt);
+        this.firstName = Hashed.createHashData(firstName, salt);
+    }
+
+    // Hash and set the last name with a generated salt
+    public void setLastName(String lastName) {
+        String salt = Hashed.generateSalt();
+        this.salts.put("lastName", salt);
+        this.lastName = Hashed.createHashData(lastName, salt);
+    }
+
+    // Hash and set the email with a generated salt
+    public void setMail(String mail) {
+        String salt = Hashed.generateSalt();
+        this.salts.put("mail", salt);
+        this.mail = Hashed.createHashData(mail, salt);
+    }
+
+    // Hash and set the phone number with a generated salt
+    public void setPhone(String phone) {
+        String salt = Hashed.generateSalt();
+        this.salts.put("phone", salt);
+        this.phone = Hashed.createHashData(phone, salt);
+    }
+
+    // Hash and set the password with a generated salt
+    public void setPassword(String password) {
+        String salt = Hashed.generateSalt();
+        this.salts.put("password", salt);
+        this.password = Hashed.createHashData(password, salt);
+    }
 }
