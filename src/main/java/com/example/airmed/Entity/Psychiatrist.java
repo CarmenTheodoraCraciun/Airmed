@@ -123,48 +123,4 @@ public class Psychiatrist {
         this.salts.put("linkLocation",salt);
         this.linkLocation = Hashed.createHashData(linkLocation,salt);
     }
-
-//    public Psychiatrist getFilteredPsychiatristData() {
-//        Psychiatrist psychiatrist = new Psychiatrist();
-//
-//        // Copiază valorile non-confidențiale din obiectul curent
-//        psychiatrist.setId(this.getId());
-//        psychiatrist.setMedicalNumber(
-//                Hashed.extractDataFromHash(this.getMedicalNumber(),this.salts.get("medicalNumber"))
-//                );
-//        psychiatrist.setFirstName(
-//                Hashed.extractDataFromHash(this.getFirstName(),this.salts.get("firstName"))
-//        );
-//        psychiatrist.setLastName(
-//                Hashed.extractDataFromHash(this.getLastName(),this.salts.get("lastName"))
-//        );
-//        psychiatrist.setMail(
-//                Hashed.extractDataFromHash(this.getMail(),this.salts.get("mail"))
-//        );
-//        psychiatrist.setPhone(
-//                Hashed.extractDataFromHash(this.getPhone(),this.salts.get("phone"))
-//        );
-//        psychiatrist.setCountry(
-//                Hashed.extractDataFromHash(this.getCountry(),this.salts.get("country"))
-//        );
-//        psychiatrist.setLocality(
-//                Hashed.extractDataFromHash(this.getLocality(),this.salts.get("locality"))
-//        );
-//        psychiatrist.setCabinetLocation(
-//                Hashed.extractDataFromHash(this.getCabinetLocation(),this.salts.get("cabinetLocation"))
-//        );
-//        psychiatrist.setLinkLocation(
-//                Hashed.extractDataFromHash(this.getLinkLocation(),this.salts.get("linkLocation"))
-//        );
-//        psychiatrist.setPriceConsult(this.getPriceConsult());
-//        psychiatrist.setPriceConsultation(this.getPriceConsultation());
-//        psychiatrist.setOnline(this.isOnline());
-//        psychiatrist.setCNAS(this.isCNAS());
-//
-//        Map<String, String> salts = new HashMap<>();
-//        psychiatrist.setSalts(salts);
-//        psychiatrist.setPassword("-");
-//
-//        return psychiatrist;
-//    }
 }
