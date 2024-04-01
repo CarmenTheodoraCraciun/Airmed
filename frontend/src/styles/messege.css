@@ -1,0 +1,57 @@
+.message-box {
+    width: 570px;
+    border-radius: 6px;
+    padding: 0;
+    position: relative;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.message-icon{
+    background-color: transparent;
+    width: 20px;
+}
+
+.message-text{
+    background-color: transparent;
+}
+.message-content{
+    background-color: transparent;
+    margin: 0;
+    font-size: 14px;
+}
+
+.message-link{
+    background-color: transparent;
+    margin: 0;
+    font-size: 14px;
+    text-decoration: underline;
+}
+
+.message-text {
+    vertical-align: middle;
+}
+
+.message-box-info {
+    background-color: #AACADA;
+    border-left: 10px solid var(--air-force-blue);
+    padding-left: 5px;
+}
+
+.message-box-warn {
+    background-color: #FCEFD9;
+    border-left: 10px solid var(--sunset);
+    padding-left: 5px;
+}
+
+.message-box-error {
+    background-color: #F9C8C8;
+    border-left: 10px solid var(--engineering-orange);
+    padding-left: 5px;
+}
+
+@media screen and (max-width: 600px) {
+    .message-box {
+        width: 450px;
+    }
+}
