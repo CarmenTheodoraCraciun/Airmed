@@ -1,0 +1,123 @@
+header{
+    background-color: var(--bg-white);
+    position: fixed;
+    height: 60px;
+    top:0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.header-all{
+    top: 5px;
+    display: flex;
+    flex-direction: row;
+    height: 50px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+}
+
+/*Logo*/
+.logo {
+    margin: 0;
+}
+
+#logo-img {
+    width: 50px;
+    height: 50px;
+    margin-right: 0;
+}
+
+.logo-link{
+    text-decoration: none;
+}
+
+.logo-name {
+    color: var(--dark-slate-grey);
+    text-decoration: none;
+}
+
+#logo-name-airmed {
+     font-family: 'CinzelDecorative', 'Inter', 'Source Sans Pro', sans-serif;
+     font-size: 24px;
+     margin-bottom: 0;
+    text-decoration: none;
+ }
+
+#logo-name-heal-up {
+    font-family: 'Inter', 'Source Sans Pro', sans-serif;
+    font-size: 14px;
+    margin-top: 0;
+    letter-spacing: 2px;
+    margin-left: 25px;
+    text-decoration: none;
+}
+
+/*Elemente*/
+
+.header-ul{
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin: 0;
+    padding: 0;
+    align-items: flex-end;
+}
+
+.header-el{
+    color: var(--black);
+    margin-right: 20px;
+    text-decoration: none;
+}
+
+.header-el:hover{
+    color: var(--air-force-blue);
+}
+
+.button-header{
+    background-color: var(--dark-slate-grey);
+    color: var(--white);
+    margin-right: 20px;
+}
+
+/* Stilurile pentru ecran mai mare sau egal cu 1000px */
+/*@media screen and (min-width: 1000px) {*/
+/*    header {*/
+/*        height: auto;*/
+/*        padding: 5px;*/
+/*    }*/
+
+/*    .header-ul {*/
+/*        flex-direction: row;*/
+/*        align-items: center;*/
+/*    }*/
+
+/*    .header-el, .button-header {*/
+/*        margin-left: 5px;*/
+/*    }*/
+/*}*/
+
+
+
+/* Stilurile pentru ecran mai mic de 600px */
+@media screen and (max-width: 600px) {
+    header {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 10px;
+        padding: 10px 20px;
+        height: auto;
+    }
+
+    .header-ul {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .header-el, .button-header {
+        margin: 10px 0;
+    }
+}
+
