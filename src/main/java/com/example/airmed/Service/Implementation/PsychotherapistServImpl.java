@@ -1,6 +1,5 @@
 package com.example.airmed.Service.Implementation;
 
-import com.example.airmed.Hashed;
 import com.example.airmed.Entity.Psychotherapist;
 import com.example.airmed.Entity.Request;
 import com.example.airmed.Repository.PsychotherapistRepo;
@@ -10,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 public class PsychotherapistServImpl implements PsychotherapistServ {
     private final PsychotherapistRepo psychotherapistRepo;
@@ -33,24 +33,13 @@ public class PsychotherapistServImpl implements PsychotherapistServ {
                 .orElse(null);
     }
     @Override
-    public Psychotherapist getPsychotherapistByMedicalNumber(String medicalNumber){
-        List<Psychotherapist> allPsychotherapists = psychotherapistRepo.findAll();
-        for (Psychotherapist psychotherapist : allPsychotherapists) {
-            String storedSalt = psychotherapist.getSalts().get("medicalNumber");
-            if (Hashed.verifyHashData(medicalNumber,storedSalt,psychotherapist.getMedicalNumber()))
-                return psychotherapist;
-        }
-        return null;
+    public Psychotherapist getPsychotherapistByMedicalNumber(String medicalNumber) {
+        return psychotherapistRepo.findByMedicalNumber(medicalNumber).orElse(null);
     }
+
     @Override
     public Psychotherapist getPsychotherapistByMail(String mail){
-        List<Psychotherapist> allPsychotherapists = psychotherapistRepo.findAll();
-        for (Psychotherapist psychotherapist : allPsychotherapists) {
-            String storedSalt = psychotherapist.getSalts().get("mail");
-            if (Hashed.verifyHashData(mail,storedSalt,psychotherapist.getMail()))
-                return psychotherapist;
-        }
-        return null;
+        return psychotherapistRepo.findByMail(mail).orElse(null);
     }
     @Override
     public Psychotherapist updatePsychotherapist(Psychotherapist old, Psychotherapist newPsychotherapist) {

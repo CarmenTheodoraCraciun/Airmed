@@ -1,8 +1,11 @@
 package com.example.airmed.Controller;
 
+import com.example.airmed.Entity.Psychotherapist;
 import com.example.airmed.Hashed;
 import com.example.airmed.Entity.Psychiatrist;
+import com.example.airmed.Service.Inteface.PatientServ;
 import com.example.airmed.Service.Inteface.PsychiatristServ;
+import com.example.airmed.Service.Inteface.PsychotherapistServ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +19,16 @@ import java.util.List;
 public class PsychiatristCtrl {
     @Autowired
     PsychiatristServ psychiatristServ;
+    @Autowired
+    PatientServ patientServ;
+    @Autowired
+    PsychotherapistServ psychotherapistServ;
 
     // method: POST
     // link: baseURL + "/psychiatrist", body: psychiatrist as json
-    // receive: 201
+    // receive: 201 - created
+    //          208 - medicalNumber already in tha db
+    //          302 - mail already in the db
     @PostMapping("/psychiatrist")
     public ResponseEntity<Psychiatrist> savePsychiatrist(@Validated @RequestBody Psychiatrist psychiatrist){
         return new ResponseEntity<>(psychiatristServ.savePsychiatrist(psychiatrist), HttpStatus.CREATED);
@@ -40,7 +49,6 @@ public class PsychiatristCtrl {
     public ResponseEntity<Psychiatrist> getPsychiatristById(@PathVariable("id") Long id){
         Psychiatrist psychiatrist = psychiatristServ.getPsychiatristById(id);
         if(psychiatrist != null) {
-
             return new ResponseEntity<>(psychiatrist, HttpStatus.FOUND);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -66,7 +74,7 @@ public class PsychiatristCtrl {
     public ResponseEntity<Psychiatrist> getPsychiatristByMailAndPassword(@RequestParam("mail")String mail,@RequestParam("password")String password){
         Psychiatrist psychiatrist = psychiatristServ.getPsychiatristByMail(mail);
         if(psychiatrist != null){
-            if(Hashed.verifyHashData(password,psychiatrist.getSalts().get("password"),psychiatrist.getPassword())){
+            if(psychiatrist.getPassword().equals(password)){
                 psychiatrist.setPassword("-");
                 return new ResponseEntity<>(psychiatrist,HttpStatus.OK);
             }

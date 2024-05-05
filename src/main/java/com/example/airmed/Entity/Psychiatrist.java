@@ -37,6 +37,9 @@ public class Psychiatrist {
     @Column(nullable = false)
     private String password;
 
+    @Column
+    private String bio;
+
     @Column(nullable = false)
     private String country;
 
@@ -61,66 +64,72 @@ public class Psychiatrist {
     @Column(columnDefinition = "boolean default false")
     private boolean CNAS;
 
-    @ElementCollection
-    private Map<String,String> salts = new HashMap<>();
-
-    public void setMedicalNumber(String medicalNumber) {
-        String salt = Hashed.generateSalt();
-        this.salts.put("medicalNumber", salt);
-        this.medicalNumber = Hashed.createHashData(medicalNumber,salt);
-    }
-
-    public void setFirstName(String firstName) {
-        String salt = Hashed.generateSalt();
-        this.salts.put("firstName",salt);
-        this.firstName = Hashed.createHashData(firstName,salt);
-    }
-
-    public void setLastName(String lastName) {
-        String salt = Hashed.generateSalt();
-        this.salts.put("lastName",salt);
-        this.lastName = Hashed.createHashData(lastName,salt);
-    }
-
-    public void setMail(String mail) {
-        String salt = Hashed.generateSalt();
-        this.salts.put("mail",salt);
-        this.mail = Hashed.createHashData(mail,salt);
-    }
-
-    public void setPhone(String phone) {
-        String salt = Hashed.generateSalt();
-        this.salts.put("phone",salt);
-        this.phone = Hashed.createHashData(phone,salt);
-    }
-
-    public void setPassword(String password) {
-        String salt = Hashed.generateSalt();
-        this.salts.put("password",salt);
-        this.password = Hashed.createHashData(password,salt);
-    }
-
-    public void setCountry(String country) {
-        String salt = Hashed.generateSalt();
-        this.salts.put("country",salt);
-        this.country = Hashed.createHashData(country,salt);
-    }
-
-    public void setLocality(String locality) {
-        String salt = Hashed.generateSalt();
-        this.salts.put("locality",salt);
-        this.locality = Hashed.createHashData(locality,salt);
-    }
-
-    public void setCabinetLocation(String cabinetLocation) {
-        String salt = Hashed.generateSalt();
-        this.salts.put("cabinetLocation",salt);
-        this.cabinetLocation = Hashed.createHashData(cabinetLocation,salt);
-    }
-
-    public void setLinkLocation(String linkLocation) {
-        String salt = Hashed.generateSalt();
-        this.salts.put("linkLocation",salt);
-        this.linkLocation = Hashed.createHashData(linkLocation,salt);
-    }
+//    @ElementCollection
+//    private Map<String,String> salts = new HashMap<>();
+//
+//    public void setMedicalNumber(String medicalNumber) {
+//        String salt = Hashed.generateSalt();
+//        this.salts.put("medicalNumber", salt);
+//        this.medicalNumber = Hashed.createHashData(medicalNumber,salt);
+//    }
+//
+//    public void setFirstName(String firstName) {
+//        String salt = Hashed.generateSalt();
+//        this.salts.put("firstName",salt);
+//        this.firstName = Hashed.createHashData(firstName,salt);
+//    }
+//
+//    public void setLastName(String lastName) {
+//        String salt = Hashed.generateSalt();
+//        this.salts.put("lastName",salt);
+//        this.lastName = Hashed.createHashData(lastName,salt);
+//    }
+//
+//    public void setMail(String mail) {
+//        String salt = Hashed.generateSalt();
+//        this.salts.put("mail",salt);
+//        this.mail = Hashed.createHashData(mail,salt);
+//    }
+//
+//    public void setPhone(String phone) {
+//        String salt = Hashed.generateSalt();
+//        this.salts.put("phone",salt);
+//        this.phone = Hashed.createHashData(phone,salt);
+//    }
+//
+//    public void setPassword(String password) {
+//        String salt = Hashed.generateSalt();
+//        this.salts.put("password",salt);
+//        this.password = Hashed.createHashData(password,salt);
+//    }
+//
+//    public void setBio(String bio) {
+//        String salt = Hashed.generateSalt();
+//        this.salts.put("bio",salt);
+//        this.bio = Hashed.createHashData(bio,salt);
+//    }
+//
+//    public void setCountry(String country) {
+//        String salt = Hashed.generateSalt();
+//        this.salts.put("country",salt);
+//        this.country = Hashed.createHashData(country,salt);
+//    }
+//
+//    public void setLocality(String locality) {
+//        String salt = Hashed.generateSalt();
+//        this.salts.put("locality",salt);
+//        this.locality = Hashed.createHashData(locality,salt);
+//    }
+//
+//    public void setCabinetLocation(String cabinetLocation) {
+//        String salt = Hashed.generateSalt();
+//        this.salts.put("cabinetLocation",salt);
+//        this.cabinetLocation = Hashed.createHashData(cabinetLocation,salt);
+//    }
+//
+//    public void setLinkLocation(String linkLocation) {
+//        String salt = Hashed.generateSalt();
+//        this.salts.put("linkLocation",salt);
+//        this.linkLocation = Hashed.createHashData(linkLocation,salt);
+//    }
 }

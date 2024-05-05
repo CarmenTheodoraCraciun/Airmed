@@ -1,32 +1,39 @@
-import {Patient} from "./Patient.ts";
-import {Salts} from "./Salt.ts";
-import {Hashed} from "./Hashed.ts";
-
 export class ContactPerson{
     id: number;
     firstName: string;
     lastName: string;
     phone: string;
     relationship: string;
-    patient: Patient;
-    salts: Salts;
+    // patient: Patient;
 
 
     constructor(id: number, firstName: string, lastName: string, phone: string,
-                relationship: string, patient: Patient, salts: Salts) {
+                relationship: string) {
         this.id = id;
-        this.salts = salts;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.relationship = relationship;
+        // this.patient = new Patient(patient.id,patient.pnc,patient.firstName,
+        //     patient.lastName,patient.mail, patient.phone, patient.psychiatrist,
+        //     patient.psychotherapist
+        // );
 
-        this.firstName = Hashed.extractDataFromHash(firstName,this.salts.firstName);
-        this.lastName = Hashed.extractDataFromHash(lastName,this.salts.lastName);
-        this.phone = Hashed.extractDataFromHash(phone,this.salts.phone);
-        this.relationship = Hashed.extractDataFromHash(relationship,this.salts.relationship);
+    }
+    static jsonToContactPersons(data: any[]): ContactPerson[] {
+        const contactPersons: ContactPerson[] = [];
+        for (let i = 0; i < 2; i++) {
+            const item = data[i] || {};
+            const contactPerson = new ContactPerson(
+                item.id || -1,
+                item.firstName || "",
+                item.lastName || "",
+                item.phone || "",
+                item.relationship || ""
+            );
+            contactPersons.push(contactPerson);
+        }
 
-
-        this.patient = new Patient(patient.id,patient.PNC,patient.firstName,
-            patient.lastName,patient.mail, patient.phone, patient.psychiatrist,
-            patient.psychotherapist,patient.salts
-        );
-
+        return contactPersons;
     }
 }

@@ -5,6 +5,7 @@ import com.example.airmed.Entity.Psychiatrist;
 import com.example.airmed.Entity.Psychotherapist;
 
 import java.util.List;
+
 // Creating a service interface for the 'Patient' entity
 public interface PatientServ {
     // Method to save or update a patient in the database
@@ -12,7 +13,6 @@ public interface PatientServ {
 
     // Method to retrieve a list of all the patients
     List<Patient> getAllPatients();
-
     // Method to retrieve a patient by their unique identifier (ID)
     Patient getPatientById(Long id);
 

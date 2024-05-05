@@ -1,6 +1,5 @@
 package com.example.airmed.Service.Implementation;
 
-import com.example.airmed.Hashed;
 import com.example.airmed.Entity.*;
 import com.example.airmed.Repository.*;
 import com.example.airmed.Service.Inteface.*;
@@ -56,17 +55,13 @@ public class PatientServImpl implements PatientServ {
     // Method to retrieve a patient by their Personal Numeric Code (PNC)
     @Override
     public Patient getPatientByPNC(String pnc) {
-        String salt = Hashed.generateSalt();
-        return patientRepo.findByPNC(Hashed.createHashData(pnc,salt))
-                .orElse(null);
+        return patientRepo.findByPNC(pnc).orElse(null);
     }
 
     // Method to retrieve a patient by their email address
     @Override
     public Patient getPatientByMail(String mail) {
-        String salt = Hashed.generateSalt();
-        return patientRepo.findByMail(Hashed.createHashData(mail,salt))
-                .orElse(null);
+        return patientRepo.findByMail(mail).orElse(null);
     }
 
     // Method to retrieve a list of patients associated with a Psychiatrist

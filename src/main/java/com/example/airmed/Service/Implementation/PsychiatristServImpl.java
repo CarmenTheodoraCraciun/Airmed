@@ -1,6 +1,5 @@
 package com.example.airmed.Service.Implementation;
 
-import com.example.airmed.Hashed;
 import com.example.airmed.Entity.Psychiatrist;
 import com.example.airmed.Entity.Request;
 import com.example.airmed.Repository.PsychiatristRepo;
@@ -35,24 +34,12 @@ public class PsychiatristServImpl implements PsychiatristServ {
     }
     @Override
     public Psychiatrist getPsychiatristByMedicalNumber(String medicalNumber) {
-        List<Psychiatrist> allPsychiatrists = psychiatristRepo.findAll();
-        for (Psychiatrist psychiatrist : allPsychiatrists) {
-            String storedSalt = psychiatrist.getSalts().get("medicalNumber");
-            if (Hashed.verifyHashData(medicalNumber,storedSalt,psychiatrist.getMedicalNumber()))
-                return psychiatrist;
-        }
-        return null;
+        return psychiatristRepo.findByMedicalNumber(medicalNumber).orElse(null);
     }
 
     @Override
     public Psychiatrist getPsychiatristByMail(String mail){
-        List<Psychiatrist> allPsychiatrists = psychiatristRepo.findAll();
-        for (Psychiatrist psychiatrist : allPsychiatrists) {
-            String storedSalt = psychiatrist.getSalts().get("mail");
-            if (Hashed.verifyHashData(mail,storedSalt,psychiatrist.getMail()))
-                return psychiatrist;
-        }
-        return null;
+        return psychiatristRepo.findByMail(mail).orElse(null);
     }
 
     @Override

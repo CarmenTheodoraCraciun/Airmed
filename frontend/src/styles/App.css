@@ -52,6 +52,11 @@ main {
     z-index: 1;
 }
 
+textarea, input {
+    font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+
 /*Alinieri de obiecte si centrari*/
 .align-start {
     display: flex;
@@ -103,6 +108,15 @@ main {
     background-color: transparent;
 }
 
+.ten-px-gap{
+    gap: 10px;
+}
+
+.error{
+    color: var(--engineering-orange);
+    background-color: transparent;
+}
+
 a {
     font-weight: 500;
     text-decoration: underline;
@@ -122,9 +136,7 @@ button {
     cursor: pointer;
     transition: border-color 0.25s;
 }
-button:hover {
-    border-color: #646cff;
-}
+
 button:focus,
 button:focus-visible {
     outline: 4px auto -webkit-focus-ring-color;

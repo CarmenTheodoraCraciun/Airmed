@@ -52,7 +52,7 @@ h2.title-form{
     position: relative;
 }
 
-.input-group input {
+.input-group-input {
     font-size: 20px;
     padding: 10px;
     outline: none;
@@ -62,7 +62,7 @@ h2.title-form{
     width: 360px;
 }
 
-.input-group input:focus{
+.input-group-input:focus{
     box-shadow: 0 0 5px var(--air-force-blue);
     border: 2px solid var(--bg-white);
 }
@@ -246,7 +246,10 @@ h2.title-form{
     left: 10px;
 }
 
-
+.error-form{
+    margin: 0 0 0 10px;
+    font-size: 9px;
+}
 
 @media screen and (max-width: 900px) {
     .create-account {

@@ -1,7 +1,10 @@
 package com.example.airmed.Controller;
 
+import com.example.airmed.Entity.Psychiatrist;
 import com.example.airmed.Hashed;
 import com.example.airmed.Entity.Psychotherapist;
+import com.example.airmed.Service.Inteface.PatientServ;
+import com.example.airmed.Service.Inteface.PsychiatristServ;
 import com.example.airmed.Service.Inteface.PsychotherapistServ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,10 +19,15 @@ import java.util.List;
 public class PsychotherapistCtrl {
     @Autowired
     PsychotherapistServ psychotherapistServ;
-
+    @Autowired
+    PsychiatristServ psychiatristServ;
+    @Autowired
+    PatientServ patientServ;
     // method: POST
     // link: baseURL + "/psychotherapist", body: psychotherapist as json
-    // receive: 201
+    // receive: 201 - created
+    //          208 - medicalNumber already in tha db
+    //          302 - mail already in the db
     @PostMapping("/psychotherapist")
     public ResponseEntity<Psychotherapist> savePsychotherapist(@Validated @RequestBody Psychotherapist psychotherapist){
         return new ResponseEntity<>(psychotherapistServ.savePsychotherapist(psychotherapist), HttpStatus.CREATED);
@@ -48,7 +56,7 @@ public class PsychotherapistCtrl {
     // link: baseURL + "/psychotherapist/medicalNumber?medicalNumber=" + medicalNumber
     // receive: json + 302 or 404
     @GetMapping("/psychotherapist/medicalNumber")
-    public ResponseEntity<Psychotherapist> getPsychotherapistByMedicalNumber(@PathVariable("id") String medicalNumber){
+    public ResponseEntity<Psychotherapist> getPsychotherapistByMedicalNumber(@RequestParam("medicalNumber") String medicalNumber){
         Psychotherapist psychotherapist = psychotherapistServ.getPsychotherapistByMedicalNumber(medicalNumber);
         if(psychotherapist != null)
             return  new ResponseEntity<>(psychotherapist, HttpStatus.FOUND);
@@ -64,7 +72,7 @@ public class PsychotherapistCtrl {
     public ResponseEntity<Psychotherapist> getPsychotherapistByMailAndPassword(@RequestParam("mail")String mail,@RequestParam("password")String password){
         Psychotherapist psychotherapist = psychotherapistServ.getPsychotherapistByMail(mail);
         if(psychotherapist != null){
-            if(Hashed.verifyHashData(password,psychotherapist.getSalts().get("password"),psychotherapist.getPassword())){
+            if(psychotherapist.getPassword().equals(password)){
                 psychotherapist.setPassword("-");
                 return new ResponseEntity<>(psychotherapist,HttpStatus.OK);
             }

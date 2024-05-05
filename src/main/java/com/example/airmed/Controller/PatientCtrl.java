@@ -14,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
@@ -26,10 +27,13 @@ public class PatientCtrl {
     PsychotherapistServ psychotherapistServ;
     // method: POST
     // link: baseURL + "/patient", body: patient as json
-    // receive: 201
+    // receive: 201 - created
+    //          208 - pnc already in tha db
+    //          302 - mail already in the db
     @PostMapping("/patient")
     public ResponseEntity<Patient> savePatient(@Validated @RequestBody Patient patient){
-        return new ResponseEntity<>(patientServ.savePatient(patient), HttpStatus.CREATED);
+        Patient patient1 = patientServ.savePatient(patient);
+        return new ResponseEntity<>(patient1, HttpStatus.CREATED);
     }
 
     // method: GET
@@ -52,7 +56,7 @@ public class PatientCtrl {
     public ResponseEntity<Patient> getPatientByMailAndPassword(@RequestParam("mail") String mail, @RequestParam("password") String password) {
         Patient patient = patientServ.getPatientByMail(mail);
         if (patient != null) {
-            if (Hashed.verifyHashData(password,patient.getSalts().get("password"),patient.getPassword())) {
+            if (patient.getPassword().equals(password)) {
                 patient.setPassword("-");
                 return new ResponseEntity<>(patient, HttpStatus.OK);
             }
@@ -68,7 +72,7 @@ public class PatientCtrl {
     public ResponseEntity<Patient> getUserByPNC(@RequestParam("PNC")String pnc){
         Patient patient = patientServ.getPatientByPNC(pnc);
         if(patient != null)
-            return new ResponseEntity<>(patient,HttpStatus.OK);
+            return new ResponseEntity<>(patient, HttpStatus.OK);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 

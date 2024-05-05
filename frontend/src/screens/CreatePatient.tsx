@@ -13,7 +13,7 @@ function CreatePatient(){
                         <>
                             <p className="message-content">Aici poți crea doar conturi de pacient.</p>
                             <p className="message-content">Dacă ești un medic urmează link-ul următor pentru creare contului special: <a className="message-link" href="/create-psychiatrist">link</a>.</p>
-                            <p className="message-content">Dacă ești psihoterapeut urmează link-ul următor pentru creare contului special:  <a className="message-link" href="/crete-psychotherapist">link</a>.</p>
+                            <p className="message-content">Dacă ești psihoterapeut urmează link-ul următor pentru creare contului special:  <a className="message-link" href="/create-psychotherapist">link</a>.</p>
                         </>
                     } />
                     <Message type="error" content={

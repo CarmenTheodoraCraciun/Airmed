@@ -25,7 +25,7 @@ public class Hashed {
             return Base64.getEncoder().encodeToString(hashedPassword);
         } catch (NoSuchAlgorithmException e) {
             // Handle any errors that occur during hashing
-            throw new RuntimeException("Error hashing password", e);
+            throw new RuntimeException("Error hashing", e);
         }
     }
 

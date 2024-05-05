@@ -19,7 +19,7 @@ function ArePsychotherapist(){
                         </Accordion>
                         <Accordion title="Cum îmi fac cont?">
                             <p>
-                                Accesând link-ul <a href='/crete-psychotherapist' >acesta</a> și competând cu atenție toate datele din formularul resprectiv.
+                                Accesând link-ul <a href='/create-psychotherapist' >acesta</a> și competând cu atenție toate datele din formularul resprectiv.
                             </p>
                         </Accordion>
                         <Accordion title="Cum adaug un utilizator în lista pacienților mei?">

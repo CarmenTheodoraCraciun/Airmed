@@ -54,6 +54,14 @@ header{
     text-decoration: none;
 }
 
+/*User img*/
+#patient-img{
+    width: 30px;
+    height: 30px;
+    margin-right: 0;
+    margin-top: 5px;
+}
+
 /*Elemente*/
 
 .header-ul{
@@ -72,7 +80,14 @@ header{
     text-decoration: none;
 }
 
-.header-el:hover{
+.header-li{
+    background-color: transparent;
+    color: var(--bg-white);
+    margin-right: 20px;
+    text-decoration: none;
+}
+
+.header-el:hover, .header-li:hover{
     color: var(--air-force-blue);
 }
 
@@ -81,6 +96,61 @@ header{
     color: var(--white);
     margin-right: 20px;
 }
+
+.menu {
+    display: none;
+    position: absolute;
+    background-color: var(--dark-slate-grey);
+    color: var(--bg-white);
+    width: 150px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.menu-li:hover .menu {
+    display: block;
+}
+
+/*Search bar*/
+.group-search {
+    display: flex;
+    line-height: 28px;
+    align-items: center;
+    position: relative;
+    max-width: 190px;
+}
+
+.input-search {
+    width: 100%;
+    line-height: 28px;
+    padding: 0 0 0 30px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    outline: none;
+    background-color: var(--bg-white);
+    color: #0d0c22;
+    transition: .3s ease;
+}
+
+.input-search::placeholder {
+    color: #9e9ea7;
+}
+
+.input-search:focus, input:hover {
+    outline: none;
+    border-color: var(--air-force-blue);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.icon-search {
+    position: absolute;
+    left: 1rem;
+    fill: #9e9ea7;
+    width: 1rem;
+    height: 1rem;
+}
+
 
 /* Stilurile pentru ecran mai mare sau egal cu 1000px */
 /*@media screen and (min-width: 1000px) {*/

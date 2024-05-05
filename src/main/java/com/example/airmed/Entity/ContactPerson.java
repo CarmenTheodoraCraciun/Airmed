@@ -34,30 +34,30 @@ public class ContactPerson {
     @JoinColumn(name = "patient", nullable = false)
     private Patient patient;
 
-    @ElementCollection
-    private Map<String,String> salts = new HashMap<>();
-
-    public void setFirstName(String firstName) {
-        String salt = Hashed.generateSalt();
-        this.salts.put("firstName", salt);
-        this.firstName = Hashed.createHashData(firstName,salt);
-    }
-
-    public void setLastName(String lastName) {
-        String salt = Hashed.generateSalt();
-        this.salts.put("lastName", salt);
-        this.lastName = Hashed.createHashData(lastName,salt);
-    }
-
-    public void setPhone(String phone) {
-        String salt = Hashed.generateSalt();
-        this.salts.put("phone", salt);
-        this.phone = Hashed.createHashData(phone,salt);
-    }
-
-    public void setRelationship(String relationship) {
-        String salt = Hashed.generateSalt();
-        this.salts.put("relationship", salt);
-        this.relationship = Hashed.createHashData(relationship,salt);
-    }
+//    @ElementCollection
+//    private Map<String,String> salts = new HashMap<>();
+//
+//    public void setFirstName(String firstName) {
+//        String salt = Hashed.generateSalt();
+//        this.salts.put("firstName", salt);
+//        this.firstName = Hashed.createHashData(firstName,salt);
+//    }
+//
+//    public void setLastName(String lastName) {
+//        String salt = Hashed.generateSalt();
+//        this.salts.put("lastName", salt);
+//        this.lastName = Hashed.createHashData(lastName,salt);
+//    }
+//
+//    public void setPhone(String phone) {
+//        String salt = Hashed.generateSalt();
+//        this.salts.put("phone", salt);
+//        this.phone = Hashed.createHashData(phone,salt);
+//    }
+//
+//    public void setRelationship(String relationship) {
+//        String salt = Hashed.generateSalt();
+//        this.salts.put("relationship", salt);
+//        this.relationship = Hashed.createHashData(relationship,salt);
+//    }
 }

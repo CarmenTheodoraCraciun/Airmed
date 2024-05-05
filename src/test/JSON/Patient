@@ -1,0 +1,38 @@
+{
+  "pnc": "1234567697",
+  "firstName": "Ana",
+  "lastName": "Marcu",
+  "mail": "ana.marcu24@gmail.com",
+  "phone": "0777139622",
+  "password": "securePassword",
+  "psychiatrist": null,
+  "psychotherapist":{
+                        "id": 1,
+                        "medicalNumber": "3Nv08GHCRuFVJGMIB32kTXlnAd+4+zKM+1Dh3UjEIrg=",
+                        "firstName": "7pt9q7d6gnbBdEHbZZ4txJSvWNZUduNJz/nAoFaTfqE=",
+                        "lastName": "cGs2/gVfxz97wB7Z5uBTgMpStVGtLr2u8g5f41gEXv8=",
+                        "mail": "9T/4pJXcVfmrGDGhIj1q/oKvF5oFsPAnSA6OSvBJhMI=",
+                        "phone": "CsIZXQU33/+3MFOkWBKvdzX7tvh3wI1HfCrsEGD+lwY=",
+                        "password": "Nq6lChpLCqU76UaSblgJu+l75qGyBEzV7/ByBr8YMhk=",
+                        "country": "c8SpjqmVF4+wGxHaH46RHWWbIGevVKNKMun+O74gTB4=",
+                        "locality": "4fU9qVEgK8//Mp40aZ21ZKt6jdWasztvR7l4hTjiaHc=",
+                        "cabinetLocation": "0Z15hulmq1HZ1Cn8iUcuz0jGbWVSPEEThHJHz8TRmsg=",
+                        "linkLocation": "THoEeJxxUbr/zPa37mlrClAVvZzsbNrVigdW9mhIMYo=",
+                        "priceConsult": 50,
+                        "priceConsultation": 80,
+                        "online": true,
+                        "salts": {
+                            "firstName": "SAArLvFFh3rm+SvCVfLjmA==",
+                            "lastName": "fwo2Qfd7Fn+xkZ39oulhGg==",
+                            "country": "aublGn5PVw6iOjC/YsMIBw==",
+                            "password": "IMChLtc4mZNdCf5u5AeOkg==",
+                            "mail": "tiMAoQgjsKct5OG2dmeZfg==",
+                            "phone": "za/MrPfA+eZLo8z0mysBdQ==",
+                            "medicalNumber": "SXCYX7HZrvPrTeoiXbkJog==",
+                            "locality": "uwL9m0plUH1A8kLDUTvl3Q==",
+                            "linkLocation": "llI/sUlSbnIqsB+rD8NWVA==",
+                            "cabinetLocation": "nWMkdAbAjqSY+6WHv8f3pg=="
+                        },
+                        "cnas": false
+                    }
+}
