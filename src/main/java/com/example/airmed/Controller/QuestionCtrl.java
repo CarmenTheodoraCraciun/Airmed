@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
 public class QuestionCtrl {
@@ -32,6 +34,15 @@ public class QuestionCtrl {
             return  new ResponseEntity<>(question, HttpStatus.FOUND);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    // method: GET
+    // link: baseURL + "/question/all"
+    // receive: json + 302 or 404
+    @GetMapping("/question/all")
+    public ResponseEntity<List<Question>> getAllQuestions(){
+        return  new ResponseEntity<>(questionServ.getAllQuestions(), HttpStatus.FOUND);
+    }
+
 
     // method: DELETE, also deleting all the answers
     // link: baseURL + "/question/" + questionId

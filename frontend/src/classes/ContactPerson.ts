@@ -1,10 +1,11 @@
+import patientToJson, {Patient} from "./Patient.ts";
+
 export class ContactPerson{
     id: number;
     firstName: string;
     lastName: string;
     phone: string;
     relationship: string;
-    // patient: Patient;
 
 
     constructor(id: number, firstName: string, lastName: string, phone: string,
@@ -14,12 +15,16 @@ export class ContactPerson{
         this.lastName = lastName;
         this.phone = phone;
         this.relationship = relationship;
-        // this.patient = new Patient(patient.id,patient.pnc,patient.firstName,
-        //     patient.lastName,patient.mail, patient.phone, patient.psychiatrist,
-        //     patient.psychotherapist
-        // );
-
     }
+
+    changeContactPerson(firstName: string, lastName: string, phone: string, relationship: string) : ContactPerson{
+        if(firstName !== '') this.firstName = firstName;
+        if(lastName !== '') this.lastName = lastName;
+        if(relationship !== '') this.phone = phone;
+        if(relationship !== this.relationship) this.relationship = relationship;
+        return this;
+    }
+
     static jsonToContactPersons(data: any[]): ContactPerson[] {
         const contactPersons: ContactPerson[] = [];
         for (let i = 0; i < 2; i++) {
@@ -36,4 +41,16 @@ export class ContactPerson{
 
         return contactPersons;
     }
+}
+
+export default function contactPersonToJson(contact: ContactPerson, patient: Patient): string {
+    const json = JSON.stringify({
+        id: contact.id,
+        firstName: contact.firstName,
+        lastName: contact.lastName,
+        phone: contact.phone,
+        relationship: contact.relationship,
+        patient: patientToJson(patient)
+    });
+    return json;
 }

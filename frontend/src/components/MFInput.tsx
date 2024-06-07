@@ -3,12 +3,12 @@ import React, { ChangeEvent } from 'react';
 interface MFInputProps {
     inputName: string;
     initialValue: string | null;
-    onChange: (value: string | null) => void;
+    onChange: (value: string) => void;
 }
 
 const MFInput: React.FC<MFInputProps> = ({ inputName, initialValue, onChange }) => {
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        onChange(e.target.value !== '' ? e.target.value : null);
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+        onChange(event.target.value);
     };
 
     return (
@@ -17,7 +17,7 @@ const MFInput: React.FC<MFInputProps> = ({ inputName, initialValue, onChange }) 
             <input
                 className="input-mf"
                 type="text"
-                value={initialValue !== null ? initialValue : ''}
+                placeholder={initialValue !== null ? initialValue : ''}
                 onChange={handleChange}
             />
         </div>

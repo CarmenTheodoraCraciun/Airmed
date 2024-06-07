@@ -2,6 +2,9 @@ import Logo from "./Logo.tsx";
 import {Link, useNavigate} from "react-router-dom";
 import {Patient} from "../classes/Patient.ts";
 import patientImg from "../resources/img/user.png";
+import psyhchiatristImg from "../resources/img/medic.png";
+import {Psychiatrist} from "../classes/Psychiatrist.ts";
+import {Psychotherapist} from "../classes/Psychotherapist.ts";
 // import {createPatientFromJSON} from "../functions/CreateUsers.ts";
 function Header(){
     const navigate = useNavigate();
@@ -9,11 +12,20 @@ function Header(){
     const psychiatristDataString = sessionStorage.getItem('psychiatrist');
     const psychotherapistDataString = sessionStorage.getItem('psychotherapist');
     var headerLinks = null;
+
+    function handleLogoutClick() {
+        sessionStorage.clear();
+    }
+
     function handleNewButtonClick() {
         navigate('/create-patient');
     }
     function handleLoginButtonClick(){
         navigate('/login');
+    }
+
+    function handleAddPatientClick() {
+        navigate('/add-patient');
     }
 
     if (patientDataString) {
@@ -29,7 +41,7 @@ function Header(){
                 </div>
             </li>
             <li>
-                <a href="/home" className="header-el">Despre noi</a>
+                <a href="/about-us" className="header-el">Despre noi</a>
             </li>
             <li className="menu-li">
                 {patient.firstName}
@@ -48,16 +60,47 @@ function Header(){
                         </>
                         : null
                     }
-                    <a href="#"  className="header-li">Deconectează-te</a>
+                    <a href="/about-us" className="header-li" onClick={handleLogoutClick}>Deconectează-te</a>
                 </div>
             </li>
         </ul>);
     }
     else if (psychiatristDataString) {
-        console.log(psychiatristDataString);
+        // Psychiatrist's header
+        const psychiatrist = Psychiatrist.jsonToPsychiatrist(psychiatristDataString);
+        headerLinks = (<ul className="header-ul">
+            <li><button className="header-btn" onClick={handleAddPatientClick}>Adaugă pacient</button></li>
+            <li>
+                <a href="/about-us" className="header-el">Despre noi</a>
+            </li>
+            <li className="menu-li">
+                {psychiatrist.firstName} {psychiatrist.lastName}
+                <img id="psychiatrist-img" src={psyhchiatristImg} alt=""/>
+                <div className="menu">
+                    <Link to={`/profile/${psychiatrist.id}/psychiatrist`} className="header-li">Profil</Link><br/>
+                    <a href="/about-us" className="header-li" onClick={handleLogoutClick}>Deconectează-te</a>
+                </div>
+            </li>
+        </ul>);
     }
     else if (psychotherapistDataString) {
-        console.log(psychotherapistDataString);
+        // Psychiatrist's header
+        const psychotherapist = Psychotherapist.jsonToPsychotherapist(psychotherapistDataString);
+        // console.log(psychotherapist);
+        headerLinks = (<ul className="header-ul">
+            <li><button className="header-btn" onClick={handleAddPatientClick}>Adaugă pacient</button></li>
+            <li>
+                <a href="/about-us" className="header-el">Despre noi</a>
+            </li>
+            <li className="menu-li">
+                {psychotherapist.firstName} {psychotherapist.lastName}
+                <img id="psychiatrist-img" src={psyhchiatristImg} alt=""/>
+                <div className="menu">
+                    <Link to="" className="header-li">Profil</Link><br/>
+                    <a href="/about-us" className="header-li" onClick={handleLogoutClick}>Deconectează-te</a>
+                </div>
+            </li>
+        </ul>);
     }
     else {
         headerLinks = (<ul className="header-ul">

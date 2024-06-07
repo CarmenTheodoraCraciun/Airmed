@@ -1,7 +1,10 @@
 import Header from "../components/Header.tsx";
 import noData from "../resources/img/no-data.png";
+import {useNavigate} from "react-router-dom";
 
 function PatientHome(){
+    const navigate = useNavigate();
+
     return (
         <>
             <Header/>
@@ -13,7 +16,7 @@ function PatientHome(){
                         <img id="big-graph-img" src={noData} alt=""/>
                     </div>
                     <div className="vertical-1">
-                        <button className="feeling-btn">Cum te simți azi? Adaugă stare</button>
+                        <button className="feeling-btn" onClick={() => navigate('/feealing-mood')}>Cum te simți azi? Adaugă stare</button>
                         <textarea placeholder="Ce te apasă zilele astea?"></textarea>
                         <button className="button-1">Salvează</button>
                     </div>

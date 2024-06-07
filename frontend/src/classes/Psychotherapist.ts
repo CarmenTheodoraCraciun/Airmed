@@ -35,4 +35,26 @@ export class Psychotherapist{
         this.cabinetLocation = cabinetLocation;
         this.linkLocation = linkLocation;
     }
+
+    static jsonToPsychotherapist(json: string) {
+        const data = JSON.parse(json);
+        // console.log("Data ", data);
+        return new Psychotherapist(
+            data.id,
+            data.medicalNumber,
+            data.firstName,
+            data.lastName,
+            data.mail,
+            data.bio,
+            data.phone,
+            data.country,
+            data.locality,
+            data.cabinetLocation,
+            data.linkLocation,
+            data.priceConsult,
+            data.priceConsultation,
+            data.online,
+            data.CNAS
+        );
+    }
 }

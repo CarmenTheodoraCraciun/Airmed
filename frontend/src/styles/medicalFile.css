@@ -48,6 +48,12 @@ aside{
     font-size: 25px;
 }
 
+.mf-subtitle{
+    margin-top: 15px;
+    margin-bottom: 15px;
+    font-size: 12px;
+}
+
 .input-group-mf{
     margin-top: 16px;
     max-width: 390px;
@@ -79,7 +85,6 @@ aside{
 }
 
 .input-mf-disable:hover{
-    cursor: not-allowed;
     border: 2px solid #ccc;
 }
 
@@ -103,9 +108,68 @@ aside{
     border: 2px solid var(--bg-white);
 }
 
+/*Feeling quiz*/
+.vertical-feeling {
+    display: flex;
+    flex-direction: column;
+    background-color: transparent;
+    width: 300px;
+    margin-left: 10px;
+    z-index: 2;
+}
+
+.horizontal-feeling {
+    display: flex;
+    flex-direction: row;
+    background-color: transparent;
+    align-items: center;
+    height: 500px;
+}
+
+#feeling-img {
+    background-color: transparent;
+    margin-left: 30px;
+    height: 400px;
+    z-index: 1;
+    align-content: center;
+}
 
 
-/*.input-mf-disable:focus{*/
-/*    box-shadow: 0 0 5px var(--air-force-blue);*/
-/*    border: 2px solid var(--bg-white);*/
-/*}*/
+.questions-container{
+    display: flex;
+    flex-direction: column;
+    background-color: transparent;
+    width: 300px;
+    gap: 20px;
+}
+
+.radio-buttons {
+    background-color: transparent;
+    display: flex;
+    gap: 40px;
+}
+
+.radio-button-container{
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+}
+
+.radio-button-btn {
+    background-color: transparent;
+    width: 20px;
+    height: 15px;
+    margin-right: 8px;
+    border: 2px solid var(--border-color);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.radio-button-label {
+    background-color: transparent;
+    display: inline-block;
+    font-size: 13px;
+}

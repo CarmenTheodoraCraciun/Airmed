@@ -2,84 +2,94 @@ import Header from "../components/Header.tsx";
 import {Patient} from "../classes/Patient.ts";
 import Aside from "../components/Aside.tsx";
 import MFDisableInput from "../components/MFDisableInput.tsx";
-import {useEffect, useState} from "react";
-import {extractBirthday, dateToString, calculateAge} from "../functions/ExtracFromPNC.ts";
-import Loading from "../components/Loading.tsx";
+import {calculateAge, dateToString, extractBirthday} from "../functions/ExtracFromPNC.ts";
+import MFInput from "../components/MFInput.tsx";
+import {FC, useState} from "react";
 
 interface Props {
-    patientId: number;
+    patient: Patient;
 }
 
-function MFPersonalData({ patientId }: Props) {
-    const baseURL: string = "http://localhost:8080";
-    const patientDataString = sessionStorage.getItem('patient');
-    // const psychiatristDataString = sessionStorage.getItem('psychiatrist');
-    const psychotherapistDataString = sessionStorage.getItem('psychotherapist');
+const MFPersonalData: FC<Props> = ({ patient }) => {
+    const [editedPatient, setEditedPatient] = useState<Patient>(patient);
 
-    const [detalies, setDetails] = useState<JSX.Element | null>(null);
+    const handlePatientChange = (field: keyof Patient, value: string | null) => {
+        setEditedPatient((prevState: Patient) => {
+            return new Patient(
+                prevState.id,
+                field === 'pnc' ? (value !== null ? value : '') : prevState.pnc,
+                field === 'firstName' ? (value !== null ? value : '') : prevState.firstName,
+                field === 'lastName' ? (value !== null ? value : '') : prevState.lastName,
+                prevState.mail,
+                prevState.phone,
+                prevState.psychiatrist,
+                prevState.psychotherapist
+            );
+        });
+    };
 
-    useEffect(() => {
-        const getPatient = async () => {
-            const response = await fetch(baseURL + '/patient/' + patientId, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': 'http://localhost:5173'
-                }
-            });
-            if (response.status === 302){
-                const data = await response.json();
-                const patient = Patient.jsonToPatient(JSON.stringify(data));
-                const bd = extractBirthday(patient.pnc);
-                let inputs = null;
-                if (patientDataString !== null || psychotherapistDataString !== null) {
-                    // contul este de pacient sau terapeut
-                    inputs = (
-                        <>
-                            <MFDisableInput inputName="Prenume" placeholderValue={patient.firstName}/>
-                            <MFDisableInput inputName="Nume" placeholderValue={patient.lastName}/>
-                            <MFDisableInput inputName="Cod numeric personal" placeholderValue={patient.pnc}/>
-                            {bd !== null ?
-                                <>
-                                    <MFDisableInput inputName="Data nașterii" placeholderValue={dateToString(bd)}/>
-                                    <MFDisableInput inputName="Vârstă" placeholderValue={calculateAge(bd).toString()}/>
-                                </>
-                                : null
-                            }
-                            <br/>
-                            <span>Există greșeli? Cere medicului să le rezolve.</span>
-                        </>
-                    );
-                }
+    const isPatientSession = sessionStorage.getItem('patient') !== null;
+    const birthday = extractBirthday(editedPatient.pnc);
 
-                const details = (
+    const patientDetails = (
+        <>
+            <Aside patientId={patient.id} patientFirstName={editedPatient.firstName} patientLastName={patient.lastName} idAside={0} />
+            <div className="vertical ten-px-gap">
+                <span className="mf-title">Date personale</span>
+                {isPatientSession ? (
                     <>
-                        <Aside patientId={patient.id} patientFirstName={patient.firstName} patientLastName={patient.lastName} idAside={0}/>
-                        <div className="vertical ten-px-gap">
-                            <span className="mf-title">Date personale</span>
-                            {inputs}
-                        </div>
+                        <MFDisableInput inputName="Prenume" initialValue={editedPatient.firstName} />
+                        <MFDisableInput inputName="Nume" initialValue={editedPatient.lastName} />
+                        <MFDisableInput inputName="Cod numeric personal" initialValue={editedPatient.pnc} />
+                        {birthday && (
+                            <>
+                                <MFDisableInput inputName="Data nașterii" initialValue={dateToString(birthday)} />
+                                <MFDisableInput inputName="Vârstă" initialValue={calculateAge(birthday).toString()} />
+                            </>
+                        )}
+                        <br />
+                        <span>Există greșeli? Cere medicului să le rezolve.</span>
                     </>
-                );
-
-                setDetails(details);
-            }
-        };
-
-        getPatient();
-    }, [patientId, patientDataString]);
+                ) : (
+                    <>
+                        <span>Există greșeli? Rescrie câmpurile unde acestea se află acestea.</span>
+                        <span>Data nașterii și vârsta se calculează în funcție de codul numeric personal.</span>
+                        <MFInput
+                            inputName="Prenume"
+                            initialValue={patient.firstName}
+                            onChange={(value) => handlePatientChange('firstName', value)}
+                        />
+                        <MFInput
+                            inputName="Nume"
+                            initialValue={patient.lastName}
+                            onChange={(value) => handlePatientChange('lastName', value)}
+                        />
+                        <MFInput
+                            inputName="Cod numeric personal"
+                            initialValue={patient.pnc}
+                            onChange={(value) => handlePatientChange('pnc', value)}
+                        />
+                        {birthday && (
+                            <>
+                                <MFDisableInput inputName="Data nașterii" initialValue={dateToString(birthday)} />
+                                <MFDisableInput inputName="Vârstă" initialValue={calculateAge(birthday).toString()} />
+                            </>
+                        )}
+                        <button className="button-form">Salvează</button>
+                    </>
+                )}
+            </div>
+        </>
+    );
 
     return (
         <>
-            <Header/>
+            <Header />
             <main className="horizontal-1 ten-px-gap">
-                {detalies === null ?
-                    <Loading/>
-                    : detalies
-                }
+                {patientDetails}
             </main>
         </>
     );
-}
+};
 
 export default MFPersonalData;

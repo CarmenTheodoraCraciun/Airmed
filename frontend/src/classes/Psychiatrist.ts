@@ -36,4 +36,26 @@ export class Psychiatrist{
         this.cabinetLocation = cabinetLocation;
         this.linkLocation = linkLocation;
     }
+
+    static jsonToPsychiatrist(json: string) {
+        const data = JSON.parse(json);
+        // console.log("Data ", data);
+        return new Psychiatrist(
+            data.id,
+            data.medicalNumber,
+            data.firstName,
+            data.lastName,
+            data.mail,
+            data.bio,
+            data.phone,
+            data.country,
+            data.locality,
+            data.cabinetLocation,
+            data.linkLocation,
+            data.priceConsult,
+            data.priceConsultation,
+            data.online,
+            data.CNAS
+        );
+    }
 }

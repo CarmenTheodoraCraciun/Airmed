@@ -10,6 +10,7 @@ import {
     isValidMedicalNumber,
     isWizeOrMapsLink, isPositiveNumber
 } from '../functions/CheckInputs.ts';
+import {checkUnique, postData} from '../functions/EndPoints.ts';
 interface FormProps {
     type: "patient" | "psychiatrist" | "psychotherapist";
 }
@@ -26,15 +27,7 @@ function Form({ type }: FormProps) {
                 baseURL + '/psychotherapist/mail?mail=' + mailValue+ '&password= '
             ];
             for (const url of emailCheckURLs) {
-                const response = await fetch(url, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Access-Control-Allow-Origin': 'http://localhost:5173' // Adaugă antetul CORS
-                    }
-                });
-
-                if (response.status !== 404) {
+                if(!await checkUnique(url)){
                     alert("Există cont cu adresa de email dată.");
                     return;
                 }
@@ -42,16 +35,8 @@ function Form({ type }: FormProps) {
 
             if (type === 'patient') {
                 if (isValidPNC(pncValue)) {
-                    // verifica daca cnp-ul e unic
-                    var response = await fetch(baseURL + '/patient/PNC?PNC=' + pncValue.toString(), {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Access-Control-Allow-Origin': 'http://localhost:5173'
-                        }
-                    });
-
-                    if (response.status !== 404) {
+                    var url = baseURL + '/patient/PNC?PNC=' + pncValue.toString();
+                    if(!await checkUnique(url)){
                         alert("CNP-ul există în baza de date.");
                         return;
                     }
@@ -66,25 +51,18 @@ function Form({ type }: FormProps) {
                         psychiatrist: null,
                         psychotherapist: null
                     }, null, 2);
-                    // creaza cont
-                    response = await fetch(baseURL + '/patient', {method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Access-Control-Allow-Origin': 'http://localhost:5173'
-                        },
-                        body: patientJson
-                    });
-
-                    if (response.status === 201) {
-                        const data = await response.json();
-                        // salvam in sessionStorege datele
-                        if (sessionStorage.getItem('patient')) {
-                            sessionStorage.removeItem('patient');
+                    var response = await postData(baseURL + '/patient', patientJson);
+                    if (response !== null) {
+                        if(response.status !== 201) {
+                            // salvam in sessionStorege datele
+                            if (sessionStorage.getItem('patient')) {
+                                sessionStorage.removeItem('patient');
+                            }
+                            sessionStorage.setItem('patient', response.toString());
+                            navigate('/about-us');
                         }
-                        sessionStorage.setItem('patient', data);
-                        navigate('/home');
+                        else alert("Te rugăm să încerci din nou mai târziu.");
                     }
-                    else alert("Te rugăm să încerci din nou mai târziu.");
                 }
                 else alert("CNP-ul trebuie să conțină 13 cifre.");
             }
@@ -100,15 +78,7 @@ function Form({ type }: FormProps) {
                         baseURL + '/psychotherapist/medicalNumber?medicalNumber=' + medicalNumberValue.toString()
                     ];
                     for (const url of medicalNumberCheckURLs) {
-                        const response = await fetch(url, {
-                            method: 'GET',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Access-Control-Allow-Origin': 'http://localhost:5173'
-                            }
-                        });
-
-                        if (response.status !== 404) {
+                        if(!await checkUnique(url)){
                             alert("Parafa medicala există în baza de date.");
                             return;
                         }
@@ -130,47 +100,36 @@ function Form({ type }: FormProps) {
                         online: isOnline,
                         CNAS: isCNAS
                     }, null, 2);
+
+                    // console.log(specialistJson);
                     if(type === 'psychiatrist') {
-                        // creaza cont
-                        response = await fetch(baseURL + '/psychiatrist', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Access-Control-Allow-Origin': 'http://localhost:5173'
-                            },
-                            body: specialistJson
-                        });
-                        if (response.status === 201) {
-                            const data = await response.json();
-                            // salvam in sessionStorege datele
-                            if (sessionStorage.getItem('psychiatrist')) {
-                                sessionStorage.removeItem('psychiatrist');
+                        response = await postData(baseURL + '/psychiatrist', specialistJson);
+                        if (response !== null) {
+                            if(response.status !== 201) {
+                                // salvam in sessionStorege datele
+                                if (sessionStorage.getItem('psychiatrist')) {
+                                    sessionStorage.removeItem('psychiatrist');
+                                }
+                                sessionStorage.setItem('psychiatrist', response.toString());
+                                navigate('/about-us');
                             }
-                            sessionStorage.setItem('psychiatrist', data);
-                            navigate('/home');
+                            else alert("Te rugăm să încerci din nou mai târziu.");
                         }
-                        else alert("Te rugăm să încerci din nou mai târziu.");
                     }
                     else{
                         // creaza cont
-                        response = await fetch(baseURL + '/psychotherapist', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Access-Control-Allow-Origin': 'http://localhost:5173'
-                            },
-                            body: specialistJson
-                        });
-                        if (response.status === 201) {
-                            const data = await response.json();
-                            // salvam in sessionStorege datele
-                            if (sessionStorage.getItem('psychotherapist')) {
-                                sessionStorage.removeItem('psychotherapist');
+                        response = await postData(baseURL + '/psychotherapist', specialistJson);
+                        if (response !== null) {
+                            if(response.status !== 201) {
+                                // salvam in sessionStorege datele
+                                if (sessionStorage.getItem('psychotherapist')) {
+                                    sessionStorage.removeItem('psychotherapist');
+                                }
+                                sessionStorage.setItem('psychotherapist', response.toString());
+                                navigate('/about-us');
                             }
-                            sessionStorage.setItem('psychotherapist', data);
-                            navigate('/home');
+                            else alert("Te rugăm să încerci din nou mai târziu.");
                         }
-                        else alert("Te rugăm să încerci din nou mai târziu.");
                     }
                 }
             }

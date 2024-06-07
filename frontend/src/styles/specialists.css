@@ -1,0 +1,26 @@
+.patients-list-container {
+    width: 170%;
+}
+
+.patients-list-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.patients-list-th, .patients-list-td {
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    text-align: left;
+}
+
+.patients-list-th {
+    background-color: var(--air-force-blue);
+}
+
+.patients-list-tr.even {
+    background-color: #f9f9f9;
+}
+
+.patients-list-tr.odd {
+    background-color: #e0e0e0;
+}

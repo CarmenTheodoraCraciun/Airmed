@@ -16,9 +16,9 @@ export class Answer{
         this.answer = answer;
 
         this.question = new Question(question.id, question.content);
-        this.patient = new Patient(patient.id,patient.PNC,patient.firstName,
+        this.patient = new Patient(patient.id,patient.pnc,patient.firstName,
             patient.lastName,patient.mail, patient.phone, patient.psychiatrist,
-            patient.psychotherapist,patient.salts
+            patient.psychotherapist
         );
     }
 }
