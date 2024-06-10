@@ -98,6 +98,17 @@ public class PatientServImpl implements PatientServ {
     }
 
     @Override
+    public Patient updatePatientPassword(Patient old, String password) {
+        if(old != null && patientRepo.existsById(old.getId())
+            && password != null){
+            // Updating the
+            old.setPassword(password);
+            return patientRepo.save(old);
+        }
+        return null;
+    }
+
+    @Override
     public Patient updatePsychiatristInPatient(Patient patient, Psychiatrist psychiatrist) {
         if(patient != null && patientRepo.existsById(patient.getId())){
             patient.setPsychiatrist(psychiatrist);
@@ -132,7 +143,6 @@ public class PatientServImpl implements PatientServ {
         }
         return null;
     }
-
 
     // Method to delete a patient by their unique identifier (ID)
     @Override

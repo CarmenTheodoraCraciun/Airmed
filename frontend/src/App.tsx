@@ -34,8 +34,6 @@ import {Fragment, useEffect, useState} from "react";
 
 function App() {
     const [patientsList, setPatientsList] = useState<Patient[]>([]);
-    const baseURL = "http://localhost:8080";
-
     let homeRoute = <Route path="/home" element={<Navigate to={"/about-us"} />} />;
     const patientDataString = sessionStorage.getItem('patient');
     const psychiatristDataString = sessionStorage.getItem('psychiatrist');
@@ -46,11 +44,11 @@ function App() {
         const fetchPatients = async () => {
             if (psychiatristDataString) {
                 const psychiatrist = Psychiatrist.jsonToPsychiatrist(psychiatristDataString);
-                const patients = await getPatientsList(baseURL + `/patient/psychiatrist?psychiatrist=${psychiatrist.id}`);
+                const patients = await getPatientsList(`/patient/psychiatrist?psychiatrist=${psychiatrist.id}`);
                 setPatientsList(patients);
             } else if (psychotherapistDataString) {
                 const psychotherapist = Psychotherapist.jsonToPsychotherapist(psychotherapistDataString);
-                const patients = await getPatientsList(baseURL + `/patient/psychotherapist?psychotherapist=${psychotherapist.id}`);
+                const patients = await getPatientsList(`/patient/psychotherapist?psychotherapist=${psychotherapist.id}`);
                 setPatientsList(patients);
             }
         };

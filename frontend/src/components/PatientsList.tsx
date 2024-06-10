@@ -12,14 +12,13 @@ interface Props {
 const PatientsList: React.FC<Props> = ({ specialist }) => {
     const navigate = useNavigate();
     const [patients, setPatients] = useState<Patient[]>([]);
-    const baseURL = "http://localhost:8080";
     useEffect(() => {
         const fetchPatients = async () => {
             let url = "";
             if (specialist instanceof Psychiatrist)
-                url = baseURL + `/patient/psychiatrist?psychiatrist=${specialist.id}`;
+                url = `/patient/psychiatrist?psychiatrist=${specialist.id}`;
             else
-                url = baseURL + `/patient/psychotherapist?psychotherapist=${specialist.id}`;
+                url = `/patient/psychotherapist?psychotherapist=${specialist.id}`;
 
             const patientsList = await getPatientsList(url);
             setPatients(patientsList);

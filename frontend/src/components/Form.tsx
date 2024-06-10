@@ -10,36 +10,28 @@ import {
     isValidMedicalNumber,
     isWizeOrMapsLink, isPositiveNumber
 } from '../functions/CheckInputs.ts';
-import {checkUnique, postData} from '../functions/EndPoints.ts';
+import {
+    checkUniqueMail,
+    checkUniqueMedicalNumber,
+    checkUniquePNC,
+    postData
+} from '../functions/EndPoints.ts';
+import {getCountriesLocalities} from "../functions/GetCountriesLocalities.ts";
 interface FormProps {
     type: "patient" | "psychiatrist" | "psychotherapist";
 }
 function Form({ type }: FormProps) {
-    const baseURL: string = "http://localhost:8080";
     const navigate = useNavigate();
     const handleButtonClick = async () => {
         if (isValidName(firstNameValue) && isValidName(lastNameValue) && isValidEmail(mailValue) &&
             isValidPhoneNumber(phoneValue) && isValidPassword(passwordValue)) {
-            // verificam daca mail-ul deja exista
-            const emailCheckURLs = [
-                baseURL + '/patient/mail?mail=' + mailValue + '&password= ',
-                baseURL + '/psychiatrist/mail?mail=' + mailValue+ '&password= ',
-                baseURL + '/psychotherapist/mail?mail=' + mailValue+ '&password= '
-            ];
-            for (const url of emailCheckURLs) {
-                if(!await checkUnique(url)){
-                    alert("Există cont cu adresa de email dată.");
-                    return;
-                }
-            }
+            if(!await checkUniqueMail(mailValue))
+                return;
 
             if (type === 'patient') {
                 if (isValidPNC(pncValue)) {
-                    var url = baseURL + '/patient/PNC?PNC=' + pncValue.toString();
-                    if(!await checkUnique(url)){
-                        alert("CNP-ul există în baza de date.");
+                    if(!await checkUniquePNC(pncValue.toString()))
                         return;
-                    }
                     // creaza json
                     const patientJson = JSON.stringify({
                         pnc: pncValue,
@@ -51,7 +43,7 @@ function Form({ type }: FormProps) {
                         psychiatrist: null,
                         psychotherapist: null
                     }, null, 2);
-                    var response = await postData(baseURL + '/patient', patientJson);
+                    var response = await postData('/patient', patientJson);
                     if (response !== null) {
                         if(response.status !== 201) {
                             // salvam in sessionStorege datele
@@ -73,16 +65,9 @@ function Form({ type }: FormProps) {
                 if(isValidMedicalNumber(medicalNumberValue) && isWizeOrMapsLink(locationLinkValue)
                     && price1Number && price2Number){
                     // verifica daca parafa e unica
-                    const medicalNumberCheckURLs = [
-                        baseURL + '/psychiatrist/medicalNumber?medicalNumber=' + medicalNumberValue.toString(),
-                        baseURL + '/psychotherapist/medicalNumber?medicalNumber=' + medicalNumberValue.toString()
-                    ];
-                    for (const url of medicalNumberCheckURLs) {
-                        if(!await checkUnique(url)){
-                            alert("Parafa medicala există în baza de date.");
-                            return;
-                        }
-                    }
+                    if(!await checkUniqueMedicalNumber(medicalNumberValue.toString()))
+                        return;
+
                     // creaza json
                     const specialistJson = JSON.stringify({
                         firstName: firstNameValue,
@@ -103,7 +88,7 @@ function Form({ type }: FormProps) {
 
                     // console.log(specialistJson);
                     if(type === 'psychiatrist') {
-                        response = await postData(baseURL + '/psychiatrist', specialistJson);
+                        response = await postData('/psychiatrist', specialistJson);
                         if (response !== null) {
                             if(response.status !== 201) {
                                 // salvam in sessionStorege datele
@@ -118,7 +103,7 @@ function Form({ type }: FormProps) {
                     }
                     else{
                         // creaza cont
-                        response = await postData(baseURL + '/psychotherapist', specialistJson);
+                        response = await postData('/psychotherapist', specialistJson);
                         if (response !== null) {
                             if(response.status !== 201) {
                                 // salvam in sessionStorege datele
@@ -255,19 +240,14 @@ function Form({ type }: FormProps) {
     };
     // incarca judete si localitati
     useEffect(() => {
-        const incarcaDate = async () => {
-            try {
-                const response = await fetch('/judete-localitati-ro.json');
-                const data: LocalityData = await response.json();
-                setCountryList(Object.keys(data));
-                setLocalityList(data);
-                setCountryValue('');
-                setLocalityNameValue('');
-            } catch (error) {
-                console.error('Eroare la încărcarea datelor:', error);
-            }
+        const getData = async () => {
+            const data: LocalityData = await getCountriesLocalities();
+            setCountryList(Object.keys(data));
+            setLocalityList(data);
+            setCountryValue('');
+            setLocalityNameValue('');
         };
-        incarcaDate();
+        getData();
     }, []);
     const handleJudetChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const judet = e.target.value;

@@ -66,7 +66,19 @@ public class PsychotherapistServImpl implements PsychotherapistServ {
             old.setPriceConsultation(newPsychotherapist.getPriceConsultation());
             old.setOnline(newPsychotherapist.isOnline());
             old.setCNAS(newPsychotherapist.isCNAS());
+            old.setBio(newPsychotherapist.getBio());
 
+            return psychotherapistRepo.save(old);
+        }
+        return null;
+    }
+
+    @Override
+    public Psychotherapist updatPsychotherapistPassword(Psychotherapist old, String password) {
+        if(old != null && psychotherapistRepo.existsById(old.getId())
+                && password != null){
+            // Updating the
+            old.setPassword(password);
             return psychotherapistRepo.save(old);
         }
         return null;

@@ -1,12 +1,13 @@
-import React, { ChangeEvent } from 'react';
+import {ChangeEvent, FC} from "react";
 
 interface MFInputProps {
     inputName: string;
     initialValue: string | null;
     onChange: (value: string) => void;
+    error?: string;
 }
 
-const MFInput: React.FC<MFInputProps> = ({ inputName, initialValue, onChange }) => {
+const MFInput: FC<MFInputProps> = ({ inputName, initialValue, onChange, error }) => {
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         onChange(event.target.value);
     };
@@ -20,6 +21,7 @@ const MFInput: React.FC<MFInputProps> = ({ inputName, initialValue, onChange }) 
                 placeholder={initialValue !== null ? initialValue : ''}
                 onChange={handleChange}
             />
+            {error && <span className="error error-form">{error}</span>}
         </div>
     );
 }

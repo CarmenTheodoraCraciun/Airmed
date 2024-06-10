@@ -1,6 +1,7 @@
 package com.example.airmed.Entity;
 
 import com.example.airmed.Hashed;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,9 +38,6 @@ public class Psychiatrist {
     @Column(nullable = false)
     private String password;
 
-    @Column
-    private String bio;
-
     @Column(nullable = false)
     private String country;
 
@@ -59,9 +57,11 @@ public class Psychiatrist {
     private int priceConsultation;
 
     @Column(columnDefinition = "boolean default false")
+    @JsonProperty
     private boolean online;
 
     @Column(columnDefinition = "boolean default false")
+    @JsonProperty
     private boolean CNAS;
 
 //    @ElementCollection

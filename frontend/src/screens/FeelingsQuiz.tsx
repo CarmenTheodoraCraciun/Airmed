@@ -26,7 +26,7 @@ function FeelingQuiz({ patientId }: Props) {
 
     async function handleSaveAnswer() {
         const baseURL: string = "http://localhost:8080";
-        const url: string = `${baseURL}/answer`; // URL-ul complet al endpoint-ului /answer
+        const url: string = `/answer`; // URL-ul complet al endpoint-ului /answer
         const promises = questions.map((_question, index) => {
             const jsonAnswer = {
                 answer: answers[index],

@@ -74,6 +74,17 @@ public class PsychiatristServImpl implements PsychiatristServ {
     }
 
     @Override
+    public Psychiatrist updatePsychiatristPassword(Psychiatrist old, String password) {
+        if(old != null && psychiatristRepo.existsById(old.getId())
+                && password != null){
+            // Updating the
+            old.setPassword(password);
+            return psychiatristRepo.save(old);
+        }
+        return null;
+    }
+
+    @Override
     public void deletePsychiatrist(Long id){
         Psychiatrist psychiatrist = getPsychiatristById(id);
         if(psychiatrist != null){

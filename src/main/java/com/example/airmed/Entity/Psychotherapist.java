@@ -1,6 +1,7 @@
 package com.example.airmed.Entity;
 
 import com.example.airmed.Hashed;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -60,9 +61,11 @@ public class Psychotherapist {
 
     // this column is default false when a row is created
     @Column(columnDefinition = "boolean default false")
+    @JsonProperty
     private boolean online;
 
     @Column(columnDefinition = "boolean default false")
+    @JsonProperty
     private boolean CNAS;
 
 //    @ElementCollection

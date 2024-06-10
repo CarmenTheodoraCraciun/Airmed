@@ -11,5 +11,8 @@ public interface PsychiatristServ {
     Psychiatrist getPsychiatristByMedicalNumber(String medicalNumber);
     Psychiatrist getPsychiatristByMail(String mail);
     Psychiatrist updatePsychiatrist(Psychiatrist old, Psychiatrist newPsychiatrist);
+
+    Psychiatrist updatePsychiatristPassword(Psychiatrist old, String password);
+
     void deletePsychiatrist(Long id);
 }

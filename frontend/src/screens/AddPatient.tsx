@@ -13,9 +13,8 @@ interface Props {
 const AddPatient: React.FC<Props> = ({ specialist }) => {
     const [cnp, setCnp] = useState('');
     const [patient, setPatient] = useState<Patient | null>(null);  // Update the state type to `Patient | null`
-    const baseURL = "http://localhost:8080";
     const handleSearch = async () => {
-        const response = await getData(baseURL+`/patient/PNC?PNC=${cnp}`);
+        const response = await getData(`/patient/PNC?PNC=${cnp}`);
         if (response.status === 200) {
             const data = await response.json();
             const patient = Patient.jsonToPatient(JSON.stringify(data));
@@ -32,13 +31,13 @@ const AddPatient: React.FC<Props> = ({ specialist }) => {
             if(specialist instanceof Psychiatrist)
                 if(patient.psychiatrist === null){
                     patient.psychiatrist = specialist;
-                    await updateData(baseURL + "/patient/psychiatrist/" + patient.id, patientToJson(patient));
+                    await updateData("/patient/psychiatrist/" + patient.id, patientToJson(patient));
                 }
                 else alert("Pacientul este asignat unui medic deja");
             else
                 if(patient.psychotherapist === null){
                     patient.psychotherapist = specialist;
-                    await updateData(baseURL + "/patient/psychotherapist/" + patient.id, patientToJson(patient));
+                    await updateData("/patient/psychotherapist/" + patient.id, patientToJson(patient));
                 }
                 else alert("Pacientul este asignat unui psihoterapeut deja");
         }
@@ -64,9 +63,9 @@ const AddPatient: React.FC<Props> = ({ specialist }) => {
                 {patient && (
                     <div className="vertical result-section">
                         <span className="mf-title">Pacientul cu codul numeric personal</span>
-                        <MFDisableInput inputName="" placeholderValue={patient.pnc}/>
-                        <MFDisableInput inputName="Prenume" placeholderValue={patient.firstName}/>
-                        <MFDisableInput inputName="Nume de familie" placeholderValue={patient.lastName}/>
+                        <MFDisableInput inputName="" initialValue={patient.pnc}/>
+                        <MFDisableInput inputName="Prenume" initialValue={patient.firstName}/>
+                        <MFDisableInput inputName="Nume de familie" initialValue={patient.lastName}/>
                         <br/>
                         <p>Nu este ceea ce căutați?</p>
                         <p>Verificați datele introduse, atât de către specialist, cât și de către pacient.</p>

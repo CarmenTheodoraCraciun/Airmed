@@ -1,5 +1,6 @@
 package com.example.airmed.Controller;
 
+import com.example.airmed.Entity.Patient;
 import com.example.airmed.Entity.Psychotherapist;
 import com.example.airmed.Hashed;
 import com.example.airmed.Entity.Psychiatrist;
@@ -91,6 +92,17 @@ public class PsychiatristCtrl {
         Psychiatrist old = psychiatristServ.getPsychiatristById(id);
         if(old != null)
             return new ResponseEntity<>(psychiatristServ.updatePsychiatrist(old,newPsychiatrist),HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    // method: PUT
+    // link: baseURL + "/psychiatrist/" + id + "?newPassword=" + password
+    // receive: json + 302 or 404
+    @PutMapping("/psychiatrist/{id}")
+    public ResponseEntity<Psychiatrist> updatePatient(@PathVariable("id") Long id, @PathVariable("newPassword") String password){
+        Psychiatrist old = psychiatristServ.getPsychiatristById(id);
+        if(old != null && password != null)
+            return new ResponseEntity<>(psychiatristServ.updatePsychiatristPassword(old,password),HttpStatus.OK);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 

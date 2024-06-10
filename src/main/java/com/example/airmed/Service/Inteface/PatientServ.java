@@ -31,6 +31,8 @@ public interface PatientServ {
     // Method to update the date about an existing patient
     Patient updatePatient(Patient old, Patient newPatient);
 
+    Patient updatePatientPassword(Patient old, String password);
+
     // Method to update the psychiatrist of the patient
     Patient updatePsychiatristInPatient(Patient patient,Psychiatrist psychiatrist);
 
