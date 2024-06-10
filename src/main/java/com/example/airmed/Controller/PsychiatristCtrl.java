@@ -96,10 +96,10 @@ public class PsychiatristCtrl {
     }
 
     // method: PUT
-    // link: baseURL + "/psychiatrist/" + id + "?newPassword=" + password
+    // link: baseURL + "/patient/" + id + "/password??newPassword=" + password
     // receive: json + 302 or 404
-    @PutMapping("/psychiatrist/{id}")
-    public ResponseEntity<Psychiatrist> updatePatient(@PathVariable("id") Long id, @PathVariable("newPassword") String password){
+    @PutMapping("/psychiatrist/{id}/password")
+    public ResponseEntity<Psychiatrist> updatePasswordPsychiatrist(@PathVariable("id") Long id, @PathVariable("newPassword") String password){
         Psychiatrist old = psychiatristServ.getPsychiatristById(id);
         if(old != null && password != null)
             return new ResponseEntity<>(psychiatristServ.updatePsychiatristPassword(old,password),HttpStatus.OK);

@@ -74,7 +74,6 @@ const SpecialistProfile: React.FC<Props> = ({ specialist }) => {
                 }
 
                 if (specialist instanceof Psychiatrist) {
-                    // TODO
                     // Prepare the updated data object
                     const updatedSpecialist = {
                         "id": specialist.id,
@@ -83,18 +82,18 @@ const SpecialistProfile: React.FC<Props> = ({ specialist }) => {
                         "lastName": lastName,
                         "mail": mail,
                         "phone": phone,
-                        "password": specialist.,
-                        "bio": null,
-                        "country": "Olt",
-                        "locality": "Slatina",
-                        "cabinetLocation": "Spitalul Județean de Urgență Slatina",
-                        "linkLocation": "https://maps.app.goo.gl/ePjZwiKCVJdCD6GS7",
-                        "priceConsult": 150,
-                        "priceConsultation": 200,
-                        "online": false,
-                        "CNAS": true
+                        "password": null,
+                        "country": country,
+                        "locality": localityName,
+                        "cabinetLocation": location,
+                        "linkLocation": locationLink,
+                        "priceConsult": price1,
+                        "priceConsultation": price2,
+                        "online": isOnline,
+                        "CNAS": isCNAS
                     };
-                    const response = await updateData('psychiatrist/' + )
+                    console.log(specialist);
+                    // const response = await updateData('psychiatrist/')
                 }
                 else{
                     // TODO: add bio
