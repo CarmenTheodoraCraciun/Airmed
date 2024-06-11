@@ -86,7 +86,7 @@ public class PsychiatristCtrl {
 
     // method: PUT
     // link: baseURL + "/psychiatrist/" + id
-    // receive: json + 302 or 404
+    // receive: json + 200 or 404
     @PutMapping("/psychiatrist/{id}")
     public ResponseEntity<Psychiatrist> updatePsychiatrist(@Validated @RequestBody Psychiatrist newPsychiatrist, @PathVariable("id") Long id){
         Psychiatrist old = psychiatristServ.getPsychiatristById(id);

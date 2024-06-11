@@ -15,9 +15,9 @@ const AddPatient: React.FC<Props> = ({ specialist }) => {
     const [patient, setPatient] = useState<Patient | null>(null);  // Update the state type to `Patient | null`
     const handleSearch = async () => {
         const response = await getData(`/patient/PNC?PNC=${cnp}`);
-        if (response.status === 200) {
-            const data = await response.json();
-            const patient = Patient.jsonToPatient(JSON.stringify(data));
+        // console.log(response);
+        if (response !== null) {
+            const patient = Patient.jsonToPatient(JSON.stringify(response));
             setPatient(patient);
             console.log(patient);
         } else {

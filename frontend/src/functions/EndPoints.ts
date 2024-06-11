@@ -1,6 +1,7 @@
 // POST
 import {Patient} from "../classes/Patient.ts";
-const baseURL = 'http://localhost:5173';
+
+const baseURL = "http://localhost:8080";
 
 export async function postData(url: string, jsonData: string) {
     try {
@@ -20,27 +21,45 @@ export async function postData(url: string, jsonData: string) {
 
 // GET
 export async function getData(url: string){
-    return await fetch(baseURL + url, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': 'http://localhost:5173'
+    try {
+        const response = await fetch(baseURL + url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': 'http://localhost:5173'
+            }
+        });
+
+        const text = await response.text();
+
+        if (response.status === 200 || response.status === 302) {
+            try {
+                return JSON.parse(text);
+            } catch (error) {
+                console.error('Response is not JSON:', text);
+                throw error;
+            }
         }
-    });
+        else if (response.status === 404){
+            return response.status;
+        }
+        else {
+            console.error('Error fetching data:', response.status);
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        throw error;
+    }
 }
 
 export async function getPatientsList(url: string) {
-    try {
-        const response = await getData(baseURL + url);
-        if (response.status === 200) {
-            const data = await response.json();
-            return data.map((patientJson: any) => Patient.jsonToPatient(JSON.stringify(patientJson)));
-        } else {
-            console.log('Error fetching patients: Invalid response status', response.status);
-            return [];
-        }
-    } catch (error) {
-        console.error('Error fetching patients:', error);
+    const response = await getData(url);
+    if (response) {
+        return response.map((patientJson: any) =>
+            Patient.jsonToPatient(JSON.stringify(patientJson)));
+    } else {
+        console.log('Error fetching patients: Invalid response');
         return [];
     }
 }
@@ -98,20 +117,23 @@ export async function checkUniquePNC(pnc: string){
 
 // PUT
 export async function updateData(url: string, jsonData: string) {
+    console.log(url);
     try {
         const response = await fetch(baseURL + url, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': 'http://localhost:5173'
             },
             body: jsonData
         });
-        if (response.status === 200) {
-            alert('Actualizare cu succes.');
-            return true;
-        } else {
-            console.log('A apărut o problemă în timpul actualizării.');
+        if(response.status === 404){
+            alert("Ceva nu a mers la noi.");
             return false;
+        }
+        else{
+            alert('Actualizare cu succes.');
+            return response.json();
         }
     } catch (error) {
         console.log('Eroare la actualizare:', error);

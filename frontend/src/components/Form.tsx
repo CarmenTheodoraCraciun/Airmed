@@ -88,6 +88,7 @@ function Form({ type }: FormProps) {
 
                     // console.log(specialistJson);
                     if(type === 'psychiatrist') {
+                        // console.log('psychiatrist');
                         response = await postData('/psychiatrist', specialistJson);
                         if (response !== null) {
                             if(response.status !== 201) {

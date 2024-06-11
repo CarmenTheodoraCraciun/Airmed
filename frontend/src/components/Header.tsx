@@ -3,6 +3,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {Patient} from "../classes/Patient.ts";
 import patientImg from "../resources/img/user.png";
 import psyhchiatristImg from "../resources/img/medic.png";
+import psychotherapistImg from "../resources/img/psychotherapist.png";
 import {Psychiatrist} from "../classes/Psychiatrist.ts";
 import {Psychotherapist} from "../classes/Psychotherapist.ts";
 // import {createPatientFromJSON} from "../functions/CreateUsers.ts";
@@ -50,13 +51,13 @@ function Header(){
                     <Link to={`${mfPath}personal-data`} className="header-li">Istoric medical</Link><br/>
                     {(patient.psychiatrist !== null) ?
                         <>
-                            <a href="#"  className="header-li">Vizitează psihiatrul</a><br/>
+                            <Link to={`/profile/${patient.psychiatrist.id}/psychiatrist`} className="header-li">Vizitează psihiatrul</Link><br/>
                         </>
                         : null
                     }
                     {(patient.psychotherapist !== null) ?
                         <>
-                            <a href="#"  className="header-li">Vizitează psihoterapeutul</a><br/>
+                            <Link to={`/profile/${patient.psychotherapist.id}/psychotherapist`} className="header-li">Vizitează psihologul</Link><br/>
                         </>
                         : null
                     }
@@ -86,7 +87,6 @@ function Header(){
     else if (psychotherapistDataString) {
         // Psychiatrist's header
         const psychotherapist = Psychotherapist.jsonToPsychotherapist(psychotherapistDataString);
-        // console.log(psychotherapist);
         headerLinks = (<ul className="header-ul">
             <li><button className="header-btn" onClick={handleAddPatientClick}>Adaugă pacient</button></li>
             <li>
@@ -94,9 +94,9 @@ function Header(){
             </li>
             <li className="menu-li">
                 {psychotherapist.firstName} {psychotherapist.lastName}
-                <img id="psychiatrist-img" src={psyhchiatristImg} alt=""/>
+                <img id="psychiatrist-img" src={psychotherapistImg} alt=""/>
                 <div className="menu">
-                    <Link to="" className="header-li">Profil</Link><br/>
+                    <Link to={`/profile/${psychotherapist.id}/psychotherapist`} className="header-li">Profil</Link><br/>
                     <a href="/about-us" className="header-li" onClick={handleLogoutClick}>Deconectează-te</a>
                 </div>
             </li>

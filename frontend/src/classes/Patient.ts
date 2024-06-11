@@ -43,6 +43,7 @@ export class Patient {
             data.psychotherapist
         );
     }
+
 }
 
 export default function patientToJson(patient: Patient): string {

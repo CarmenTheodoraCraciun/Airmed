@@ -17,17 +17,16 @@ import InputGroup from "../components/InputGroup.tsx";
 import {checkUniqueMail, checkUniqueMedicalNumber, updateData} from "../functions/EndPoints.ts";
 
 interface Props {
+    dr: boolean;
     specialist: Psychiatrist | Psychotherapist;
 }
 
-const SpecialistProfile: React.FC<Props> = ({ specialist }) => {
-    console.log(specialist);
-
+const SpecialistProfile: React.FC<Props> = ({ dr, specialist }) => {
     let personalProfile = false;
     const [editing, setEditing] = useState(false);
-
+    const typeOfUser = (dr ? "medic psihiatru" : "psihoterapeut");
     // daca e profilul personal atunci poate edita
-    if(specialist instanceof Psychiatrist){
+    if(dr){
         const psychiatristDataString = sessionStorage.getItem('psychiatrist');
         if(psychiatristDataString !== null) {
             const psychiatrist = Psychiatrist.jsonToPsychiatrist(psychiatristDataString);
@@ -74,36 +73,15 @@ const SpecialistProfile: React.FC<Props> = ({ specialist }) => {
                 }
 
                 if (specialist instanceof Psychiatrist) {
-                    // Prepare the updated data object
-                    const updatedSpecialist = {
-                        "id": specialist.id,
-                        "medicalNumber": medicalNumber,
-                        "firstName": firstName,
-                        "lastName": lastName,
-                        "mail": mail,
-                        "phone": phone,
-                        "password": null,
-                        "country": country,
-                        "locality": localityName,
-                        "cabinetLocation": location,
-                        "linkLocation": locationLink,
-                        "priceConsult": price1,
-                        "priceConsultation": price2,
-                        "online": isOnline,
-                        "CNAS": isCNAS
-                    };
-                    console.log(specialist);
-                    // const response = await updateData('psychiatrist/')
-                }
-                else{
-                    // TODO: add bio
-                    const updatedSpecialist = {
-                        firstName,
-                        lastName,
-                        mail,
-                        phone,
-                        medicalNumber,
-                        country,
+                    const specialistUpdate = {
+                        id: specialist.id,
+                        medicalNumber: medicalNumber,
+                        firstName: firstName,
+                        lastName: lastName,
+                        mail: mail,
+                        phone: phone,
+                        password: null,
+                        country: country,
                         locality: localityName,
                         cabinetLocation: location,
                         linkLocation: locationLink,
@@ -111,8 +89,38 @@ const SpecialistProfile: React.FC<Props> = ({ specialist }) => {
                         priceConsultation: price2,
                         online: isOnline,
                         CNAS: isCNAS
-                    };
-                    console.log(updatedSpecialist);
+                    }
+                    const psychiatrist = JSON.stringify(specialistUpdate, null, 2);
+                    const response = await updateData("/psychiatrist/" + specialist.id, psychiatrist);
+                    if (response) {
+                        sessionStorage.setItem('psychiatrist', JSON.stringify(response.valueOf()));
+                        specialist = response.valueOf();
+                    }
+                }
+                else {
+                    const specialistUpdate = {
+                        id: specialist.id,
+                        medicalNumber: medicalNumber,
+                        firstName: firstName,
+                        lastName: lastName,
+                        mail: mail,
+                        phone: phone,
+                        password: null,
+                        country: country,
+                        locality: localityName,
+                        cabinetLocation: location,
+                        linkLocation: locationLink,
+                        priceConsult: price1,
+                        priceConsultation: price2,
+                        online: isOnline,
+                        CNAS: isCNAS
+                    }
+                    const psychiatrist = JSON.stringify(specialistUpdate, null, 2);
+                    const response = await updateData("/psychiatrist/" + specialist.id, psychiatrist);
+                    if (response) {
+                        sessionStorage.setItem('psychiatrist', JSON.stringify(response.valueOf()));
+                        specialist = response.valueOf();
+                    }
                 }
             } else {
                 alert("Datele introduse nu sunt valide.");
@@ -229,7 +237,7 @@ const SpecialistProfile: React.FC<Props> = ({ specialist }) => {
                     // Datele editabile
                     <>
                     <div className="vertical-2 ten-px-gap">
-                        <span className="mf-title">Date personale</span>
+                        <span className="profile-subtitle">Date personale</span>
                         <InputGroup
                             label="Prenume"
                             name="firstName"
@@ -270,7 +278,7 @@ const SpecialistProfile: React.FC<Props> = ({ specialist }) => {
                                 : <option value="">{specialist.locality}</option>
                             }
                         </select>
-                        <span className="mf-title">Date de contact</span>
+                        <span className="profile-subtitle">Date de contact</span>
                         <InputGroup
                             label="Mail"
                             name="mail"
@@ -291,7 +299,7 @@ const SpecialistProfile: React.FC<Props> = ({ specialist }) => {
                             onChange={handleInputChange}
                             error={phoneErrorValue}
                         />
-                        <span className="mf-title">Date medicale</span>
+                        <span className="profile-subtitle">Date medicale</span>
                         <InputGroup
                             label="Parafă medicală"
                             name="medicalNumber"
@@ -331,7 +339,18 @@ const SpecialistProfile: React.FC<Props> = ({ specialist }) => {
                         </label>
                     </div>
                     <div className="vertical-2 ten-px-gap">
-                        <span className="mf-title">Listă prețuri</span>
+                        {!dr ?
+                            <InputGroup
+                                label="Despre psihotherapia cu mine"
+                                name="bio"
+                                type="text"
+                                value={bioValue}
+                                placeholder={specialist.bio}
+                                onChange={handleInputChange}
+                                error={''}
+                            /> : null
+                        }
+                        <span className="profile-subtitle">Listă prețuri</span>
                         <InputGroup
                             label="Consult"
                             name="price1"
@@ -350,17 +369,6 @@ const SpecialistProfile: React.FC<Props> = ({ specialist }) => {
                             onChange={handleInputChange}
                             error={price2ErrorValue}
                         />
-                        {specialist instanceof Psychotherapist ?
-                            <InputGroup
-                                label="Despre psihotherapia cu mine"
-                                name="bio"
-                                type="text"
-                                value={bioValue}
-                                placeholder={specialist.bio}
-                                onChange={handleInputChange}
-                                error={''}
-                            /> : null
-                        }
                         <button onClick={handleSaveData} className="button-form">Salvează</button>
                     </div>
                     </>
@@ -368,7 +376,8 @@ const SpecialistProfile: React.FC<Props> = ({ specialist }) => {
                     // datele needitabile
                     <>
                         <div className="vertical-2 ten-px-gap">
-                            <span className="mf-title">Date personale</span>
+                            <span className="profile-title">Salut, sunt {typeOfUser}</span>
+                            <span className="profile-subtitle">Date personale</span>
                             <MFDisableInput
                                 inputName="Prenume"
                                 initialValue={specialist.firstName}
@@ -385,18 +394,19 @@ const SpecialistProfile: React.FC<Props> = ({ specialist }) => {
                                 inputName="Localitate"
                                 initialValue={specialist.locality}
                             />
-                            <span className="mf-title">Date de contact</span>
+                            <span className="profile-subtitle">Date de contact</span>
                             <MFDisableInput
                                 inputName="Mail"
                                 initialValue={specialist.mail}
                             />
                         </div>
                         <div className="vertical-2 ten-px-gap">
+
                             <MFDisableInput
                                 inputName="Număr de telefon"
                                 initialValue={specialist.phone}
                             />
-                            <span className="mf-title">Date medicale</span>
+                            <span className="profile-subtitle">Date medicale</span>
                             <MFDisableInput
                                 inputName="Parafă medicală"
                                 initialValue={(specialist as Psychiatrist).medicalNumber}
@@ -420,13 +430,13 @@ const SpecialistProfile: React.FC<Props> = ({ specialist }) => {
                             />
                         </div>
                         <div className="vertical-2 ten-px-gap">
-                            {specialist instanceof Psychotherapist ?
+                            {!dr ?
                                 <MFDisableInput
                                     inputName="Despre psihotherapia cu mine"
-                                    initialValue={specialist.bio}
+                                    initialValue={specialist.bio !== null? specialist.bio: ''}
                                 /> : null
                             }
-                            <span className="mf-title">Listă prețuri</span>
+                            <span className="profile-subtitle">Listă prețuri</span>
                             <MFDisableInput
                                 inputName="Consult"
                                 initialValue={specialist.priceConsult.toString()}

@@ -19,7 +19,7 @@ const PatientsList: React.FC<Props> = ({ specialist }) => {
                 url = `/patient/psychiatrist?psychiatrist=${specialist.id}`;
             else
                 url = `/patient/psychotherapist?psychotherapist=${specialist.id}`;
-
+            // console.log('Fetching URL:', url);
             const patientsList = await getPatientsList(url);
             setPatients(patientsList);
         };
