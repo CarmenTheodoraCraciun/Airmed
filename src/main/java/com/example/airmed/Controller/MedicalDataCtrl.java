@@ -42,7 +42,7 @@ public class MedicalDataCtrl {
     // link: baseURL + "/medicalData/patient?patient=" + patientId
     // receive: json list + 302 or 404
     @GetMapping("/medicalData/patient")
-    public ResponseEntity<MedicalData> getMedicalDataByPatient(@PathVariable("patient") Long id){
+    public ResponseEntity<MedicalData> getMedicalDataByPatient(@RequestParam("patient") Long id){
         Patient patient = patientServ.getPatientById(id);
         if(patient != null) {
             MedicalData medicalData = medicalDataServ.getMedicalDataByPatient(patient);

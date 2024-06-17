@@ -6,7 +6,7 @@ export class MedicalData{
     weight: string;
     height: string;
     diseases: string;
-    medicamentation: string;
+    medecamentation: string;
     pregnant: boolean;
     patient: Patient;
 
@@ -19,12 +19,12 @@ export class MedicalData{
         this.weight = weight;
         this.height = height;
         this.diseases = diseases;
-        this.medicamentation = medicamentation;
+        this.medecamentation = medicamentation;
         this.pregnant = pregnant;
 
-        this.patient = new Patient(patient.id,patient.PNC,patient.firstName,
+        this.patient = new Patient(patient.id,patient.pnc,patient.firstName,
             patient.lastName,patient.mail, patient.phone, patient.psychiatrist,
-            patient.psychotherapist,patient.salts
+            patient.psychotherapist
         );
     }
 }

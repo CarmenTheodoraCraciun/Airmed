@@ -1,4 +1,4 @@
-const DateNotFound = () => {
+const Error404 = () => {
     return (
         <div className="date-not-found">
             <div className="icon">&#x1F50D;</div> {/* Unicode character for magnifying glass */}
@@ -10,4 +10,4 @@ const DateNotFound = () => {
     );
 }
 
-export default DateNotFound;
+export default Error404;

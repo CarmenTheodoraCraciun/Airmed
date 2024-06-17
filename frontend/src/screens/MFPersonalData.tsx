@@ -1,7 +1,7 @@
 import Header from "../components/Header.tsx";
 import {Patient} from "../classes/Patient.ts";
 import Aside from "../components/Aside.tsx";
-import MFDisableInput from "../components/MFDisableInput.tsx";
+import InputGroupDisable from "../components/InputGroupDisable.tsx";
 import {calculateAge, dateToString, extractBirthday} from "../functions/ExtracFromPNC.ts";
 import React, {FC, useState} from "react";
 import {
@@ -86,13 +86,13 @@ const MFPersonalData: FC<Props> = ({ patient }) => {
                 <span className="mf-title">Date personale</span>
                 {!isEditEnabled ? (
                     <>
-                        <MFDisableInput inputName="Prenume" initialValue={patient.firstName} />
-                        <MFDisableInput inputName="Nume" initialValue={patient.lastName} />
-                        <MFDisableInput inputName="Cod numeric personal" initialValue={patient.pnc} />
+                        <InputGroupDisable inputName="Prenume" initialValue={patient.firstName} />
+                        <InputGroupDisable inputName="Nume" initialValue={patient.lastName} />
+                        <InputGroupDisable inputName="Cod numeric personal" initialValue={patient.pnc} />
                         {birthday && (
                             <>
-                                <MFDisableInput inputName="Data nașterii" initialValue={dateToString(birthday)} />
-                                <MFDisableInput inputName="Vârstă" initialValue={calculateAge(birthday).toString()} />
+                                <InputGroupDisable inputName="Data nașterii" initialValue={dateToString(birthday)} />
+                                <InputGroupDisable inputName="Vârstă" initialValue={calculateAge(birthday).toString()} />
                             </>
                         )}
                         <br />

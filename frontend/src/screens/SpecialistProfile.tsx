@@ -2,7 +2,7 @@ import {Psychiatrist} from "../classes/Psychiatrist.ts";
 import {Psychotherapist} from "../classes/Psychotherapist.ts";
 import Header from "../components/Header.tsx";
 import React, {useEffect, useState} from "react";
-import MFDisableInput from "../components/MFDisableInput.tsx";
+import InputGroupDisable from "../components/InputGroupDisable.tsx";
 import {LocalityData} from "../classes/Locality.ts";
 import {getCountriesLocalities} from "../functions/GetCountriesLocalities.ts";
 import {
@@ -15,6 +15,8 @@ import {
 } from "../functions/CheckInputs.ts";
 import InputGroup from "../components/InputGroup.tsx";
 import {checkUniqueMail, checkUniqueMedicalNumber, updateData} from "../functions/EndPoints.ts";
+import CheckboxGroup from "../components/CheckBox.tsx";
+import {Patient} from "../classes/Patient.ts";
 
 interface Props {
     dr: boolean;
@@ -22,6 +24,16 @@ interface Props {
 }
 
 const SpecialistProfile: React.FC<Props> = ({ dr, specialist }) => {
+    var isHisPatient = false;
+    const patientDataString = sessionStorage.getItem('patient');
+    if (patientDataString) {
+        const patientData: Patient = Patient.jsonToPatient(patientDataString);
+        if(dr && patientData.psychiatrist.id === specialist.id)
+            isHisPatient = true;
+        if(!dr && patientData.psychotherapist.id === specialist.id)
+            isHisPatient = true;
+    }
+
     let personalProfile = false;
     const [editing, setEditing] = useState(false);
     const typeOfUser = (dr ? "medic psihiatru" : "psihoterapeut");
@@ -40,93 +52,6 @@ const SpecialistProfile: React.FC<Props> = ({ dr, specialist }) => {
             const pychotherapist = Psychotherapist.jsonToPsychotherapist(psychotherapistDataString);
             if (pychotherapist.id === specialist.id)
                 personalProfile = true;
-        }
-    }
-
-    async function handleSaveData() {
-        // Check if there are new data
-        if (firstNameValue !== '' || lastNameValue !== '' || mailValue !== '' ||
-            phoneValue !== '' || medicalNumberValue !== '' || locationValue !== '' ||
-            locationLinkValue !== '' || price1Value !== '' || price2Value !== '' ||
-            countryValue !== specialist.country || localityNameValue !== specialist.locality) {
-            const firstName = firstNameValue || specialist.firstName;
-            const lastName = lastNameValue || specialist.lastName;
-            const mail = mailValue || specialist.mail;
-            const phone = phoneValue || specialist.phone;
-            const medicalNumber = medicalNumberValue || specialist.medicalNumber;
-            const location = locationValue || specialist.cabinetLocation;
-            const country = countryValue || specialist.country;
-            const localityName = localityNameValue || specialist.locality;
-            const locationLink = locationLinkValue || specialist.linkLocation;
-            const price1 = price1Value || specialist.priceConsult.toString();
-            const price2 = price2Value || specialist.priceConsultation.toString();
-            // Validate the data
-            if (isValidName(firstName) && isValidName(lastName) && isValidEmail(mail)
-                && isValidPhoneNumber(phone) && isValidMedicalNumber(medicalNumber)
-                && isWizeOrMapsLink(locationLink) && isPositiveNumber(price1)
-                && isPositiveNumber(price2)) {
-
-                // Check if the mail or medical number is new and unique
-                if ((mail !== specialist.mail && !await checkUniqueMail(mail)) ||
-                    (medicalNumber !== specialist.medicalNumber && !await checkUniqueMedicalNumber(medicalNumber))) {
-                    return;
-                }
-
-                if (specialist instanceof Psychiatrist) {
-                    const specialistUpdate = {
-                        id: specialist.id,
-                        medicalNumber: medicalNumber,
-                        firstName: firstName,
-                        lastName: lastName,
-                        mail: mail,
-                        phone: phone,
-                        password: null,
-                        country: country,
-                        locality: localityName,
-                        cabinetLocation: location,
-                        linkLocation: locationLink,
-                        priceConsult: price1,
-                        priceConsultation: price2,
-                        online: isOnline,
-                        CNAS: isCNAS
-                    }
-                    const psychiatrist = JSON.stringify(specialistUpdate, null, 2);
-                    const response = await updateData("/psychiatrist/" + specialist.id, psychiatrist);
-                    if (response) {
-                        sessionStorage.setItem('psychiatrist', JSON.stringify(response.valueOf()));
-                        specialist = response.valueOf();
-                    }
-                }
-                else {
-                    const specialistUpdate = {
-                        id: specialist.id,
-                        medicalNumber: medicalNumber,
-                        firstName: firstName,
-                        lastName: lastName,
-                        mail: mail,
-                        phone: phone,
-                        password: null,
-                        country: country,
-                        locality: localityName,
-                        cabinetLocation: location,
-                        linkLocation: locationLink,
-                        priceConsult: price1,
-                        priceConsultation: price2,
-                        online: isOnline,
-                        CNAS: isCNAS
-                    }
-                    const psychiatrist = JSON.stringify(specialistUpdate, null, 2);
-                    const response = await updateData("/psychiatrist/" + specialist.id, psychiatrist);
-                    if (response) {
-                        sessionStorage.setItem('psychiatrist', JSON.stringify(response.valueOf()));
-                        specialist = response.valueOf();
-                    }
-                }
-            } else {
-                alert("Datele introduse nu sunt valide.");
-            }
-        } else {
-            alert("Datele sunt identice cu cele inițiale.");
         }
     }
 
@@ -226,8 +151,105 @@ const SpecialistProfile: React.FC<Props> = ({ dr, specialist }) => {
                 break;
         }
     };
-
     function handleEditData() {setEditing(true);}
+    async function handleSaveData() {
+        // Check if there are new data
+        if (firstNameValue !== '' || lastNameValue !== '' || mailValue !== '' ||
+            phoneValue !== '' || medicalNumberValue !== '' || locationValue !== '' ||
+            locationLinkValue !== '' || price1Value !== '' || price2Value !== '' ||
+            countryValue !== specialist.country || localityNameValue !== specialist.locality) {
+            const firstName = firstNameValue || specialist.firstName;
+            const lastName = lastNameValue || specialist.lastName;
+            const mail = mailValue || specialist.mail;
+            const phone = phoneValue || specialist.phone;
+            const medicalNumber = medicalNumberValue || specialist.medicalNumber;
+            const location = locationValue || specialist.cabinetLocation;
+            const country = countryValue || specialist.country;
+            const localityName = localityNameValue || specialist.locality;
+            const locationLink = locationLinkValue || specialist.linkLocation;
+            const price1 = price1Value || specialist.priceConsult.toString();
+            const price2 = price2Value || specialist.priceConsultation.toString();
+            // Validate the data
+            if (isValidName(firstName) && isValidName(lastName) && isValidEmail(mail)
+                && isValidPhoneNumber(phone) && isValidMedicalNumber(medicalNumber)
+                && isWizeOrMapsLink(locationLink) && isPositiveNumber(price1)
+                && isPositiveNumber(price2)) {
+
+                // Check if the mail or medical number is new and unique
+                if ((mail !== specialist.mail && !await checkUniqueMail(mail)) ||
+                    (medicalNumber !== specialist.medicalNumber && !await checkUniqueMedicalNumber(medicalNumber))) {
+                    return;
+                }
+
+                if (specialist instanceof Psychiatrist) {
+                    const specialistUpdate = {
+                        id: specialist.id,
+                        medicalNumber: medicalNumber,
+                        firstName: firstName,
+                        lastName: lastName,
+                        mail: mail,
+                        phone: phone,
+                        password: null,
+                        country: country,
+                        locality: localityName,
+                        cabinetLocation: location,
+                        linkLocation: locationLink,
+                        priceConsult: price1,
+                        priceConsultation: price2,
+                        online: isOnline,
+                        CNAS: isCNAS
+                    }
+                    const psychiatrist = JSON.stringify(specialistUpdate, null, 2);
+                    const response = await updateData("/psychiatrist/" + specialist.id, psychiatrist);
+                    if (response) {
+                        sessionStorage.setItem('psychiatrist', JSON.stringify(response.valueOf()));
+                        specialist = response.valueOf();
+                    }
+                }
+                else {
+                    const specialistUpdate = {
+                        id: specialist.id,
+                        medicalNumber: medicalNumber,
+                        firstName: firstName,
+                        lastName: lastName,
+                        mail: mail,
+                        phone: phone,
+                        password: null,
+                        country: country,
+                        locality: localityName,
+                        cabinetLocation: location,
+                        linkLocation: locationLink,
+                        priceConsult: price1,
+                        priceConsultation: price2,
+                        online: isOnline,
+                        CNAS: isCNAS
+                    }
+                    const psychiatrist = JSON.stringify(specialistUpdate, null, 2);
+                    const response = await updateData("/psychiatrist/" + specialist.id, psychiatrist);
+                    if (response) {
+                        sessionStorage.setItem('psychiatrist', JSON.stringify(response.valueOf()));
+                        specialist = response.valueOf();
+                    }
+                }
+            } else {
+                alert("Datele introduse nu sunt valide.");
+            }
+        } else {
+            alert("Datele sunt identice cu cele inițiale.");
+        }
+    }
+
+    async function handleDeleteColaboration() {
+        const confirmMessage = "Ești sigur? Nu vei mai fi legat de un " + typeOfUser;
+        if (!window.confirm(confirmMessage)) {
+            return;
+        }
+        const url = (dr ? "/patient/psychiatrist/" : "/patient/psychotherapist/") + specialist.id;
+        const response = await updateData(url, null);
+        if (response) {
+            alert("Date salvate.");
+        }
+    }
 
     return (
         <>
@@ -327,16 +349,18 @@ const SpecialistProfile: React.FC<Props> = ({ dr, specialist }) => {
                             onChange={handleInputChange}
                             error={locationLinkErrorValue}
                         />
-                        <label className="material-checkbox">
-                            <input type="checkbox" name="cnas" checked={isCNAS} onChange={handleInputChange} />
-                            <span className={`checkmark ${isCNAS ? 'checked' : ''}`}></span>
-                            Lucrez cu CNAS
-                        </label>
-                        <label className="material-checkbox">
-                            <input type="checkbox" name="online" checked={isOnline} onChange={handleInputChange} />
-                            <span className={`checkmark ${isOnline ? 'checked' : ''}`}></span>
-                            Pot face consultații online
-                        </label>
+                        <CheckboxGroup
+                            label="Lucrez cu CNAS"
+                            name="cnas"
+                            checked={isCNAS}
+                            onChange={handleInputChange}
+                        />
+                        <CheckboxGroup
+                            label="Pot face consultații online"
+                            name="online"
+                            checked={isOnline}
+                            onChange={handleInputChange}
+                        />
                     </div>
                     <div className="vertical-2 ten-px-gap">
                         {!dr ?
@@ -378,40 +402,40 @@ const SpecialistProfile: React.FC<Props> = ({ dr, specialist }) => {
                         <div className="vertical-2 ten-px-gap">
                             <span className="profile-title">Salut, sunt {typeOfUser}</span>
                             <span className="profile-subtitle">Date personale</span>
-                            <MFDisableInput
+                            <InputGroupDisable
                                 inputName="Prenume"
                                 initialValue={specialist.firstName}
                             />
-                            <MFDisableInput
+                            <InputGroupDisable
                                 inputName="Nume"
                                 initialValue={specialist.lastName}
                             />
-                            <MFDisableInput
+                            <InputGroupDisable
                                 inputName="Județ"
                                 initialValue={specialist.country}
                             />
-                            <MFDisableInput
+                            <InputGroupDisable
                                 inputName="Localitate"
                                 initialValue={specialist.locality}
                             />
                             <span className="profile-subtitle">Date de contact</span>
-                            <MFDisableInput
+                            <InputGroupDisable
                                 inputName="Mail"
                                 initialValue={specialist.mail}
                             />
                         </div>
                         <div className="vertical-2 ten-px-gap">
 
-                            <MFDisableInput
+                            <InputGroupDisable
                                 inputName="Număr de telefon"
                                 initialValue={specialist.phone}
                             />
                             <span className="profile-subtitle">Date medicale</span>
-                            <MFDisableInput
+                            <InputGroupDisable
                                 inputName="Parafă medicală"
                                 initialValue={(specialist as Psychiatrist).medicalNumber}
                             />
-                            <MFDisableInput
+                            <InputGroupDisable
                                 inputName="Locație cabinet"
                                 initialValue={specialist.cabinetLocation}
                             />
@@ -420,32 +444,33 @@ const SpecialistProfile: React.FC<Props> = ({ dr, specialist }) => {
                                     Vezi locația cabinetului
                                 </a>
                             )}
-                            <MFDisableInput
+                            <InputGroupDisable
                                 inputName="Lucrez cu CNAS"
                                 initialValue={specialist.CNAS? 'Da' : 'Nu'}
                             />
-                            <MFDisableInput
+                            <InputGroupDisable
                                 inputName="Pot face consulații online"
                                 initialValue={specialist.online? 'Da' : 'Nu'}
                             />
                         </div>
                         <div className="vertical-2 ten-px-gap">
                             {!dr ?
-                                <MFDisableInput
+                                <InputGroupDisable
                                     inputName="Despre psihotherapia cu mine"
                                     initialValue={specialist.bio !== null? specialist.bio: ''}
                                 /> : null
                             }
                             <span className="profile-subtitle">Listă prețuri</span>
-                            <MFDisableInput
+                            <InputGroupDisable
                                 inputName="Consult"
                                 initialValue={specialist.priceConsult.toString()}
                             />
-                            <MFDisableInput
+                            <InputGroupDisable
                                 inputName="Consulație"
                                 initialValue={specialist.priceConsultation.toString()}
                             />
                             {personalProfile ? <button onClick={handleEditData} className="button-form">Editează</button> : null}
+                            {isHisPatient ? <button onClick={handleDeleteColaboration} className="button-cancel">Anulează colaborarea</button> : null}
                         </div>
                     </>
                 }

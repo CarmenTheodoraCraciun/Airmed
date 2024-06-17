@@ -1,11 +1,11 @@
-import React from 'react';
+import {FC} from 'react';
 
-interface MFDisableInputProps {
+interface Props {
     inputName: string;
     initialValue: string;
 }
 
-const MFDisableInput: React.FC<MFDisableInputProps> = ({ inputName, initialValue }) => {
+const InputGroupDisable: FC<Props> = ({ inputName, initialValue }) => {
     return (
         <div className="input-group-mf">
             <span className="input-span">{inputName}</span> <br/>
@@ -14,4 +14,4 @@ const MFDisableInput: React.FC<MFDisableInputProps> = ({ inputName, initialValue
     );
 }
 
-export default MFDisableInput;
+export default InputGroupDisable;

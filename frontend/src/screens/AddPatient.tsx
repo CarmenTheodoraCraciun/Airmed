@@ -3,7 +3,7 @@ import { Psychiatrist } from "../classes/Psychiatrist";
 import { Psychotherapist } from "../classes/Psychotherapist";
 import Header from "../components/Header";
 import patientToJson, { Patient } from "../classes/Patient";
-import MFDisableInput from "../components/MFDisableInput.tsx";
+import InputGroupDisable from "../components/InputGroupDisable.tsx";
 import {getData, updateData} from "../functions/EndPoints.ts";
 
 interface Props {
@@ -19,7 +19,7 @@ const AddPatient: React.FC<Props> = ({ specialist }) => {
         if (response !== null) {
             const patient = Patient.jsonToPatient(JSON.stringify(response));
             setPatient(patient);
-            console.log(patient);
+            // console.log(patient);
         } else {
             setPatient(null);
             alert("Nu există pacient.");
@@ -63,9 +63,9 @@ const AddPatient: React.FC<Props> = ({ specialist }) => {
                 {patient && (
                     <div className="vertical result-section">
                         <span className="mf-title">Pacientul cu codul numeric personal</span>
-                        <MFDisableInput inputName="" initialValue={patient.pnc}/>
-                        <MFDisableInput inputName="Prenume" initialValue={patient.firstName}/>
-                        <MFDisableInput inputName="Nume de familie" initialValue={patient.lastName}/>
+                        <InputGroupDisable inputName="" initialValue={patient.pnc}/>
+                        <InputGroupDisable inputName="Prenume" initialValue={patient.firstName}/>
+                        <InputGroupDisable inputName="Nume de familie" initialValue={patient.lastName}/>
                         <br/>
                         <p>Nu este ceea ce căutați?</p>
                         <p>Verificați datele introduse, atât de către specialist, cât și de către pacient.</p>

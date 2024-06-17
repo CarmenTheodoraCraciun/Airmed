@@ -1,5 +1,6 @@
 /*Intro style*/
 #intro-1, #intro-2, #intro-3{
+    color: var(--black);
     margin-top: 0;
     margin-bottom: 0;
     margin-left: 10px;

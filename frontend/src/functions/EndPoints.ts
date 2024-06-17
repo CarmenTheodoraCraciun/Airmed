@@ -1,8 +1,8 @@
-// POST
 import {Patient} from "../classes/Patient.ts";
 
 const baseURL = "http://localhost:8080";
 
+// POST
 export async function postData(url: string, jsonData: string) {
     try {
         return await fetch(baseURL + url, {
@@ -116,17 +116,30 @@ export async function checkUniquePNC(pnc: string){
 }
 
 // PUT
-export async function updateData(url: string, jsonData: string) {
+export async function updateData(url: string, jsonData: any) {
     console.log(url);
     try {
-        const response = await fetch(baseURL + url, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': 'http://localhost:5173'
-            },
-            body: jsonData
-        });
+        var response;
+        if(jsonData) {
+            response = await fetch(baseURL + url, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': 'http://localhost:5173'
+                },
+                body: jsonData
+            });
+        }
+        else{
+            response = await fetch(baseURL + url, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': 'http://localhost:5173'
+                },
+                body: JSON.stringify(jsonData)
+            });
+        }
         if(response.status === 404){
             alert("Ceva nu a mers la noi.");
             return false;

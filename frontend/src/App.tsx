@@ -9,8 +9,6 @@ import './styles/loadingAnd404.css';
 import './styles/specialists.css';
 
 import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
-
-
 import AboutUs from "./screens/AboutUs.tsx";
 import ArePsychiatrist from "./screens/ArePsychiatrist.tsx";
 import ArePsychotherapist from "./screens/ArePsychotherapist.tsx";
@@ -30,26 +28,43 @@ import AddPatient from "./screens/AddPatient.tsx";
 import {getData, getPatientsList} from "./functions/EndPoints.ts";
 import {Psychotherapist} from "./classes/Psychotherapist.ts";
 import {Fragment, useEffect, useState} from "react";
-import MFContextData from "./screens/MFContextData.tsx";
+import MFSocialContext from "./screens/MFSocialContext.tsx";
+import MFMedicalData from "./screens/MFMedialData.tsx";
+import MFPsychiatricData from "./screens/MFPsychiatricData.tsx";
 
 function App() {
     const [patientsList, setPatientsList] = useState<Patient[]>([]);
     const [patient, setPatient] = useState<Patient | null>(null);
-    const [myPsychiatrist, setMyPsychiatrist] = useState<Psychiatrist | null>();
-    const [myPsychotherapist, setMyPsychotherapist] = useState<Psychotherapist | null>();
+    const [psychiatrist, setPsychiatrist] = useState<Psychiatrist | null>(null);
+    const [psychotherapist, setPsychotherapist] = useState<Psychotherapist | null>(null);
+    const [myPsychiatrist, setMyPsychiatrist] = useState<Psychiatrist | null>(null);
+    const [myPsychotherapist, setMyPsychotherapist] = useState<Psychotherapist | null>(null);
 
-    let homeRoute = <Route path="/home" element={<Navigate to={"/about-us"} />} />;
     const patientDataString = sessionStorage.getItem('patient');
     const psychiatristDataString = sessionStorage.getItem('psychiatrist');
     const psychotherapistDataString = sessionStorage.getItem('psychotherapist');
 
+    // set user data
     useEffect(() => {
-        if (patientDataString) {
-            const patientData: Patient = Patient.jsonToPatient(patientDataString);
-            setPatient(patientData);
-        }
-    }, [patientDataString]);
+        const getUser = async () => {
+            if (patientDataString) {
+                const data = Patient.jsonToPatient(patientDataString);
+                const response = await getData("/patient/" + data.id);
+                if (response !== 404) setPatient(response);
+            } else if (psychiatristDataString) {
+                const data = Psychiatrist.jsonToPsychiatrist(psychiatristDataString);
+                const response = await getData("/psychiatrist/" + data.id);
+                if (response !== 404) setPsychiatrist(response);
+            } else if (psychotherapistDataString) {
+                const data = Psychotherapist.jsonToPsychotherapist(psychotherapistDataString);
+                const response = await getData("/psychotherapist/" + data.id);
+                if (response !== 404) setPsychotherapist(response);
+            }
+        };
+        getUser();
+    }, [patientDataString, psychiatristDataString, psychotherapistDataString]);
 
+    // set my specialists
     useEffect(() => {
         const fetchSpecialist = async () => {
             if (patient) {
@@ -69,66 +84,16 @@ function App() {
     // Get the list of patients
     useEffect(() => {
         const fetchPatients = async () => {
-            if (psychiatristDataString) {
-                const psychiatrist = Psychiatrist.jsonToPsychiatrist(psychiatristDataString);
+            if (psychiatrist) {
                 const patients = await getPatientsList(`/patient/psychiatrist?psychiatrist=${psychiatrist.id}`);
                 setPatientsList(patients);
-            } else if (psychotherapistDataString) {
-                const psychotherapist = Psychotherapist.jsonToPsychotherapist(psychotherapistDataString);
+            } else if (psychotherapist) {
                 const patients = await getPatientsList(`/patient/psychotherapist?psychotherapist=${psychotherapist.id}`);
                 setPatientsList(patients);
             }
         };
-
         fetchPatients();
-    }, [psychiatristDataString, psychotherapistDataString]);
-
-    if (patient !== null) {
-        // const patient = Patient.jsonToPatient(patientDataString);
-        const mfPath = `/medical-history/${patient.id}/`;
-        homeRoute = (
-            <>
-                <Route path="/home" element={<PatientHome />} />
-                <Route path="/feeling-mood" element={<FeelingQuiz patientId={patient.id} />} />
-                {myPsychiatrist ?
-                    <Route path={`profile/${myPsychiatrist.id}/psychiatrist`} element={<SpecialistProfile dr={true} specialist={myPsychiatrist} />} />
-                    : null}
-                {myPsychotherapist ?
-                    <Route path={`profile/${myPsychotherapist.id}/psychotherapist`} element={<SpecialistProfile dr={false} specialist={myPsychotherapist} />} />
-                    : null}
-                {/*Fisa medicala*/}
-                <Route path={`${mfPath}personal-data`} element={<MFPersonalData patient={patient} />} />
-                <Route path={`${mfPath}contact-data`} element={<MFContactData patient={patient} />} />
-                <Route path={`${mfPath}personal-and-social-context`} element={<MFContextData patient={patient}/>}/>
-                {/*<Route path={`${mfPath}medical-data`} element={}/>*/}
-                {/*<Route path={`${mfPath}psychiatric-before-data`} element={}/>*/}
-                {/*<Route path={`${mfPath}psychiatric-after-data`} element={}/>*/}
-                {/*<Route path={`${mfPath}statistic-data`} element={}/>*/}
-                {/*<Route path={`${mfPath}external-note`} element={}/>*/}
-                {/*<Route path={`${mfPath}your-note`} element={}/>*/}
-            </>
-        );
-    } else if (psychiatristDataString) {
-        const psychiatrist = Psychiatrist.jsonToPsychiatrist(psychiatristDataString);
-        homeRoute = (
-            <>
-                <Route path="/home" element={<SpecialistHome />} />
-                <Route path={`profile/${psychiatrist.id}/psychiatrist`} element={<SpecialistProfile dr={true} specialist={psychiatrist} />} />
-                <Route path="/add-patient" element={<AddPatient specialist={psychiatrist} />} />
-            </>
-        );
-    } else if (psychotherapistDataString) {
-        const psychotherapist = Psychotherapist.jsonToPsychotherapist(psychotherapistDataString);
-        console.log(psychotherapist);
-        homeRoute = (
-            <>
-                <Route path="/home" element={<SpecialistHome />} />
-                <Route path={`profile/${psychotherapist.id}/psychotherapist`} element={<SpecialistProfile dr={false} specialist={psychotherapist} />} />
-                <Route path="/add-patient" element={<AddPatient specialist={psychotherapist} />} />
-            </>
-        );
-    }
-
+    }, [psychiatrist, psychotherapist]);
 
     return (
         <Router>
@@ -141,20 +106,54 @@ function App() {
                 <Route path="/create-psychiatrist" element={<CreatePsychiatrist />} />
                 <Route path="/create-psychotherapist" element={<CreatePsychotherapist />} />
                 <Route path="/login" element={<Login />} />
-                {homeRoute}
+
+                {/* Private routes */}
+                {patient && (
+                    <>
+                        <Route path="/home" element={<PatientHome />} />
+                        <Route path="/feeling-mood" element={<FeelingQuiz patientId={patient.id} />} />
+                        {myPsychiatrist && (
+                            <Route path={`profile/${myPsychiatrist.id}/psychiatrist`}
+                                   element={<SpecialistProfile dr={true} specialist={myPsychiatrist} />} />
+                        )}
+                        {myPsychotherapist && (
+                            <Route path={`profile/${myPsychotherapist.id}/psychotherapist`}
+                                   element={<SpecialistProfile dr={false} specialist={myPsychotherapist} />} />
+                        )}
+                        <Route path={`/medical-history/${patient.id}/personal-data`} element={<MFPersonalData patient={patient} />} />
+                        <Route path={`/medical-history/${patient.id}/contact-data`} element={<MFContactData patient={patient} />} />
+                        <Route path={`/medical-history/${patient.id}/personal-and-social-context`} element={<MFSocialContext patient={patient} />} />
+                        <Route path={`/medical-history/${patient.id}/medical-data`} element={<MFMedicalData patient={patient} />} />
+                        <Route path={`/medical-history/${patient.id}/psychiatric-before-data`} element={<MFPsychiatricData patient={patient} presant={false} />} />
+                        <Route path={`/medical-history/${patient.id}/psychiatric-after-data`} element={<MFPsychiatricData patient={patient} presant={true} />} />
+                    </>
+                )}
+                {psychiatrist && (
+                    <>
+                        <Route path="/home" element={<SpecialistHome />} />
+                        <Route path={`profile/${psychiatrist.id}/psychiatrist`} element={<SpecialistProfile dr={true} specialist={psychiatrist} />} />
+                        <Route path="/add-patient" element={<AddPatient specialist={psychiatrist} />} />
+                    </>
+                )}
+                {psychotherapist && (
+                    <>
+                        <Route path="/home" element={<SpecialistHome />} />
+                        <Route path={`profile/${psychotherapist.id}/psychotherapist`} element={<SpecialistProfile dr={false} specialist={psychotherapist} />} />
+                        <Route path="/add-patient" element={<AddPatient specialist={psychotherapist} />} />
+                    </>
+                )}
+
                 {patientsList.map(patient => (
                     <Fragment key={patient.id}>
                         <Route path={`/medical-history/${patient.id}/personal-data`} element={<MFPersonalData patient={patient} />} />
                         <Route path={`/medical-history/${patient.id}/contact-data`} element={<MFContactData patient={patient} />} />
-                        {/*<Route path={`/medical-history/${patient.id}/personal-and-social-context`} element={}/>*/}
-                        {/*<Route path={`/medical-history/${patient.id}/medical-data`} element={}/>*/}
-                        {/*<Route path={`/medical-history/${patient.id}/psychiatric-before-data`} element={}/>*/}
-                        {/*<Route path={`/medical-history/${patient.id}/psychiatric-after-data`} element={}/>*/}
-                        {/*<Route path={`/medical-history/${patient.id}/statistic-data`} element={}/>*/}
-                        {/*<Route path={`/medical-history/${patient.id}/external-note`} element={}/>*/}
-                        {/*<Route path={`/medical-history/${patient.id}/your-note`} element={}/>*/}
+                        <Route path={`/medical-history/${patient.id}/personal-and-social-context`} element={<MFSocialContext patient={patient} />} />
+                        <Route path={`/medical-history/${patient.id}/medical-data`} element={<MFMedicalData patient={patient} />} />
+                        <Route path={`/medical-history/${patient.id}/psychiatric-before-data`} element={<MFPsychiatricData patient={patient} presant={false} />} />
+                        <Route path={`/medical-history/${patient.id}/psychiatric-after-data`} element={<MFPsychiatricData patient={patient} presant={true} />} />
                     </Fragment>
                 ))}
+
                 <Route path="/" element={<Navigate to="/home" />} />
             </Routes>
         </Router>
@@ -162,5 +161,3 @@ function App() {
 }
 
 export default App;
-
-

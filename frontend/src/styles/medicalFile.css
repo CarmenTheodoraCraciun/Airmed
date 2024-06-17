@@ -73,6 +73,7 @@ aside{
 .input-span{
     display: block;
     font-size: 16px;
+    margin-bottom: 5px;
 }
 
 .input-mf{
@@ -83,6 +84,21 @@ aside{
     background-color: transparent;
     border-radius: 10px;
     width: 300px;
+}
+
+.input-group-mf-mini{
+    margin-top: 16px;
+    max-width: 200px;
+}
+
+.input-mf-mini{
+    font-size: 16px;
+    padding: 10px;
+    outline: none;
+    border: 2px solid #ccc;
+    background-color: transparent;
+    border-radius: 10px;
+    width: 170px;
 }
 
 .input-mf-select{
@@ -109,6 +125,27 @@ aside{
     border: 2px solid #ccc;
 }
 
+.textarea-group-mf{
+    margin-top: 20px;
+    width: 300px;
+}
+
+.textarea-mf{
+    font-family: 'Inter', 'Source Sans Pro', sans-serif;
+    resize: none;
+    width: 90%;
+    height: 100px;
+    border-radius: 5px;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+.textarea-span{
+    display: block;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
 .select-mf {
     font-size: 16px;
     padding: 10px;
@@ -130,23 +167,6 @@ aside{
 }
 
 /*Feeling quiz*/
-.vertical-feeling {
-    display: flex;
-    flex-direction: column;
-    background-color: transparent;
-    width: 300px;
-    margin-left: 10px;
-    z-index: 2;
-}
-
-.horizontal-feeling {
-    display: flex;
-    flex-direction: row;
-    background-color: transparent;
-    align-items: center;
-    height: 500px;
-}
-
 #feeling-img {
     background-color: transparent;
     margin-left: 30px;
@@ -193,4 +213,12 @@ aside{
     background-color: transparent;
     display: inline-block;
     font-size: 13px;
+}
+
+.button-cancel{
+    margin: 2px 0 0 10px;
+    background-color: var(--engineering-orange);
+    width: 200px;
+    height: 40px;
+    color: var(--white);
 }

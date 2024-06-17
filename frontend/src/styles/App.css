@@ -86,6 +86,21 @@ textarea, input {
     background-color: transparent;
 }
 
+.horizontal-form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: transparent;
+}
+
+.horizontal-feeling {
+    display: flex;
+    flex-direction: row;
+    background-color: transparent;
+    align-items: center;
+    height: 500px;
+}
+
 .vertical {
     display: flex;
     flex-direction: column;
@@ -93,11 +108,13 @@ textarea, input {
     background-color: transparent;
 }
 
-.horizontal-form {
+.vertical-feeling {
     display: flex;
-    flex-direction: row;
-    align-items: center;
+    flex-direction: column;
     background-color: transparent;
+    width: 300px;
+    margin-left: 10px;
+    z-index: 2;
 }
 
 .vertical-form {
@@ -106,6 +123,19 @@ textarea, input {
     flex-direction: column;
     line-height: 0.7;
     background-color: transparent;
+}
+
+.vertical-textarea{
+    display: flex;
+    flex-direction: column;
+    line-height: 0.7;
+    background-color: transparent;
+    width: 400px;
+}
+
+.clear{
+    height: 30px;
+    color: var(--bg-white)
 }
 
 .ten-px-gap{

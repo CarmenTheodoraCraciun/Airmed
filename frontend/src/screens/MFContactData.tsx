@@ -4,7 +4,7 @@ import Aside from "../components/Aside.tsx";
 import React, {useEffect, useState} from "react";
 import {ContactPerson} from "../classes/ContactPerson.ts";
 import {getData, postData, updateData} from "../functions/EndPoints.ts";
-import MFDisableInput from "../components/MFDisableInput.tsx";
+import InputGroupDisable from "../components/InputGroupDisable.tsx";
 import Loading from "../components/Loading.tsx";
 import {isValidEmail, isValidName, isValidPhoneNumber} from "../functions/CheckInputs.ts";
 import InputGroup from "../components/InputGroup.tsx";
@@ -313,15 +313,15 @@ function MFContactData({ patient }: Props) {
                     // date needitabile
                     <>
                         <div className="vertical ten-px-gap">
-                            <MFDisableInput inputName="Mail" initialValue={patient.mail} />
-                            <MFDisableInput inputName="Număr de telefon" initialValue={patient.phone}/>
+                            <InputGroupDisable inputName="Mail" initialValue={patient.mail} />
+                            <InputGroupDisable inputName="Număr de telefon" initialValue={patient.phone}/>
                             {getResponse ?
                                 <>
                                     <span className="mf-title">Persoană de contact 1</span>
-                                    <MFDisableInput inputName="Prenume" initialValue={contactPerson0?.firstName ?? ""} />
-                                    <MFDisableInput inputName="Nume de familie" initialValue={contactPerson0?.lastName ?? ""} />
-                                    <MFDisableInput inputName="Relație" initialValue={contactPerson0?.relationship ?? ""} />
-                                    <MFDisableInput inputName="Număr de telefon" initialValue={contactPerson0?.phone ?? ""} />
+                                    <InputGroupDisable inputName="Prenume" initialValue={contactPerson0?.firstName ?? ""} />
+                                    <InputGroupDisable inputName="Nume de familie" initialValue={contactPerson0?.lastName ?? ""} />
+                                    <InputGroupDisable inputName="Relație" initialValue={contactPerson0?.relationship ?? ""} />
+                                    <InputGroupDisable inputName="Număr de telefon" initialValue={contactPerson0?.phone ?? ""} />
                                 </> :
                                 <Loading/>
                             }
@@ -330,10 +330,10 @@ function MFContactData({ patient }: Props) {
                             {getResponse ?
                                 <>
                                     <span className="mf-title">Persoană de contact 2</span>
-                                    <MFDisableInput inputName="Prenume" initialValue={contactPerson1?.firstName ?? ""} />
-                                    <MFDisableInput inputName="Nume de familie" initialValue={contactPerson1?.lastName ?? ""} />
-                                    <MFDisableInput inputName="Relație" initialValue={contactPerson1?.relationship ?? ""} />
-                                    <MFDisableInput inputName="Număr de telefon" initialValue={contactPerson1?.phone ?? ""} />
+                                    <InputGroupDisable inputName="Prenume" initialValue={contactPerson1?.firstName ?? ""} />
+                                    <InputGroupDisable inputName="Nume de familie" initialValue={contactPerson1?.lastName ?? ""} />
+                                    <InputGroupDisable inputName="Relație" initialValue={contactPerson1?.relationship ?? ""} />
+                                    <InputGroupDisable inputName="Număr de telefon" initialValue={contactPerson1?.phone ?? ""} />
                                     {isPatientSession?
                                         <button onClick={handleEditData} className="button-form">Editează</button>
                                         : null

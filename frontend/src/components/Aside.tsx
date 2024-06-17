@@ -1,5 +1,8 @@
 import React from "react";
 import {Link} from "react-router-dom";
+import {updateData} from "../functions/EndPoints.ts";
+import {Psychiatrist} from "../classes/Psychiatrist.ts";
+import {Psychotherapist} from "../classes/Psychotherapist.ts";
 
 interface Props {
     patientId: number;
@@ -9,6 +12,9 @@ interface Props {
 }
 
 const Aside: React.FC<Props> = ({ patientId, patientFirstName, patientLastName , idAside}) => {
+    const psychiatristDataString = sessionStorage.getItem('psychiatrist');
+    const psychotherapistDataString = sessionStorage.getItem('psychotherapist');
+
     const mfPath = `/medical-history/${patientId}/`;
     const intro = <>
         <span id="title-aside">Fișă medicală</span>
@@ -24,6 +30,34 @@ const Aside: React.FC<Props> = ({ patientId, patientFirstName, patientLastName ,
     const extNote = <Link to={`${mfPath}external-note`} className="part-aside">Note externe</Link>;
     const yourNote = <Link to={`${mfPath}your-note`} className="part-aside">Notele tale</Link>;
 
+    async function handleDeleteColaboration() {
+        const confirmMessage = "Ești sigur? Nu vei mai fi legat de pacientul " + patientFirstName;
+        if (!window.confirm(confirmMessage)) {
+            return;
+        }
+        var specialistId;
+        var dr = false;
+        if(psychiatristDataString){
+            const psychiatrist = Psychiatrist.jsonToPsychiatrist(psychiatristDataString);
+            specialistId = psychiatrist.id;
+            dr = true;
+        }
+        if(psychotherapistDataString){
+            const psychotherapist = Psychotherapist.jsonToPsychotherapist(psychotherapistDataString);
+            specialistId = psychotherapist.id;
+        }
+
+        const url = (dr ? "/patient/psychiatrist/" : "/patient/psychotherapist/") + specialistId;
+        const response = await updateData(url, null);
+        if (response) {
+            alert("Date salvate.");
+        }
+    }
+
+
+    const cancelBtn =
+        (psychiatristDataString || psychotherapistDataString) ? <button onClick={handleDeleteColaboration} className="button-cancel">Anulează colaborarea</button>
+            : null
     if(idAside == 0){
         return <>
             <aside>
@@ -37,6 +71,7 @@ const Aside: React.FC<Props> = ({ patientId, patientFirstName, patientLastName ,
                 {statisticData}
                 {extNote}
                 {yourNote}
+                {cancelBtn}
             </aside>
         </>;
     }
@@ -53,6 +88,7 @@ const Aside: React.FC<Props> = ({ patientId, patientFirstName, patientLastName ,
                 {statisticData}
                 {extNote}
                 {yourNote}
+                {cancelBtn}
             </aside>
         </>;
     }
@@ -69,6 +105,7 @@ const Aside: React.FC<Props> = ({ patientId, patientFirstName, patientLastName ,
                 {statisticData}
                 {extNote}
                 {yourNote}
+                {cancelBtn}
             </aside>
         </>;
     }
@@ -85,6 +122,7 @@ const Aside: React.FC<Props> = ({ patientId, patientFirstName, patientLastName ,
                 {statisticData}
                 {extNote}
                 {yourNote}
+                {cancelBtn}
             </aside>
         </>;
     }
@@ -101,6 +139,7 @@ const Aside: React.FC<Props> = ({ patientId, patientFirstName, patientLastName ,
                 {statisticData}
                 {extNote}
                 {yourNote}
+                {cancelBtn}
             </aside>
         </>;
     }
@@ -117,6 +156,7 @@ const Aside: React.FC<Props> = ({ patientId, patientFirstName, patientLastName ,
                 {statisticData}
                 {extNote}
                 {yourNote}
+                {cancelBtn}
             </aside>
         </>;
     }
@@ -133,6 +173,7 @@ const Aside: React.FC<Props> = ({ patientId, patientFirstName, patientLastName ,
                 <a href="#" className="active-part-aside part-aside">Date statistice</a>
                 {extNote}
                 {yourNote}
+                {cancelBtn}
             </aside>
         </>;
     }
@@ -149,6 +190,7 @@ const Aside: React.FC<Props> = ({ patientId, patientFirstName, patientLastName ,
                 {statisticData}
                 <a href="#" className="active-part-aside part-aside">Note externe</a>
                 {yourNote}
+                {cancelBtn}
             </aside>
         </>;
     }
@@ -165,6 +207,7 @@ const Aside: React.FC<Props> = ({ patientId, patientFirstName, patientLastName ,
                 {statisticData}
                 {extNote}
                 <a href="#" className="active-part-aside part-aside">Notele tale</a>
+                {cancelBtn}
             </aside>
         </>;
     }

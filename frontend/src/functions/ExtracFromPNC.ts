@@ -1,5 +1,5 @@
-export function checkMale(pnc: string): boolean {
-    const sexMValues = ['1', '5', '7'];
+export function checkFemale(pnc: string): boolean {
+    const sexMValues = ['2', '6', '8'];
     const firstDigit = pnc[0];
     return sexMValues.includes(firstDigit);
 }
