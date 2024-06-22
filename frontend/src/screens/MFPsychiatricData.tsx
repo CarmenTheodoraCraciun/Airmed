@@ -1,6 +1,6 @@
-import {FC, useEffect, useState} from "react";
+import {ChangeEvent, FC, useEffect, useState} from "react";
 import { Patient } from "../classes/Patient";
-import {convertToPychiatricData, PychiatricData} from "../classes/PychiatricData";
+import {convertToPsychiatricData, PsychiatricData} from "../classes/PsychiatricData.ts";
 import Header from "../components/Header";
 import Aside from "../components/Aside";
 import NoData from "../components/NoData";
@@ -21,13 +21,13 @@ interface FormValues {
     antidepressantP: string;
     moodStabilizersP: string;
     antipsychoticsP: string;
-    suicedeThoughtsP: string;
+    suicideThoughtsP: string;
     diagnosticsA: string;
     hospitalizationA: boolean;
     antidepressantA: string;
     moodStabilizersA: string;
     antipsychoticsA: string;
-    suicedeThoughtsA: string;
+    suicideThoughtsA: string;
 }
 
 const initialFormValues: FormValues = {
@@ -36,20 +36,20 @@ const initialFormValues: FormValues = {
     antidepressantP: "",
     moodStabilizersP: "",
     antipsychoticsP: "",
-    suicedeThoughtsP: "",
+    suicideThoughtsP: "",
     diagnosticsA: "",
     hospitalizationA: false,
     antidepressantA: "",
     moodStabilizersA: "",
     antipsychoticsA: "",
-    suicedeThoughtsA: "",
+    suicideThoughtsA: "",
 };
 
 const MFPsychiatricData: FC<Props> = ({ patient, presant }) => {
     const isPsychiatristSession = sessionStorage.getItem("psychiatrist") !== null;
     const [isEditEnabled, setIsEditEnabled] = useState(false);
     const [getResponse, setGetResponse] = useState(false);
-    const [psyData, setPsyData] = useState<{ pre: PychiatricData | null; ant: PychiatricData | null }>({
+    const [psyData, setPsyData] = useState<{ pre: PsychiatricData | null; ant: PsychiatricData | null }>({
         pre: null,
         ant: null,
     });
@@ -65,6 +65,7 @@ const MFPsychiatricData: FC<Props> = ({ patient, presant }) => {
                     });
                 }
                 setGetResponse(true);
+                console.log(response[1]);
             } catch (error) {
                 console.error("Failed to fetch psychiatric data:", error);
             }
@@ -75,7 +76,7 @@ const MFPsychiatricData: FC<Props> = ({ patient, presant }) => {
 
     const [formValues, setFormValues] = useState<FormValues>(initialFormValues);
 
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleInputChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value, type } = event.target;
         if (type === "checkbox") {
             const { checked } = event.target as HTMLInputElement;
@@ -94,29 +95,41 @@ const MFPsychiatricData: FC<Props> = ({ patient, presant }) => {
     const handleEditData = () => setIsEditEnabled(true);
     const handlePsychiatricChange = async () => {
         const psychiatricData = {
-            diagnostics: presant ? formValues.diagnosticsP : formValues.diagnosticsA,
-            hospitalization: presant ? formValues.hospitalizationP : formValues.hospitalizationA,
-            antidepressant: presant ? formValues.antidepressantP : formValues.antidepressantA,
-            moodStabilizers: presant ? formValues.moodStabilizersP : formValues.moodStabilizersA,
-            antipsychotics: presant ? formValues.antipsychoticsP : formValues.antipsychoticsA,
-            suicedeThoughts: presant ? formValues.suicedeThoughtsP : formValues.suicedeThoughtsA,
+            diagnostics: presant
+                ? (formValues.diagnosticsP || psyData.pre?.diagnostics || "")
+                : (formValues.diagnosticsA || psyData.ant?.diagnostics || ""),
+            hospitalization: presant
+                ? (formValues.hospitalizationP !== undefined ? formValues.hospitalizationP : psyData.pre?.hospitalization || false)
+                : (formValues.hospitalizationA !== undefined ? formValues.hospitalizationA : psyData.ant?.hospitalization || false),
+            antidepressant: presant
+                ? (formValues.antidepressantP || psyData.pre?.antidepressant || "")
+                : (formValues.antidepressantA || psyData.ant?.antidepressant || ""),
+            moodStabilizers: presant
+                ? (formValues.moodStabilizersP || psyData.pre?.moodStabilizers || "")
+                : (formValues.moodStabilizersA || psyData.ant?.moodStabilizers || ""),
+            antipsychotics: presant
+                ? (formValues.antipsychoticsP || psyData.pre?.antipsychotics || "")
+                : (formValues.antipsychoticsA || psyData.ant?.antipsychotics || ""),
+            suicideThoughts: presant
+                ? (formValues.suicideThoughtsP || psyData.pre?.suicideThoughts || "")
+                : (formValues.suicideThoughtsA || psyData.ant?.suicideThoughts || ""),
             presant: presant,
             patient: { id: patient.id },
         };
 
         const data = JSON.stringify(psychiatricData, null, 2);
         try {
-            let response: PychiatricData | undefined;
+            let response: PsychiatricData | undefined;
             if (presant ? psyData.pre : psyData.ant) {
                 const id = presant ? psyData.pre?.id : psyData.ant?.id;
                 const updateResponse = await updateData(`/psychiatricData/${id}`, data);
                 if (updateResponse) {
-                    response = convertToPychiatricData(updateResponse);
+                    response = convertToPsychiatricData(updateResponse);
                 }
             } else {
                 const postResponse = await postData("/psychiatricData", data);
                 if (postResponse) {
-                    response = convertToPychiatricData(postResponse);
+                    response = convertToPsychiatricData(postResponse);
                 }
             }
 
@@ -135,78 +148,76 @@ const MFPsychiatricData: FC<Props> = ({ patient, presant }) => {
             alert("Te rugăm să încerci mai târziu");
         }
     };
-
-    const renderEditInputs = (prefix: "P" | "A", data: PychiatricData | null) => (
+    const renderEditInputs = (prefix: "P" | "A", data: PsychiatricData | null) => (
         <>
-        <div className="vertical ten-px-gap">
-            <TextAreaGroup
-                label="Diagnostic"
-                name={`diagnostics${prefix}`}
-                value={formValues[`diagnostics${prefix}`]}
-                placeholder={data?.diagnostics ?? ""}
-                onChange={handleInputChange}
-                error=""
-            />
-            <CheckboxGroup
-                label="Pacient spitalizat?"
-                name={`hospitalization${prefix}`}
-                checked={formValues[`hospitalization${prefix}`]}
-                onChange={handleInputChange}
-            />
-            <TextAreaGroup
-                label="Antidepresive"
-                name={`antidepressant${prefix}`}
-                value={formValues[`antidepressant${prefix}`]}
-                placeholder={data?.antidepressant ?? ""}
-                onChange={handleInputChange}
-                error=""
-            />
-            <TextAreaGroup
-                label="Stabilizatori de dispoziție"
-                name={`moodStabilizers${prefix}`}
-                value={formValues[`moodStabilizers${prefix}`]}
-                placeholder={data?.moodStabilizers ?? ""}
-                onChange={handleInputChange}
-                error=""
-            />
-        </div>
-        <div className="vertical ten-px-gap">
-            <TextAreaGroup
-                label="Antipsihotice"
-                name={`antipsychotics${prefix}`}
-                value={formValues[`antipsychotics${prefix}`]}
-                placeholder={data?.antipsychotics ?? ""}
-                onChange={handleInputChange}
-                error=""
-            />
-            <TextAreaGroup
-                label="Gânduri suicidale"
-                name={`suicedeThoughts${prefix}`}
-                value={formValues[`suicedeThoughts${prefix}`]}
-                placeholder={data?.suicedeThoughts ?? ""}
-                onChange={handleInputChange}
-                error=""
-            />
-            <button onClick={handlePsychiatricChange} className="button-form">Salvează</button>
-        </div>
+            <div className="vertical ten-px-gap">
+                <TextAreaGroup
+                    label="Diagnostic"
+                    name={`diagnostics${prefix}`}
+                    value={formValues[`diagnostics${prefix}`]}
+                    placeholder={data?.diagnostics ?? ""}
+                    onChange={handleInputChange}
+                    error=""
+                />
+                <CheckboxGroup
+                    label="Pacient spitalizat?"
+                    name={`hospitalization${prefix}`}
+                    checked={formValues[`hospitalization${prefix}`]}
+                    onChange={handleInputChange}
+                />
+                <TextAreaGroup
+                    label="Antidepresive"
+                    name={`antidepressant${prefix}`}
+                    value={formValues[`antidepressant${prefix}`]}
+                    placeholder={data?.antidepressant ?? ""}
+                    onChange={handleInputChange}
+                    error=""
+                />
+                <TextAreaGroup
+                    label="Stabilizatori de dispoziție"
+                    name={`moodStabilizers${prefix}`}
+                    value={formValues[`moodStabilizers${prefix}`]}
+                    placeholder={data?.moodStabilizers ?? ""}
+                    onChange={handleInputChange}
+                    error=""
+                />
+            </div>
+            <div className="vertical ten-px-gap">
+                <TextAreaGroup
+                    label="Antipsihotice"
+                    name={`antipsychotics${prefix}`}
+                    value={formValues[`antipsychotics${prefix}`]}
+                    placeholder={data?.antipsychotics ?? ""}
+                    onChange={handleInputChange}
+                    error=""
+                />
+                <TextAreaGroup
+                    label="Gânduri suicidale"
+                    name={`suicideThoughts${prefix}`}
+                    value={formValues[`suicideThoughts${prefix}`]}
+                    placeholder={data?.suicideThoughts ?? ""}
+                    onChange={handleInputChange}
+                    error=""
+                />
+                <button onClick={handlePsychiatricChange} className="button-form">Salvează</button>
+            </div>
         </>
     );
-
-    const renderDisableInputs = (data: PychiatricData | null) => (
+    const renderDisableInputs = (data: PsychiatricData | null) => (
         <>
-        <div className="vertical ten-px-gap">
-            <TextAreaGroupDisable label="Diagnostic" value={data?.diagnostics ?? ""} />
-            <TextAreaGroupDisable label="Pacient spitalizat?" value={data?.hospitalization ? "Da" : "Nu"} />
-            <TextAreaGroupDisable label="Antidepresive" value={data?.antidepressant ?? ""} />
-            <TextAreaGroupDisable label="Stabilizatori de dispoziție" value={data?.moodStabilizers ?? ""} />
-        </div>
-        <div className="vertical ten-px-gap">
-            <TextAreaGroupDisable label="Antipsihotice" value={data?.antipsychotics ?? ""} />
-            <TextAreaGroupDisable label="Gânduri suicidale" value={data?.suicedeThoughts ?? ""} />
-            {isPsychiatristSession ?
-                <button className="button-form" onClick={handleEditData}>Editează</button>
-                : null}
-        </div>
+            <div className="vertical-textarea ten-px-gap">
+                <TextAreaGroupDisable label="Diagnostic" value={data?.diagnostics ?? ""} />
+                <TextAreaGroupDisable label="Pacient spitalizat?" value={data?.hospitalization ? "Da" : "Nu"} />
+                <TextAreaGroupDisable label="Antidepresive" value={data?.antidepressant ?? ""} />
+                <TextAreaGroupDisable label="Stabilizatori de dispoziție" value={data?.moodStabilizers ?? ""} />
+            </div>
+            <div className="vertical-textarea ten-px-gap">
+                <TextAreaGroupDisable label="Antipsihotice" value={data?.antipsychotics ?? ""} />
+                <TextAreaGroupDisable label="Gânduri suicidale" value={data?.suicideThoughts ?? ""} />
+                {isPsychiatristSession ?
+                    <button className="button-form" onClick={handleEditData}>Editează</button>
+                    : null}
+            </div>
         </>
     );
 

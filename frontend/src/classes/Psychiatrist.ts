@@ -6,7 +6,6 @@ export class Psychiatrist{
     lastName: string;
     mail: string;
     phone: string;
-    bio: string;
     country: string;
     locality: string;
     cabinetLocation: string;
@@ -16,16 +15,25 @@ export class Psychiatrist{
     online: boolean;
     CNAS: boolean;
 
-    constructor(id: number, medicalNumber: string, firstName: string, lastName: string, mail: string,
-                bio: string, phone: string, country: string, locality: string, cabinetLocation: string,
-                linkLocation: string, priceConsult: number, priceConsultation: number, online: boolean,
+    constructor(id: number,
+                medicalNumber: string,
+                firstName: string,
+                lastName: string,
+                mail: string,
+                phone: string,
+                country: string,
+                locality: string,
+                cabinetLocation: string,
+                linkLocation: string,
+                priceConsult: number,
+                priceConsultation: number,
+                online: boolean,
                 CNAS: boolean) {
         this.id = id;
         this.priceConsultation = priceConsultation;
         this.priceConsult = priceConsult;
         this.CNAS = CNAS;
         this.online = online;
-        this.bio = bio;
         this.medicalNumber = medicalNumber;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -46,7 +54,6 @@ export class Psychiatrist{
             data.firstName,
             data.lastName,
             data.mail,
-            data.bio,
             data.phone,
             data.country,
             data.locality,

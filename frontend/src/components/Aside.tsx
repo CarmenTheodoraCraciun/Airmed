@@ -27,8 +27,8 @@ const Aside: React.FC<Props> = ({ patientId, patientFirstName, patientLastName ,
     const psychiatricAnt = <Link to={`${mfPath}psychiatric-before-data`} className="part-aside">Date psihiatrice anterioare</Link>;
     const psychiatristPre = <Link to={`${mfPath}psychiatric-after-data`} className="part-aside">Date psihiatrice prezente</Link>;
     const statisticData = <Link to={`${mfPath}statistic-data`} className="part-aside">Date statistice</Link>;
-    const extNote = <Link to={`${mfPath}external-note`} className="part-aside">Note externe</Link>;
-    const yourNote = <Link to={`${mfPath}your-note`} className="part-aside">Notele tale</Link>;
+    const extNote = <Link to={`${mfPath}extern-notes`} className="part-aside">Note externe</Link>;
+    const yourNote = <Link to={`${mfPath}your-notes`} className="part-aside">Notele tale</Link>;
 
     async function handleDeleteColaboration() {
         const confirmMessage = "Ești sigur? Nu vei mai fi legat de pacientul " + patientFirstName;

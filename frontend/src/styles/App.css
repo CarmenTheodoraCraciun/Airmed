@@ -56,6 +56,14 @@ textarea, input {
     font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
+.textarea-style{
+    height: 150px;
+}
+
+.textarea-disebel-style{
+    height: auto;
+}
+
 
 /*Alinieri de obiecte si centrari*/
 .align-start {
@@ -130,7 +138,7 @@ textarea, input {
     flex-direction: column;
     line-height: 0.7;
     background-color: transparent;
-    width: 400px;
+    width: 300px;
 }
 
 .clear{

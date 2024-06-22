@@ -8,7 +8,7 @@ import './styles/create-accont.css';
 import './styles/loadingAnd404.css';
 import './styles/specialists.css';
 
-import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import AboutUs from "./screens/AboutUs.tsx";
 import ArePsychiatrist from "./screens/ArePsychiatrist.tsx";
 import ArePsychotherapist from "./screens/ArePsychotherapist.tsx";
@@ -31,6 +31,8 @@ import {Fragment, useEffect, useState} from "react";
 import MFSocialContext from "./screens/MFSocialContext.tsx";
 import MFMedicalData from "./screens/MFMedialData.tsx";
 import MFPsychiatricData from "./screens/MFPsychiatricData.tsx";
+import MFYourNote from "./screens/MFYourNote.tsx";
+import MFExternNote from "./screens/MFExternNote.tsx";
 
 function App() {
     const [patientsList, setPatientsList] = useState<Patient[]>([]);
@@ -110,7 +112,7 @@ function App() {
                 {/* Private routes */}
                 {patient && (
                     <>
-                        <Route path="/home" element={<PatientHome />} />
+                        <Route path="/home" element={<PatientHome userId={patient.id}/>} />
                         <Route path="/feeling-mood" element={<FeelingQuiz patientId={patient.id} />} />
                         {myPsychiatrist && (
                             <Route path={`profile/${myPsychiatrist.id}/psychiatrist`}
@@ -126,20 +128,22 @@ function App() {
                         <Route path={`/medical-history/${patient.id}/medical-data`} element={<MFMedicalData patient={patient} />} />
                         <Route path={`/medical-history/${patient.id}/psychiatric-before-data`} element={<MFPsychiatricData patient={patient} presant={false} />} />
                         <Route path={`/medical-history/${patient.id}/psychiatric-after-data`} element={<MFPsychiatricData patient={patient} presant={true} />} />
+                        <Route path={`/medical-history/${patient.id}/extern-notes`} element={<MFExternNote patient={patient} user={patient} type="patient"/>} />
+                        <Route path={`/medical-history/${patient.id}/your-notes`} element={<MFYourNote patient={patient} />} />
                     </>
                 )}
                 {psychiatrist && (
                     <>
                         <Route path="/home" element={<SpecialistHome />} />
                         <Route path={`profile/${psychiatrist.id}/psychiatrist`} element={<SpecialistProfile dr={true} specialist={psychiatrist} />} />
-                        <Route path="/add-patient" element={<AddPatient specialist={psychiatrist} />} />
+                        <Route path="/add-patient" element={<AddPatient specialist={psychiatrist} dr={true}/>} />
                     </>
                 )}
                 {psychotherapist && (
                     <>
                         <Route path="/home" element={<SpecialistHome />} />
                         <Route path={`profile/${psychotherapist.id}/psychotherapist`} element={<SpecialistProfile dr={false} specialist={psychotherapist} />} />
-                        <Route path="/add-patient" element={<AddPatient specialist={psychotherapist} />} />
+                        <Route path="/add-patient" element={<AddPatient specialist={psychotherapist} dr={false}/>} />
                     </>
                 )}
 
@@ -151,10 +155,15 @@ function App() {
                         <Route path={`/medical-history/${patient.id}/medical-data`} element={<MFMedicalData patient={patient} />} />
                         <Route path={`/medical-history/${patient.id}/psychiatric-before-data`} element={<MFPsychiatricData patient={patient} presant={false} />} />
                         <Route path={`/medical-history/${patient.id}/psychiatric-after-data`} element={<MFPsychiatricData patient={patient} presant={true} />} />
+                        <Route path={`/medical-history/${patient.id}/your-notes`} element={<MFYourNote patient={patient} />} />
+                        {psychiatrist?
+                            <Route path={`/medical-history/${patient.id}/extern-notes`} element={<MFExternNote patient={patient} user={psychiatrist} type="psychiatrist"/>} />
+                            : null}
+                        {psychotherapist?
+                            <Route path={`/medical-history/${patient.id}/extern-notes`} element={<MFExternNote patient={patient} user={psychotherapist} type="psychotherapist"/>} />
+                            : null}
                     </Fragment>
                 ))}
-
-                <Route path="/" element={<Navigate to="/home" />} />
             </Routes>
         </Router>
     );

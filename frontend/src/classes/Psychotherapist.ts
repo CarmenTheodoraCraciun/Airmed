@@ -15,9 +15,20 @@ export class Psychotherapist{
     online: boolean;
     CNAS: boolean;
 
-    constructor(id: number, medicalNumber: string, firstName: string, lastName: string, mail: string,
-                bio: string, phone: string, country: string, locality: string, cabinetLocation: string,
-                linkLocation: string, priceConsult: number, priceConsultation: number, online: boolean,
+    constructor(id: number,
+                medicalNumber: string,
+                firstName: string,
+                lastName: string,
+                mail: string,
+                bio: string,
+                phone: string,
+                country: string,
+                locality: string,
+                cabinetLocation: string,
+                linkLocation: string,
+                priceConsult: number,
+                priceConsultation: number,
+                online: boolean,
                 CNAS: boolean) {
         this.id = id;
         this.priceConsultation = priceConsultation;

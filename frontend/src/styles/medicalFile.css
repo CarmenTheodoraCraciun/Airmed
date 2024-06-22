@@ -130,6 +130,13 @@ aside{
     width: 300px;
 }
 
+.material-radiobox{
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+    flex-direction: column;
+}
+
 .textarea-mf{
     font-family: 'Inter', 'Source Sans Pro', sans-serif;
     resize: none;

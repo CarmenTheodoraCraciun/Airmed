@@ -11,7 +11,11 @@ public interface NoteServ {
     Note saveNote(Note note);
     Note getNoteById(Long id);
     List<Note> getNoteByPatient(Patient patient);
-    List<Note> getNoteByPsychotherapist(Psychotherapist psychotherapist);
-    List<Note> getNoteByPsychiatrist(Psychiatrist psychiatrist);
+    List<Note> getNoteByPsychotherapist(Psychotherapist psychotherapist, Patient patient);
+    List<Note> getNoteByPsychiatrist(Psychiatrist psychiatrist, Patient patient);
+    List<Note> getAllSharedAllNotesWithPatient(Patient patient);
+
+    List<Note> findNotesSharedWithSpecialists(Patient patient, Psychiatrist psychiatrist, Psychotherapist psychotherapist);
+
     void deleteNote(Long id);
 }

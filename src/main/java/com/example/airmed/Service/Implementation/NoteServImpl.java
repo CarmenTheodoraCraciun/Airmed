@@ -32,17 +32,31 @@ public class NoteServImpl implements NoteServ {
 
     @Override
     public List<Note> getNoteByPatient(Patient patient) {
-        return noteRepo.findByPatient(patient);
+        return noteRepo.findByPatientAndPsychiatristIsNullAndPsychotherapistIsNull(patient);
     }
 
     @Override
-    public List<Note> getNoteByPsychotherapist(Psychotherapist psychotherapist) {
-        return noteRepo.findByPsychotherapist(psychotherapist);
+    public List<Note> getNoteByPsychotherapist(Psychotherapist psychotherapist, Patient patient) {
+        return noteRepo.findByPsychotherapistAndPatient(psychotherapist, patient);
     }
 
     @Override
-    public List<Note> getNoteByPsychiatrist(Psychiatrist psychiatrist) {
-        return noteRepo.findByPsychiatrist(psychiatrist);
+    public List<Note> getNoteByPsychiatrist(Psychiatrist psychiatrist, Patient patient) {
+        return noteRepo.findByPsychiatristAndPatient(psychiatrist, patient);
+    }
+
+    @Override
+    public List<Note> getAllSharedAllNotesWithPatient(Patient patient) {
+        return noteRepo.findAllSharedAllNotesWithSpecialists(patient);
+    }
+
+    @Override
+    public List<Note> findNotesSharedWithSpecialists(Patient patient, Psychiatrist psychiatrist, Psychotherapist psychotherapist) {
+        if(psychiatrist != null)
+            return noteRepo.findNotesSharedWithSpecialistsExcludingPsychiatrist(patient,psychiatrist);
+        if (psychotherapist != null)
+            return noteRepo.findNotesSharedWithSpecialistsExcludingPsychotherapist(patient,psychotherapist);
+        throw new IllegalArgumentException("At least one specialist must be provided.");
     }
 
     @Override

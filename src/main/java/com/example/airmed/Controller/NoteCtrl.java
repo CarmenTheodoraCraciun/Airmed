@@ -56,24 +56,87 @@ public class NoteCtrl {
     }
 
     // method: GET
-    // link: baseURL + "/note/psychiatrist?psychiatrist=" + psychiatristId
+    // link: baseURL + "/note/psychiatrist?psychiatrist=" + psychiatristId + "&patient=" + patientID
     // receive: json list + 302 or 404
     @GetMapping("/note/psychiatrist")
-    public ResponseEntity<List<Note>> getNoteByPsychiatrist(@RequestParam("psychiatrist") Long id){
-        Psychiatrist psychiatrist = psychiatristServ.getPsychiatristById(id);
-        if(psychiatrist != null)
-            return new ResponseEntity<>(noteServ.getNoteByPsychiatrist(psychiatrist),HttpStatus.FOUND);
+    public ResponseEntity<List<Note>> getNotesByPsychiatristAndPatient(@RequestParam("psychiatrist") Long psychiatristId,
+                                                                       @RequestParam("patient") Long patientId) {
+        Psychiatrist psychiatrist = psychiatristServ.getPsychiatristById(psychiatristId);
+        Patient patient = patientServ.getPatientById(patientId);
+
+        if (psychiatrist != null && patient != null) {
+            List<Note> notes = noteServ.getNoteByPsychiatrist(psychiatrist, patient);
+            if (!notes.isEmpty()) {
+                return new ResponseEntity<>(notes, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     // method: GET
-    // link: baseURL + "/note/pychotherapist?pychotherapist=" + pychotherapistId
+    // link: baseURL + "/note/psychotherapist?psychotherapist=" + psychotherapistId + "&patient=" + patientID
     // receive: json list + 302 or 404
-    @GetMapping("/note/pychotherapist")
-    public ResponseEntity<List<Note>> getNoteByPsychotherapist(@RequestParam("psychotherapist") Long id){
-        Psychotherapist psychotherapist = psychotherapistServ.getPsychotherapistById(id);
-        if(psychotherapist != null)
-            return new ResponseEntity<>(noteServ.getNoteByPsychotherapist(psychotherapist),HttpStatus.FOUND);
+    @GetMapping("/note/psychotherapist")
+    public ResponseEntity<List<Note>> getNotesByPsychotherapistAndPatient(@RequestParam("psychotherapist") Long psychotherapistId,
+                                                                       @RequestParam("patient") Long patientId) {
+        Psychotherapist psychotherapist = psychotherapistServ.getPsychotherapistById(psychotherapistId);
+        Patient patient = patientServ.getPatientById(patientId);
+
+        if (psychotherapist != null && patient != null) {
+            List<Note> notes = noteServ.getNoteByPsychotherapist(psychotherapist, patient);
+            if (!notes.isEmpty()) {
+                return new ResponseEntity<>(notes, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    // method: GET
+    // link: baseURL + "/note/shared-with-patient?patient=" + patientID
+    // receive: json list + 302 or 404
+    @GetMapping("/note/shared-with-patient?patient=")
+    public ResponseEntity<List<Note>> getAllSharedAllNotesWithPatient(@RequestParam("patient") Long patientId){
+        Patient patient = patientServ.getPatientById(patientId);
+        if(patient != null)
+            return  new ResponseEntity<>(noteServ.getAllSharedAllNotesWithPatient(patient), HttpStatus.FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    // method: GET
+    // link: baseURL + "/note/shared-with-specilist?specialist=" + specialistId + "&type=" + type + "&patient="  + patientID
+    // receive: json list + 302 or 404
+    @GetMapping("/note/shared-with-specialist")
+    public ResponseEntity<List<Note>> findNotesSharedWithSpecialists(
+            @RequestParam("specialist") Long specialistId,
+            @RequestParam("type") String type,
+            @RequestParam("patient") Long patientId) {
+        Patient patient = patientServ.getPatientById(patientId);
+        if (patient == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        List<Note> notes;
+        if ("psychiatrist".equalsIgnoreCase(type)) {
+            Psychiatrist psychiatrist = psychiatristServ.getPsychiatristById(specialistId);
+            if (psychiatrist == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            notes = noteServ.findNotesSharedWithSpecialists(patient, psychiatrist, null);
+        } else if ("psychotherapist".equalsIgnoreCase(type)) {
+            Psychotherapist psychotherapist = psychotherapistServ.getPsychotherapistById(specialistId);
+            if (psychotherapist == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            notes = noteServ.findNotesSharedWithSpecialists(patient, null, psychotherapist);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        if (notes.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(notes, HttpStatus.OK);
     }
 }

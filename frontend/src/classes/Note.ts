@@ -18,24 +18,48 @@ export class Note{
         this.sharedAll = sharedAll;
 
         this.psychiatrist = new Psychiatrist(
-            psychiatrist.id, psychiatrist.medicalNumber, psychiatrist.firstName,
-            psychiatrist.lastName, psychiatrist.mail, psychiatrist.phone,
-            psychiatrist.country, psychiatrist.locality, psychiatrist.cabinetLocation,
-            psychiatrist.linkLocation, psychiatrist.priceConsult, psychiatrist.priceConsultation,
-            psychiatrist.online, psychiatrist.CNAS, psychiatrist.salts
+            psychiatrist.id,
+            psychiatrist.medicalNumber,
+            psychiatrist.firstName,
+            psychiatrist.lastName,
+            psychiatrist.mail,
+            psychiatrist.phone,
+            psychiatrist.country,
+            psychiatrist.locality,
+            psychiatrist.cabinetLocation,
+            psychiatrist.linkLocation,
+            psychiatrist.priceConsult,
+            psychiatrist.priceConsultation,
+            psychiatrist.online,
+            psychiatrist.CNAS
         );
 
         this.psychotherapist = new Psychotherapist(
-            psychotherapist.id, psychotherapist.medicalNumber, psychotherapist.firstName,
-            psychotherapist.lastName, psychotherapist.mail, psychotherapist.phone,
-            psychotherapist.country, psychotherapist.locality, psychotherapist.cabinetLocation,
-            psychotherapist.linkLocation, psychotherapist.priceConsult, psychotherapist.priceConsultation,
-            psychotherapist.online, psychotherapist.CNAS, psychotherapist.salts
+            psychotherapist.id,
+            psychotherapist.medicalNumber,
+            psychotherapist.firstName,
+            psychotherapist.lastName,
+            psychotherapist.mail,
+            psychotherapist.bio,
+            psychotherapist.phone,
+            psychotherapist.country,
+            psychotherapist.locality,
+            psychotherapist.cabinetLocation,
+            psychotherapist.linkLocation,
+            psychotherapist.priceConsult,
+            psychotherapist.priceConsultation,
+            psychotherapist.online,
+            psychotherapist.CNAS
         );
 
-        this.patient = new Patient(patient.id,patient.PNC,patient.firstName,
-            patient.lastName,patient.mail, patient.phone, patient.psychiatrist,
-            patient.psychotherapist,patient.salts
+        this.patient = new Patient(patient.id,
+            patient.pnc,
+            patient.firstName,
+            patient.lastName,
+            patient.mail,
+            patient.phone,
+            patient.psychiatrist,
+            patient.psychotherapist
         );
     }
 }

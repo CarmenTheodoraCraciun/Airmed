@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import {FC, useState} from "react";
 import { Psychiatrist } from "../classes/Psychiatrist";
 import { Psychotherapist } from "../classes/Psychotherapist";
 import Header from "../components/Header";
@@ -8,9 +8,10 @@ import {getData, updateData} from "../functions/EndPoints.ts";
 
 interface Props {
     specialist: Psychiatrist | Psychotherapist;
+    dr: boolean;
 }
 
-const AddPatient: React.FC<Props> = ({ specialist }) => {
+const AddPatient: FC<Props> = ({ specialist, dr }) => {
     const [cnp, setCnp] = useState('');
     const [patient, setPatient] = useState<Patient | null>(null);  // Update the state type to `Patient | null`
     const handleSearch = async () => {
@@ -28,7 +29,7 @@ const AddPatient: React.FC<Props> = ({ specialist }) => {
 
     const handleAddPatient = async () =>{
         if(patient) {
-            if(specialist instanceof Psychiatrist)
+            if(dr)
                 if(patient.psychiatrist === null){
                     patient.psychiatrist = specialist;
                     await updateData("/patient/psychiatrist/" + patient.id, patientToJson(patient));

@@ -1,6 +1,6 @@
 import {Patient} from "./Patient.ts";
 
-export class PychiatricData{
+export class PsychiatricData {
     id: number;
     presant: boolean;
     diagnostics: string;
@@ -8,7 +8,7 @@ export class PychiatricData{
     antidepressant: string;
     moodStabilizers: string;
     antipsychotics: string;
-    suicedeThoughts: string;
+    suicideThoughts: string;
     patient: Patient;
 
 
@@ -20,7 +20,7 @@ export class PychiatricData{
         this.antidepressant = antidepressant;
         this.moodStabilizers = moodStabilizers;
         this.antipsychotics = antipsychotics;
-        this.suicedeThoughts = suicedeThoughts;
+        this.suicideThoughts = suicedeThoughts;
 
         this.patient = new Patient(patient.id,patient.pnc,patient.firstName,
             patient.lastName,patient.mail, patient.phone, patient.psychiatrist,
@@ -29,8 +29,8 @@ export class PychiatricData{
     }
 }
 
-export function convertToPychiatricData(data: any): PychiatricData {
-    return new PychiatricData(
+export function convertToPsychiatricData(data: any): PsychiatricData {
+    return new PsychiatricData(
         data.id,
         data.presant,
         data.diagnostics,
