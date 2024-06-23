@@ -42,19 +42,4 @@ public class QuestionCtrl {
     public ResponseEntity<List<Question>> getAllQuestions(){
         return  new ResponseEntity<>(questionServ.getAllQuestions(), HttpStatus.FOUND);
     }
-
-
-    // method: DELETE, also deleting all the answers
-    // link: baseURL + "/question/" + questionId
-    // receive: 200 or 500
-    @DeleteMapping("/question/{id}")
-    public ResponseEntity<String> deleteQuestionAndAnswers(@PathVariable("id") Long id) {
-        try {
-            questionServ.deleteQuestionAndAnswers(id);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            String errorMessage = "Error deleting question and answers: " + e.getMessage();
-            return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 }

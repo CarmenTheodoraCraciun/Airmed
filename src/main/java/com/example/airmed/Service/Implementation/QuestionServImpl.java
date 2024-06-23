@@ -36,16 +36,4 @@ public class QuestionServImpl implements QuestionServ {
     public Question getQuestionById(Long id){
         return questionRepo.findById(id).orElse(null);
     }
-    @Override
-    @Transactional
-    public void deleteQuestionAndAnswers(Long id) {
-        Question question = getQuestionById(id);
-        if (question != null) {
-            List<Answer> answers = answerServ.getAnswerByQuestion(question);
-            for (Answer answer : answers) {
-                answerServ.deleteAnswer(answer.getId());
-            }
-            questionRepo.delete(question);
-        }
-    }
 }

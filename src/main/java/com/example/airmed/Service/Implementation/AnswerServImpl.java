@@ -37,11 +37,11 @@ public class AnswerServImpl implements AnswerServ {
     public List<Answer> getAnswerByPatient(Patient patient) {
         return answerRepo.findByPatient(patient);
     }
-    @Override
-    public List<Answer> getAnswerByQuestion(Question question) {
-        return answerRepo.findByQuestion(question);
-    }
 
+    @Override
+    public List<Answer> getAnswerByPatientAndQuestion(Patient patient, Question question) {
+        return answerRepo.findByPatientAndQuestion(patient, question);
+    }
     @Override
     public void deleteAnswer(Long id) {
         answerRepo.deleteById(id);

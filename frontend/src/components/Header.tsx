@@ -6,13 +6,15 @@ import psyhchiatristImg from "../resources/img/medic.png";
 import psychotherapistImg from "../resources/img/psychotherapist.png";
 import {Psychiatrist} from "../classes/Psychiatrist.ts";
 import {Psychotherapist} from "../classes/Psychotherapist.ts";
-// import {createPatientFromJSON} from "../functions/CreateUsers.ts";
+import {useState} from "react";
+import {postData} from "../functions/EndPoints.ts";
 function Header(){
     const navigate = useNavigate();
     const patientDataString = sessionStorage.getItem('patient');
     const psychiatristDataString = sessionStorage.getItem('psychiatrist');
     const psychotherapistDataString = sessionStorage.getItem('psychotherapist');
-    var headerLinks = null;
+    let headerLinks;
+    const [showAlertBox, setShowAlertBox] = useState(false);
 
     function handleLogoutClick() {
         sessionStorage.clear();
@@ -29,42 +31,109 @@ function Header(){
         navigate('/add-patient');
     }
 
+    const handleAlertClick = () => {
+        setShowAlertBox(!showAlertBox);
+    };
+
+    const handleCloseClick = () => {
+        setShowAlertBox(false);
+    };
+
+    async function postRequest(json: any) {
+        const x = JSON.stringify(json, null, 2);
+        try {
+            const response = await postData('/request', x);
+            if (response) {
+                alert("Alertă trimisă.");
+            }
+        } catch (error) {
+            console.error('Failed to update medical data:', error);
+            alert("Te rugăm să încerci din nou");
+        }
+    }
+
+    function handleAlertPsychiatrist(patient: Patient) {
+        postRequest(
+            {
+                status: false,
+                type: "Alert",
+                psychiatrist: patient.psychiatrist,
+                psychotherapist: null,
+                patient: patient
+            }
+        );
+    }
+
+    function handleAlertPsychotherapist(patient: Patient) {
+        postRequest(
+            {
+                status: false,
+                type: "Alert",
+                psychiatrist: null,
+                psychotherapist: patient.psychotherapist,
+                patient: patient
+            }
+        );
+    }
+
+    function handleAlertBoth(patient: Patient) {
+        handleAlertPsychiatrist(patient);
+        handleAlertPsychotherapist(patient);
+    }
+
     if (patientDataString) {
         // Patient's header
         const patient = Patient.jsonToPatient(patientDataString);
-        // console.log(patient);
         const mfPath = `/medical-history/${patient.id}/`;
-        headerLinks = (<ul className="header-ul">
-            <li>
-                <div className="group-search">
-                    <svg className="icon-search" aria-hidden="true" viewBox="0 0 24 24"><g><path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"></path></g></svg>
-                    <input placeholder="Caută specialist" type="search" className="input-search"/>
-                </div>
-            </li>
-            <li>
-                <a href="/about-us" className="header-el">Despre noi</a>
-            </li>
-            <li className="menu-li">
-                {patient.firstName}
-                <img id="patient-img" src={patientImg} alt=""/>
-                <div className="menu">
-                    <Link to={`${mfPath}personal-data`} className="header-li">Istoric medical</Link><br/>
-                    {(patient.psychiatrist !== null) ?
-                        <>
-                            <Link to={`/profile/${patient.psychiatrist.id}/psychiatrist`} className="header-li">Vizitează psihiatrul</Link><br/>
-                        </>
-                        : null
-                    }
-                    {(patient.psychotherapist !== null) ?
-                        <>
-                            <Link to={`/profile/${patient.psychotherapist.id}/psychotherapist`} className="header-li">Vizitează psihologul</Link><br/>
-                        </>
-                        : null
-                    }
-                    <a href="/about-us" className="header-li" onClick={handleLogoutClick}>Deconectează-te</a>
-                </div>
-            </li>
-        </ul>);
+        headerLinks = (
+            <>
+            {(patient.psychotherapist !== null || patient.psychiatrist !== null) && (
+                <>
+                    <button className="header-btn" onClick={handleAlertClick}>Trimite alertă</button>
+                    {showAlertBox && (
+                        <div className="alert-box">
+                            <button className="cancel-alert-button" onClick={handleCloseClick}>×</button><br/>
+                            <span className="alert-text">Trimite alerta către</span>
+                            <div className="horizontal ten-px-gap">
+                                {patient.psychiatrist !== null ?
+                                    <button onClick={() => handleAlertPsychiatrist(patient)} className="alert-button">Psihiatru</button>
+                                    : null}
+                                {patient.psychotherapist !== null ?
+                                    <button onClick={() => handleAlertPsychotherapist(patient)} className="alert-button">Psihoterapeut</button>
+                                    : null}
+                                {patient.psychiatrist !== null && patient.psychotherapist !== null ?
+                                    <button onClick={() => handleAlertBoth(patient)} className="alert-button">Amândoi</button>
+                                    : null}
+                            </div>
+                        </div>
+                    )}
+                </>
+            )}
+            <ul className="header-ul">
+                <li>
+                    <a href="/about-us" className="header-el">Despre noi</a>
+                </li>
+                <li className="menu-li">
+                    {patient.firstName}
+                    <img id="patient-img" src={patientImg} alt="" />
+                    <div className="menu">
+                        <Link to={`${mfPath}personal-data`} className="header-li">Istoric medical</Link><br />
+                        {patient.psychiatrist && (
+                            <>
+                                <Link to={`/profile/${patient.psychiatrist.id}/psychiatrist`} className="header-li">Vizitează psihiatrul</Link><br />
+                            </>
+                        )}
+                        {patient.psychotherapist && (
+                            <>
+                                <Link to={`/profile/${patient.psychotherapist.id}/psychotherapist`} className="header-li">Vizitează psihologul</Link><br />
+                            </>
+                        )}
+                        <a href="/about-us" className="header-li" onClick={handleLogoutClick}>Deconectează-te</a>
+                    </div>
+                </li>
+            </ul>
+        </>
+        );
     }
     else if (psychiatristDataString) {
         // Psychiatrist's header

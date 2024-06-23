@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface AnswerRepo extends JpaRepository<Answer,Long> {
     List<Answer> findByPatient(Patient patient);
-    List<Answer> findByQuestion(Question question);
+    List<Answer> findByPatientAndQuestion(Patient patient, Question question);
 }

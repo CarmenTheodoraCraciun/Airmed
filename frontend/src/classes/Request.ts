@@ -10,7 +10,6 @@ export class Request{
     psychotherapist: Psychotherapist;
     patient: Patient;
 
-
     constructor(id: number, status: boolean, type: string, psychiatrist: Psychiatrist, psychotherapist: Psychotherapist, patient: Patient) {
         this.id = id;
         this.status = status;
@@ -21,20 +20,20 @@ export class Request{
             psychiatrist.lastName, psychiatrist.mail, psychiatrist.phone,
             psychiatrist.country, psychiatrist.locality, psychiatrist.cabinetLocation,
             psychiatrist.linkLocation, psychiatrist.priceConsult, psychiatrist.priceConsultation,
-            psychiatrist.online, psychiatrist.CNAS, psychiatrist.salts
+            psychiatrist.online, psychiatrist.CNAS
         );
 
         this.psychotherapist = new Psychotherapist(
             psychotherapist.id, psychotherapist.medicalNumber, psychotherapist.firstName,
-            psychotherapist.lastName, psychotherapist.mail, psychotherapist.phone,
+            psychotherapist.lastName, psychotherapist.mail, psychotherapist.bio, psychotherapist.phone,
             psychotherapist.country, psychotherapist.locality, psychotherapist.cabinetLocation,
             psychotherapist.linkLocation, psychotherapist.priceConsult, psychotherapist.priceConsultation,
-            psychotherapist.online, psychotherapist.CNAS, psychotherapist.salts
+            psychotherapist.online, psychotherapist.CNAS
         );
 
-        this.patient = new Patient(patient.id,patient.PNC,patient.firstName,
+        this.patient = new Patient(patient.id,patient.pnc,patient.firstName,
             patient.lastName,patient.mail, patient.phone, patient.psychiatrist,
-            patient.psychotherapist,patient.salts
+            patient.psychotherapist
         );
     }
 }

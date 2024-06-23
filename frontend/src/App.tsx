@@ -5,7 +5,7 @@ import './styles/header.css';
 import './styles/about.css';
 import './styles/messege.css';
 import './styles/create-accont.css';
-import './styles/loadingAnd404.css';
+import './styles/utility.css';
 import './styles/specialists.css';
 
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
@@ -112,8 +112,7 @@ function App() {
                 {/* Private routes */}
                 {patient && (
                     <>
-                        <Route path="/home" element={<PatientHome userId={patient.id}/>} />
-                        <Route path="/feeling-mood" element={<FeelingQuiz patientId={patient.id} />} />
+                        <Route path="/home" element={<PatientHome patient={patient}/>} />
                         {myPsychiatrist && (
                             <Route path={`profile/${myPsychiatrist.id}/psychiatrist`}
                                    element={<SpecialistProfile dr={true} specialist={myPsychiatrist} />} />
@@ -130,6 +129,7 @@ function App() {
                         <Route path={`/medical-history/${patient.id}/psychiatric-after-data`} element={<MFPsychiatricData patient={patient} presant={true} />} />
                         <Route path={`/medical-history/${patient.id}/extern-notes`} element={<MFExternNote patient={patient} user={patient} type="patient"/>} />
                         <Route path={`/medical-history/${patient.id}/your-notes`} element={<MFYourNote patient={patient} />} />
+                        <Route path={`/feeling-mood`} element={<FeelingQuiz patient={patient} />} />
                     </>
                 )}
                 {psychiatrist && (

@@ -21,7 +21,6 @@ export async function postData(url: string, jsonData: string) {
 
 // GET
 export async function getData(url: string){
-    // console.log(baseURL + url);
     try {
         const response = await fetch(baseURL + url, {
             method: 'GET',
@@ -41,7 +40,7 @@ export async function getData(url: string){
                 throw error;
             }
         }
-        else if (response.status === 404){
+        else if (response.status === 204 || response.status === 404){
             return response.status;
         }
         else {

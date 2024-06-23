@@ -9,7 +9,10 @@ import java.util.List;
 public interface AnswerServ {
     Answer saveAnswer(Answer answer);
     Answer getAnswerById(Long id);
+
     List<Answer> getAnswerByPatient(Patient patient);
-    List<Answer> getAnswerByQuestion(Question question);
+
+    List<Answer> getAnswerByPatientAndQuestion(Patient patient, Question question);
+
     void deleteAnswer(Long id);
 }

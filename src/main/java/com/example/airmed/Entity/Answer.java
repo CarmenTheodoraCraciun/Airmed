@@ -16,9 +16,6 @@ public class Answer {
     @Column(name = "id", nullable = false, updatable = false)
     private Long id;
 
-    @Column
-    private Date expirationDate;
-
     @Column(nullable = false)
     private int answer;
 
