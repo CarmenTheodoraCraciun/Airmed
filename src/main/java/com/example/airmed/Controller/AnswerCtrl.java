@@ -74,11 +74,11 @@ public class AnswerCtrl {
     // link: baseURL + "/answer/patient?patient=" + patientId + "&questionId=" + questionId
     // receive: json list + 302 or 404
     @GetMapping("/answer/patient")
-    public ResponseEntity<List<Answer>> getAnswerByPatient(@RequestParam("patient") Long patientId, @RequestParam("question") Long questionId){
+    public ResponseEntity<List<Answer>> getAnswerByPatient(@RequestParam("patient") Long patientId, @RequestParam("question") Long questionId, @RequestParam("limit") int limit){
         Patient patient = patientServ.getPatientById(patientId);
         Question question = questionServ.getQuestionById(questionId);
         if(patient != null)
-            return new ResponseEntity<>(answerServ.getAnswerByPatientAndQuestion(patient,question),HttpStatus.FOUND);
+            return new ResponseEntity<>(answerServ.getTopNAnswersByPatientAndQuestion(patient,question, limit),HttpStatus.FOUND);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

@@ -35,12 +35,16 @@ function PatientHome({patient} : Props){
                         <Notify
                             text="Aplicația funcționează la parametrii normali alături de un medic psihiatru."
                             onClose={handleClosePsychiatristNotify}
+                            type="warning"
+                            requestId={-1}
                         />
                     )}
                     {showPsychotherapistNotify && (
                         <Notify
                             text="Aplicația funcționează la parametrii normali alături de un psihoterapeut."
                             onClose={handleClosePsychotherapistNotify}
+                            type="warning"
+                            requestId={-1}
                         />
                     )}
                 </div>

@@ -10,6 +10,7 @@
     --robin-egg-blue: #64C4C3;
     --sunset: #F8D49A;
     --engineering-orange: #B81313;
+    --engineering-orange-opacity: rgba(184, 19, 19,0.75);
     --border-color: #a1a1a1;
     --gray: #707070;
 }

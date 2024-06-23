@@ -14,8 +14,8 @@ import java.util.List;
 @Service
 public class AnswerServImpl implements AnswerServ {
     private final AnswerRepo answerRepo;
-    @Autowired
     private final PatientRepo patientRepo;
+
     @Autowired
     public AnswerServImpl(AnswerRepo answerRepo, PatientRepo patientRepo) {
         this.answerRepo = answerRepo;
@@ -34,14 +34,28 @@ public class AnswerServImpl implements AnswerServ {
     }
 
     @Override
-    public List<Answer> getAnswerByPatient(Patient patient) {
-        return answerRepo.findByPatient(patient);
+    public List<Answer> getPatient(Patient patient) {
+        return answerRepo.findPatient(patient);
     }
 
     @Override
-    public List<Answer> getAnswerByPatientAndQuestion(Patient patient, Question question) {
-        return answerRepo.findByPatientAndQuestion(patient, question);
+    public List<Answer> getTopNAnswersByPatient(Patient patient, int limit) {
+        List<Answer> answers = answerRepo.findPatientOrderByCreatedAtDesc(patient);
+        if(limit != 0)
+            while (answers.size() > limit)
+                answers.remove(answers.size() - 1);
+        return answers;
     }
+
+    @Override
+    public List<Answer> getTopNAnswersByPatientAndQuestion(Patient patient, Question question, int limit) {
+        List<Answer> answers =  answerRepo.findPatientAndQuestionOrderByCreatedAtDesc(patient, question);
+        if(limit != 0)
+            while (answers.size() > limit)
+                answers.remove(answers.size() - 1);
+        return answers;
+    }
+
     @Override
     public void deleteAnswer(Long id) {
         answerRepo.deleteById(id);

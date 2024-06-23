@@ -10,9 +10,11 @@ public interface AnswerServ {
     Answer saveAnswer(Answer answer);
     Answer getAnswerById(Long id);
 
-    List<Answer> getAnswerByPatient(Patient patient);
+    List<Answer> getPatient(Patient patient);
 
-    List<Answer> getAnswerByPatientAndQuestion(Patient patient, Question question);
+    List<Answer> getTopNAnswersByPatient(Patient patient, int limit);
+
+    List<Answer> getTopNAnswersByPatientAndQuestion(Patient patient, Question question, int limit);
 
     void deleteAnswer(Long id);
 }

@@ -153,3 +153,25 @@ export async function updateData(url: string, jsonData: any) {
         return false;
     }
 }
+
+// DELETE
+export async function deleteData(url: string) {
+    try {
+        const response = await fetch(baseURL + url, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': 'http://localhost:5173'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok.');
+        }
+
+        return response;
+    } catch (error) {
+        console.error('Eroare la ștergerea datelor:', error);
+        return null;
+    }
+}

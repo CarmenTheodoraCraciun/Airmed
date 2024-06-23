@@ -150,7 +150,7 @@ public class PatientServImpl implements PatientServ {
         Patient patient = getPatientById(id);
         if(patient != null){
             // deleting all data associated with the patient
-            List<Answer> answers = answerServ.getAnswerByPatient(patient);
+            List<Answer> answers = answerServ.getPatient(patient);
             for(Answer answer : answers)
                 answerServ.deleteAnswer(answer.getId());
 

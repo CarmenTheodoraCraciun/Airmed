@@ -91,7 +91,7 @@ function Header(){
                 <>
                     <button className="header-btn" onClick={handleAlertClick}>Trimite alertă</button>
                     {showAlertBox && (
-                        <div className="alert-box">
+                        <div className="send-alert-box">
                             <button className="cancel-alert-button" onClick={handleCloseClick}>×</button><br/>
                             <span className="alert-text">Trimite alerta către</span>
                             <div className="horizontal ten-px-gap">
