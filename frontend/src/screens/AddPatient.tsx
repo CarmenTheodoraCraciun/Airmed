@@ -1,8 +1,8 @@
 import {FC, useState} from "react";
-import { Psychiatrist } from "../classes/Psychiatrist";
-import { Psychotherapist } from "../classes/Psychotherapist";
+import psychiatristToJson, { Psychiatrist } from "../classes/Psychiatrist";
+import psychotherapistToJson, { Psychotherapist } from "../classes/Psychotherapist";
 import Header from "../components/Header";
-import patientToJson, { Patient } from "../classes/Patient";
+import { Patient } from "../classes/Patient";
 import InputGroupDisable from "../components/InputGroupDisable.tsx";
 import {getData, updateData} from "../functions/EndPoints.ts";
 
@@ -32,13 +32,13 @@ const AddPatient: FC<Props> = ({ specialist, dr }) => {
             if(dr)
                 if(patient.psychiatrist === null){
                     patient.psychiatrist = specialist;
-                    await updateData("/patient/psychiatrist/" + patient.id, patientToJson(patient));
+                    await updateData("/patient/psychiatrist/" + patient.id, psychiatristToJson(specialist));
                 }
                 else alert("Pacientul este asignat unui medic deja");
             else
                 if(patient.psychotherapist === null){
                     patient.psychotherapist = specialist;
-                    await updateData("/patient/psychotherapist/" + patient.id, patientToJson(patient));
+                    await updateData("/patient/psychotherapist/" + patient.id, psychotherapistToJson(specialist));
                 }
                 else alert("Pacientul este asignat unui psihoterapeut deja");
         }

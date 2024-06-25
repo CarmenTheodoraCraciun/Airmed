@@ -35,12 +35,12 @@ public class AnswerServImpl implements AnswerServ {
 
     @Override
     public List<Answer> getPatient(Patient patient) {
-        return answerRepo.findPatient(patient);
+        return answerRepo.findByPatient(patient);
     }
 
     @Override
     public List<Answer> getTopNAnswersByPatient(Patient patient, int limit) {
-        List<Answer> answers = answerRepo.findPatientOrderByCreatedAtDesc(patient);
+        List<Answer> answers = answerRepo.findByPatientOrderByCreatedAtDesc(patient);
         if(limit != 0)
             while (answers.size() > limit)
                 answers.remove(answers.size() - 1);
@@ -49,7 +49,7 @@ public class AnswerServImpl implements AnswerServ {
 
     @Override
     public List<Answer> getTopNAnswersByPatientAndQuestion(Patient patient, Question question, int limit) {
-        List<Answer> answers =  answerRepo.findPatientAndQuestionOrderByCreatedAtDesc(patient, question);
+        List<Answer> answers =  answerRepo.findByPatientAndQuestionOrderByCreatedAtDesc(patient, question);
         if(limit != 0)
             while (answers.size() > limit)
                 answers.remove(answers.size() - 1);

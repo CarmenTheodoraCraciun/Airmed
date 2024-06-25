@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -15,6 +16,9 @@ public class Answer {
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, updatable = false)
     private Long id;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
     @Column(nullable = false)
     private int answer;

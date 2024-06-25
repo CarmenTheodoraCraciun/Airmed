@@ -2,7 +2,7 @@ import Header from "../components/Header.tsx";
 import Message from "../components/Message.tsx";
 import Form from "../components/Form.tsx";
 
-import img from '../resources/img/img-4.png';
+import img from '../resources/img/img-4.jpg';
 function CreatePatient(){
     return <>
         <Header/>

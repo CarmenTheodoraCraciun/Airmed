@@ -66,3 +66,23 @@ export class Psychiatrist{
         );
     }
 }
+
+export default function psychiatristToJson(psychiatrist: Psychiatrist): string {
+    const json = JSON.stringify({
+        id: psychiatrist.id,
+        medicalNumber: psychiatrist.medicalNumber,
+        firstName: psychiatrist.firstName,
+        lastName: psychiatrist.lastName,
+        mail: psychiatrist.mail,
+        phone: psychiatrist.phone,
+        country: psychiatrist.country,
+        locality: psychiatrist.locality,
+        cabinetLocation: psychiatrist.cabinetLocation,
+        linkLocation: psychiatrist.linkLocation,
+        priceConsult: psychiatrist.priceConsult,
+        priceConsultation: psychiatrist.priceConsultation,
+        online: psychiatrist.online,
+        CNAS: psychiatrist.CNAS
+    });
+    return json;
+}

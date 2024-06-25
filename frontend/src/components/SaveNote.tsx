@@ -144,7 +144,7 @@ function SaveNote({ forPatient, userId, userType, placeholder }:Props) {
                     </div>
                 </>
                 : null}
-            <button onClick={handleSaveNote} className="button-1">Salvează</button>
+            <button onClick={handleSaveNote} className="button-3">Notează gândurile</button>
         </>
     );
 }

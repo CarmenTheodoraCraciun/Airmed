@@ -33,6 +33,7 @@ import MFMedicalData from "./screens/MFMedialData.tsx";
 import MFPsychiatricData from "./screens/MFPsychiatricData.tsx";
 import MFYourNote from "./screens/MFYourNote.tsx";
 import MFExternNote from "./screens/MFExternNote.tsx";
+import {MFStatisticData} from "./screens/MFStatisticData.tsx";
 
 function App() {
     const [patientsList, setPatientsList] = useState<Patient[]>([]);
@@ -129,6 +130,7 @@ function App() {
                         <Route path={`/medical-history/${patient.id}/psychiatric-after-data`} element={<MFPsychiatricData patient={patient} presant={true} />} />
                         <Route path={`/medical-history/${patient.id}/extern-notes`} element={<MFExternNote patient={patient} user={patient} type="patient"/>} />
                         <Route path={`/medical-history/${patient.id}/your-notes`} element={<MFYourNote patient={patient} />} />
+                        <Route path={`/medical-history/${patient.id}/statistic-data`} element={<MFStatisticData patient={patient} />} />
                         <Route path={`/feeling-mood`} element={<FeelingQuiz patient={patient} />} />
                     </>
                 )}
@@ -156,6 +158,7 @@ function App() {
                         <Route path={`/medical-history/${patient.id}/psychiatric-before-data`} element={<MFPsychiatricData patient={patient} presant={false} />} />
                         <Route path={`/medical-history/${patient.id}/psychiatric-after-data`} element={<MFPsychiatricData patient={patient} presant={true} />} />
                         <Route path={`/medical-history/${patient.id}/your-notes`} element={<MFYourNote patient={patient} />} />
+                        <Route path={`/medical-history/${patient.id}/statistic-data`} element={<MFStatisticData patient={patient} />} />
                         {psychiatrist?
                             <Route path={`/medical-history/${patient.id}/extern-notes`} element={<MFExternNote patient={patient} user={psychiatrist} type="psychiatrist"/>} />
                             : null}

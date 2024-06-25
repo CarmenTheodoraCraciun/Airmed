@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import {updateData} from "../functions/EndPoints.ts";
 import {Psychiatrist} from "../classes/Psychiatrist.ts";
 import {Psychotherapist} from "../classes/Psychotherapist.ts";
+import {ConvertPDF} from "../functions/ConvertPDF.ts";
 
 interface Props {
     patientId: number;
@@ -55,9 +56,12 @@ const Aside: React.FC<Props> = ({ patientId, patientFirstName, patientLastName ,
     }
 
 
-    const cancelBtn =
-        (psychiatristDataString || psychotherapistDataString) ? <button onClick={handleDeleteColaboration} className="button-cancel">Anulează colaborarea</button>
-            : null
+    const cancelBtn = (psychiatristDataString || psychotherapistDataString) ?
+        <button onClick={handleDeleteColaboration} className="button-cancel">Anulează colaborarea</button>
+            : null;
+
+    const exportBtn = <button onClick={() => ConvertPDF(patientId)} className="button-form-2">Exportă ca pdf</button>;
+
     if(idAside == 0){
         return <>
             <aside>
@@ -71,6 +75,7 @@ const Aside: React.FC<Props> = ({ patientId, patientFirstName, patientLastName ,
                 {statisticData}
                 {extNote}
                 {yourNote}
+                {exportBtn}
                 {cancelBtn}
             </aside>
         </>;
@@ -88,6 +93,7 @@ const Aside: React.FC<Props> = ({ patientId, patientFirstName, patientLastName ,
                 {statisticData}
                 {extNote}
                 {yourNote}
+                {exportBtn}
                 {cancelBtn}
             </aside>
         </>;
@@ -105,6 +111,7 @@ const Aside: React.FC<Props> = ({ patientId, patientFirstName, patientLastName ,
                 {statisticData}
                 {extNote}
                 {yourNote}
+                {exportBtn}
                 {cancelBtn}
             </aside>
         </>;
@@ -122,6 +129,7 @@ const Aside: React.FC<Props> = ({ patientId, patientFirstName, patientLastName ,
                 {statisticData}
                 {extNote}
                 {yourNote}
+                {exportBtn}
                 {cancelBtn}
             </aside>
         </>;
@@ -139,6 +147,7 @@ const Aside: React.FC<Props> = ({ patientId, patientFirstName, patientLastName ,
                 {statisticData}
                 {extNote}
                 {yourNote}
+                {exportBtn}
                 {cancelBtn}
             </aside>
         </>;
@@ -156,6 +165,7 @@ const Aside: React.FC<Props> = ({ patientId, patientFirstName, patientLastName ,
                 {statisticData}
                 {extNote}
                 {yourNote}
+                {exportBtn}
                 {cancelBtn}
             </aside>
         </>;
@@ -173,6 +183,7 @@ const Aside: React.FC<Props> = ({ patientId, patientFirstName, patientLastName ,
                 <a href="#" className="active-part-aside part-aside">Date statistice</a>
                 {extNote}
                 {yourNote}
+                {exportBtn}
                 {cancelBtn}
             </aside>
         </>;
@@ -190,6 +201,7 @@ const Aside: React.FC<Props> = ({ patientId, patientFirstName, patientLastName ,
                 {statisticData}
                 <a href="#" className="active-part-aside part-aside">Note externe</a>
                 {yourNote}
+                {exportBtn}
                 {cancelBtn}
             </aside>
         </>;
@@ -207,6 +219,7 @@ const Aside: React.FC<Props> = ({ patientId, patientFirstName, patientLastName ,
                 {statisticData}
                 {extNote}
                 <a href="#" className="active-part-aside part-aside">Notele tale</a>
+                {exportBtn}
                 {cancelBtn}
             </aside>
         </>;

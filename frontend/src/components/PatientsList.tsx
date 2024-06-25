@@ -1,17 +1,22 @@
 import {Psychiatrist} from "../classes/Psychiatrist.ts";
 import {Psychotherapist} from "../classes/Psychotherapist.ts";
-import React, {useEffect, useState} from "react";
+import {FC, useEffect, useState} from "react";
 import {getPatientsList} from "../functions/EndPoints.ts";
 import {Patient} from "../classes/Patient.ts";
 import {useNavigate} from "react-router-dom";
+import {getAnswerOf} from "../functions/getAnswerOf.ts";
+import {calculateDeviation, calculateMean} from "../functions/Statistics.ts";
 
 interface Props {
     specialist: Psychiatrist | Psychotherapist;
 }
 
-const PatientsList: React.FC<Props> = ({ specialist }) => {
+const PatientsList: FC<Props> = ({ specialist }) => {
     const navigate = useNavigate();
     const [patients, setPatients] = useState<Patient[]>([]);
+    const [means, setMeans] = useState<(number | string)[]>([]);
+    const [devs, setDevs] = useState<(number | string)[]>([]);
+
     useEffect(() => {
         const fetchPatients = async () => {
             let url = "";
@@ -19,9 +24,29 @@ const PatientsList: React.FC<Props> = ({ specialist }) => {
                 url = `/patient/psychiatrist?psychiatrist=${specialist.id}`;
             else
                 url = `/patient/psychotherapist?psychotherapist=${specialist.id}`;
-            // console.log('Fetching URL:', url);
+
             const patientsList = await getPatientsList(url);
-            setPatients(patientsList);
+
+            const updatedPatientsList = await Promise.all(
+                patientsList.map(async (patient: Patient) => {
+                    const answers = await getAnswerOf(patient.id, 7, 14);
+                    console.log(patient.firstName,answers);
+                    if (answers !== null && answers.length !== 0) {
+                        const mean = calculateMean(answers);
+                        const dev = calculateDeviation(answers, mean);
+                        return { ...patient, mean, dev, answers };
+                    } else {
+                        return { ...patient, mean: "Date insuficiente", dev: "Date insuficiente" };
+                    }
+                })
+            );
+
+            setPatients(updatedPatientsList);
+
+            const updatedMeans = updatedPatientsList.map(patient => patient.mean);
+            const updatedDevs = updatedPatientsList.map(patient => patient.dev);
+            setMeans(updatedMeans);
+            setDevs(updatedDevs);
         };
         fetchPatients();
     }, [specialist]);
@@ -37,9 +62,8 @@ const PatientsList: React.FC<Props> = ({ specialist }) => {
                 <tr>
                     <th className="patients-list-th">Prenume</th>
                     <th className="patients-list-th">Nume</th>
-                    <th className="patients-list-th">Cod Numeric Personal</th>
-                    <th className="patients-list-th">Număr de telefon</th>
-                    <th className="patients-list-th">Mail</th>
+                    <th className="patients-list-th">Dispoziția medie</th>
+                    <th className="patients-list-th">Instabilitatea de dispoziție</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -52,9 +76,12 @@ const PatientsList: React.FC<Props> = ({ specialist }) => {
                     >
                         <td className="patients-list-td">{patient.firstName}</td>
                         <td className="patients-list-td">{patient.lastName}</td>
-                        <td className="patients-list-td">{patient.pnc}</td>
-                        <td className="patients-list-td">{patient.phone}</td>
-                        <td className="patients-list-td">{patient.mail}</td>
+                        <td className="patients-list-td">
+                            {typeof means[index] === 'number' ? means[index] : means[index]}
+                        </td>
+                        <td className="patients-list-td">
+                            {typeof devs[index] === 'number' ? devs[index] : devs[index]}
+                        </td>
                     </tr>
                 ))}
                 </tbody>

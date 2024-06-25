@@ -1,17 +1,14 @@
-import Header from "../components/Header.tsx";
 import { ReactNode, useEffect, useState } from "react";
-import img from "../resources/img/img-2.png";
+// import img from "../resources/img/img-2.png";
 import { Patient } from "../classes/Patient.ts";
 import { Question } from "../classes/Question.ts";
 import {getData, postData} from "../functions/EndPoints.ts";
-// import img from "../resources/img/img-2.png";
-
 
 interface Props {
     patient: Patient;
 }
 
-function FeelingQuiz({ patient }: Props) {
+function Feeling({ patient }: Props) {
     const [questions, setQuestions] = useState<Question[]>([]);
     const [container, setContainer] = useState<ReactNode[]>([]);
     const [answers, setAnswers] = useState<number[]>([]);
@@ -102,25 +99,22 @@ function FeelingQuiz({ patient }: Props) {
 
     return (
         <>
-            <Header />
-            <main className="horizontal-feeling">
-                <div className="vertical-feeling">
-                    <span className="mf-title">Cum te simți azi?</span>
-                    <span className="mf-subtitle">
-                        *considerând
-                        <br />1 - cea mai departe de real și
-                        <br />5 - cel mai aproape de sentimentele mele.
-                        <br />Notează următoarele propoziții
-                    </span>
-                    <div className="questions-container">
-                        {container}
-                    </div>
-                    <button className="button-1" onClick={handleSaveAnswer}>Salvează</button>
+            <div className="vertical-1">
+                <span className="mf-title">Cum te simți azi?</span>
+                <span className="mf-subtitle">
+                    *considerând
+                    <br />1 - cea mai departe de real și
+                    <br />5 - cel mai aproape de sentimentele mele.
+                    <br />Notează următoarele propoziții
+                </span>
+                <div className="questions-container">
+                    {container}
                 </div>
-                <img id="feeling-img" src={img} alt="" />
-            </main>
+                <button className="button-1" onClick={handleSaveAnswer}>Salvează</button>
+            </div>
+            {/*<img id="feeling-img" src={img} alt="" />*/}
         </>
     );
 }
 
-export default FeelingQuiz;
+export default Feeling;

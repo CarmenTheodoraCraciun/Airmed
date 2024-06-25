@@ -26,9 +26,9 @@ function Notify({ text, onClose, type, requestId }: Props) {
     }
     else if(type === "warning") {
         return (
-            <div className="notify-box">
-                <button className="cancel-notify-button" onClick={onClose}>×</button>
-                <span className="notify-text">{text}</span>
+            <div className="alert-box">
+                <button className="cancel-alert-button" onClick={onClose}>×</button>
+                <span className="alert-text">{text}</span>
             </div>
         );
     }

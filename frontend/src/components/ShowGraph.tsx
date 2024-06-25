@@ -1,30 +1,37 @@
-import React from 'react';
-import { Bar } from 'react-chartjs-2';
-import { Answer } from '../classes/Answer.ts'; // Verifică dacă aceasta este calea corectă către clasa Answer
+import {Patient} from "../classes/Patient.ts";
+import {useEffect, useState} from "react";
+import {Answer} from "../classes/Answer.ts";
+import {getData} from "../functions/EndPoints.ts";
 
-interface Props {
-    answers: Answer[];
+interface Props{
+    patient: Patient;
+    questionId: number;
+    limit: number;
 }
 
-const ShowGraph: React.FC<Props> = ({ answers }) => {
-    // Crează datele necesare pentru grafic
-    const data = {
-        datasets: [
-            {
-                label: 'Answers',
-                data: answers.map(answer => answer.answer),
-                backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1,
-            },
-        ],
-    };
+function ShowGraph({patient, questionId, limit}: Props){
+    const [answers,setAnswers] = useState<Answer[]>([]);
+    const [values, setValues] = useState<number[]>([]);
 
-    return (
-        <div style={{ height: '400px', width: '600px' }}>
-            <Bar data={data} />
-        </div>
-    );
-};
+    useEffect(() => {
+        const getAnswers = async () => {
+            const response = await getData("/answer/patient?patient=" + patient.id + "&question=" + questionId + "&limit=" + limit);
+            if (response !== 404) setAnswers(response);
+        }
+        getAnswers();
+    }, [patient,questionId,limit]);
+
+    useEffect(() => {
+        setValues(
+            answers.map(answer => answer.answer)
+        );
+    }, [answers]);
+
+    console.log(values);
+
+    return <>
+        {/*<BarGraph values={values} />*/}
+    </>
+}
 
 export default ShowGraph;

@@ -9,8 +9,8 @@ import java.awt.print.Pageable;
 import java.util.List;
 
 public interface AnswerRepo extends JpaRepository<Answer,Long> {
-    List<Answer> findPatient(Patient patient);
-    List<Answer> findPatientOrderByCreatedAtDesc(Patient patient);
+    List<Answer> findByPatient(Patient patient);
+    List<Answer> findByPatientOrderByCreatedAtDesc(Patient patient);
 
-    List<Answer> findPatientAndQuestionOrderByCreatedAtDesc(Patient patient, Question question);
+    List<Answer> findByPatientAndQuestionOrderByCreatedAtDesc(Patient patient, Question question);
 }

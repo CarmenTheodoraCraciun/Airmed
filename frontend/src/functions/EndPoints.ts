@@ -118,6 +118,7 @@ export async function checkUniquePNC(pnc: string){
 // PUT
 export async function updateData(url: string, jsonData: any) {
     console.log(url);
+    console.log(jsonData);
     try {
         var response;
         if(jsonData) {

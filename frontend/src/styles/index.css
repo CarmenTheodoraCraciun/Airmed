@@ -1,5 +1,5 @@
 #big-graph-img{
-    width: 100%;
+    width: 700px;
 }
 
 .intro{
@@ -83,6 +83,13 @@ textarea:focus {
     color: var(--white);
     margin-right: 20px;
     width: 150px;
+}
+
+.button-3{
+    background-color: var(--dark-blue-opacity);
+    color: var(--white);
+    margin-right: 20px;
+    width: 200px;
 }
 
 .add-p-container {

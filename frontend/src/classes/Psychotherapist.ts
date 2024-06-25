@@ -69,3 +69,24 @@ export class Psychotherapist{
         );
     }
 }
+
+export default function psychotherapistToJson(psychotherapist: Psychotherapist): string {
+    const json = JSON.stringify({
+        id: psychotherapist.id,
+        medicalNumber: psychotherapist.medicalNumber,
+        firstName: psychotherapist.firstName,
+        lastName: psychotherapist.lastName,
+        bio: psychotherapist.bio,
+        mail: psychotherapist.mail,
+        phone: psychotherapist.phone,
+        country: psychotherapist.country,
+        locality: psychotherapist.locality,
+        cabinetLocation: psychotherapist.cabinetLocation,
+        linkLocation: psychotherapist.linkLocation,
+        priceConsult: psychotherapist.priceConsult,
+        priceConsultation: psychotherapist.priceConsultation,
+        online: psychotherapist.online,
+        CNAS: psychotherapist.CNAS
+    });
+    return json;
+}

@@ -6,7 +6,7 @@ export class Answer{
     answer: number;
     question: Question;
     patient: Patient;
-
+    createdAt: Date;
 
     constructor(id: number, answer: number,
                 question: Question, patient: Patient) {

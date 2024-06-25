@@ -177,7 +177,7 @@ aside{
 #feeling-img {
     background-color: transparent;
     margin-left: 30px;
-    height: 400px;
+    height: 550px;
     z-index: 1;
     align-content: center;
 }
@@ -223,9 +223,43 @@ aside{
 }
 
 .button-cancel{
-    margin: 2px 0 0 10px;
+    margin: 2px 0 0 0;
     background-color: var(--engineering-orange);
     width: 200px;
     height: 40px;
     color: var(--white);
+}
+
+.statistics-container {
+    width: 100%;
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.statistics-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+    background-color: #fff;
+}
+
+.statistics-table th,
+.statistics-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.statistics-table th {
+    background-color: var(--air-force-blue);
+}
+
+.statistics-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.statistics-table tbody tr:hover {
+    background-color: #e5f4fe;
 }
