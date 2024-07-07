@@ -89,6 +89,20 @@ export function MFStatisticData({ patient }: Props) {
                             </tbody>
                         </table>
                     </div>
+                    {/*<div className="explain-statistics">*/}
+                    {/*    <p>Datele acestea provin din formularul stărilor de spirit, fiecare dintre ele reprezintă o valoare statistică calculată pe decursul a cel puțin 5 formulare.</p>*/}
+                    {/*    <p><b>Dispoziția medie</b> (media aritmetică) reprezintă cât de fericit sau trist te simți în medie.</p>*/}
+                    {/*    <p><b>Instabilitatea de dispoziție</b> (deviația statistică) reprezintă cât de mult se schimbă starea ta de la o zi la alta.</p>*/}
+                    {/*    <p><b>Gradul de dispersie al stărilor</b> (deviația standard) reprezintă cât de mult diferă stările tale față de media lor.</p>*/}
+                    {/*    <p><b>Dispoziție dominantă</b> (moda statistică) este starea pe care o ai cel mai des.</p>*/}
+                    {/*</div>*/}
+                    <div className="explain-statistics">
+                        <p><span className="statistic-description">Datele acestea provin din formularul stărilor de spirit, fiecare dintre ele reprezintă o valoare statistică calculată pe decursul a cel puțin 5 formulare.</span></p>
+                        <p><span className="statistic-name">Dispoziția medie</span> <span className="statistic-description">(media aritmetică) reprezintă cât de fericit sau trist te simți în medie.</span></p>
+                        <p><span className="statistic-name">Instabilitatea de dispoziție</span> <span className="statistic-description">(deviația statistică) reprezintă cât de mult se schimbă starea ta de la o zi la alta.</span></p>
+                        <p><span className="statistic-name">Gradul de dispersie al stărilor</span> <span className="statistic-description">(deviația standard) reprezintă cât de mult diferă stările tale față de media lor.</span></p>
+                        <p><span className="statistic-name">Dispoziție dominantă</span> <span className="statistic-description">(moda statistică) este starea pe care o ai cel mai des.</span></p>
+                    </div>
                 </div>
             </main>
         </>

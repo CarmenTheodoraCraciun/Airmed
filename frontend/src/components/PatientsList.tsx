@@ -30,7 +30,7 @@ const PatientsList: FC<Props> = ({ specialist }) => {
             const updatedPatientsList = await Promise.all(
                 patientsList.map(async (patient: Patient) => {
                     const answers = await getAnswerOf(patient.id, 7, 14);
-                    console.log(patient.firstName,answers);
+                    console.log(patient.firstName, answers);
                     if (answers !== null && answers.length !== 0) {
                         const mean = calculateMean(answers);
                         const dev = calculateDeviation(answers, mean);
@@ -40,6 +40,18 @@ const PatientsList: FC<Props> = ({ specialist }) => {
                     }
                 })
             );
+
+            // Sortare pacienți după media și dispersia lor
+            updatedPatientsList.sort((a, b) => {
+                if (typeof a.mean === "string") return 1;
+                if (typeof b.mean === "string") return -1;
+                if (a.mean === b.mean) {
+                    if (typeof a.dev === "string") return 1;
+                    if (typeof b.dev === "string") return -1;
+                    return a.dev - b.dev;
+                }
+                return a.mean - b.mean;
+            });
 
             setPatients(updatedPatientsList);
 

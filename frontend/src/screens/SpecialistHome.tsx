@@ -1,14 +1,14 @@
 import Header from "../components/Header.tsx";
 import PatientsList from "../components/PatientsList.tsx";
 import {Psychiatrist} from "../classes/Psychiatrist.ts";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {Psychotherapist} from "../classes/Psychotherapist.ts";
-import {ReactNode, useEffect, useState} from "react";
+import {FC, ReactNode, useEffect, useState} from "react";
 import {getData} from "../functions/EndPoints.ts";
 import Notify from "../components/Notify.tsx";
 import {RequestNotify} from "../classes/RequestNotify.ts";
 
-function SpecialistHome(){
+const SpecialistHome: FC = () => {
     const navigate = useNavigate();
     const psychiatristDataString = sessionStorage.getItem('psychiatrist');
     const psychotherapistDataString = sessionStorage.getItem('psychotherapist');
@@ -16,7 +16,7 @@ function SpecialistHome(){
     const [container, setContainer] = useState<ReactNode[]>([]);
 
     useEffect(() => {
-        const getAlerts = async () => {
+        const fetchAlerts = async () => {
             let url;
             if (psychiatristDataString !== null) {
                 const psychiatrist = Psychiatrist.jsonToPsychiatrist(psychiatristDataString);
@@ -29,18 +29,26 @@ function SpecialistHome(){
                 if (url) {
                     const response = await getData(url);
                     var newRequests;
-                    if(response !== 404)
+                    if (response !== 404)
                         newRequests = response.map((requestData: string) =>
                             requestData
                         );
-                    if(newRequests)
+                    if (newRequests)
                         setAlerts(newRequests);
                 }
             } catch (error) {
                 console.error('Failed to fetch social context data:', error);
             }
         };
-        getAlerts();
+
+        // Fetch alerts initially
+        fetchAlerts();
+
+        // Set up interval to fetch alerts periodically
+        const intervalId = setInterval(fetchAlerts, 5000); // Update every 5 seconds
+
+        // Cleanup interval on component unmount
+        return () => clearInterval(intervalId);
     }, [psychiatristDataString, psychotherapistDataString]);
 
     useEffect(() => {
@@ -48,7 +56,15 @@ function SpecialistHome(){
             const notifications = alerts.map((alert, index) => (
                 <Notify
                     key={index}
-                    text={`Aveți o alertă de la ${alert.patient.firstName} ${alert.patient.lastName}.`}
+                    text={
+                        <>
+                            Aveți o alertă de la
+                            <Link className="alert-text-a" to={`/medical-history/${alert.patient.id}/contact-data`}>
+                                {alert.patient.firstName} {alert.patient.lastName}
+                            </Link>
+                            .
+                        </>
+                    }
                     onClose={() => handleRemoveAlert(index)}
                     type="alert"
                     requestId={alert.id}
@@ -57,37 +73,37 @@ function SpecialistHome(){
             setContainer(notifications);
         }
     }, [alerts]);
+
     const handleRemoveAlert = (index: number) => {
         setAlerts((prevAlerts) => prevAlerts.filter((_, i) => i !== index));
     };
 
-    if(psychiatristDataString !== null) {
+    if (psychiatristDataString !== null) {
         const psychiatrist = Psychiatrist.jsonToPsychiatrist(psychiatristDataString);
         return (
             <>
-                <Header/>
+                <Header />
                 <main>
-                    <PatientsList specialist={psychiatrist}/>
                     {container}
+                    <PatientsList specialist={psychiatrist} />
                 </main>
             </>
         )
-    }
-    else if(psychotherapistDataString !== null){
+    } else if (psychotherapistDataString !== null) {
         const psychotherapist = Psychotherapist.jsonToPsychotherapist(psychotherapistDataString);
         return (
             <>
-                <Header/>
+                <Header />
                 <main>
                     {container}
-                    <PatientsList specialist={psychotherapist}/>
+                    <PatientsList specialist={psychotherapist} />
                 </main>
             </>
         )
-    }
-    else {
+    } else {
         alert("Încercați mai târziu.");
         navigate('/about-us');
+        return null;
     }
 }
 

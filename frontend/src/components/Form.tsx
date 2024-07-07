@@ -45,15 +45,15 @@ function Form({ type }: FormProps) {
                     }, null, 2);
                     var response = await postData('/patient', patientJson);
                     if (response !== null) {
-                        if(response.status !== 201) {
+                        // if(response.status !== 201) {
                             // salvam in sessionStorege datele
                             if (sessionStorage.getItem('patient')) {
                                 sessionStorage.removeItem('patient');
                             }
                             sessionStorage.setItem('patient', response.toString());
                             navigate('/about-us');
-                        }
-                        else alert("Te rugăm să încerci din nou mai târziu.");
+                        // }
+                        // else alert("Te rugăm să încerci din nou mai târziu.");
                     }
                 }
                 else alert("CNP-ul trebuie să conțină 13 cifre.");

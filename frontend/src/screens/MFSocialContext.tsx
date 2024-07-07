@@ -15,6 +15,7 @@ interface Props {
 }
 
 function MFSocialContext({ patient }: Props) {
+    // console.log(patient);
     const isPsychiatristSession = sessionStorage.getItem('psychiatrist') !== null;
     const [isEditEnabled, setIsEditEnabled] = useState(false);
     const [getResponse, setGetResponse] = useState(false);
@@ -112,30 +113,49 @@ function MFSocialContext({ patient }: Props) {
     };
 
     const handleSocialContextChange = async () => {
-        const newSocialContext = {
-            occupation: occupationValue || socialContext?.occupation,
-            highestEdu: highestEduValue || socialContext?.highestEdu,
-            relationship: relationshipValue || socialContext?.relationship,
-            sexuallyActive: sexuallyActiveValue,
-            genderOrientatin: genderOrientationValue || socialContext?.genderOrientatin,
-            legalProblems: legalProblemsValue || socialContext?.legalProblems,
-            adopted: adoptedValue,
-            family: familyValue || socialContext?.family,
-            familyPsychiatric: familyPsychiatricValue || socialContext?.familyPsychiatric,
-            drugs: drugsValue || socialContext?.drugs,
-            alcohol: alcoholValue || socialContext?.alcohol,
-            abuseMeds: abuseMedsValue || socialContext?.abuseMeds,
-            caffeine: caffeineValue || socialContext?.caffeine,
-            exercise: exerciseValue || socialContext?.exercise,
-            patient: {"id": patient.id}
-        };
-
-        const sc = JSON.stringify(newSocialContext, null, 2);
         try {
             let response;
             if (socialContext) {
+                const newSocialContext = {
+                    occupation: occupationValue || socialContext?.occupation,
+                    highestEdu: highestEduValue || socialContext?.highestEdu,
+                    relationship: relationshipValue || socialContext?.relationship,
+                    sexuallyActive: sexuallyActiveValue,
+                    genderOrientatin: genderOrientationValue || socialContext?.genderOrientatin,
+                    legalProblems: legalProblemsValue || socialContext?.legalProblems,
+                    adopted: adoptedValue,
+                    family: familyValue || socialContext?.family,
+                    familyPsychiatric: familyPsychiatricValue || socialContext?.familyPsychiatric,
+                    drugs: drugsValue || socialContext?.drugs,
+                    alcohol: alcoholValue || socialContext?.alcohol,
+                    abuseMeds: abuseMedsValue || socialContext?.abuseMeds,
+                    caffeine: caffeineValue || socialContext?.caffeine,
+                    exercise: exerciseValue || socialContext?.exercise,
+                    patient: {"id": patient.id}
+                };
+
+                const sc = JSON.stringify(newSocialContext, null, 2);
                 response = await updateData(`/socialContext/${socialContext.id}`, sc);
             } else {
+                const newSocialContext = {
+                    occupation: occupationValue,
+                    highestEdu: highestEduValue,
+                    relationship: relationshipValue,
+                    sexuallyActive: sexuallyActiveValue,
+                    genderOrientatin: genderOrientationValue,
+                    legalProblems: legalProblemsValue,
+                    adopted: adoptedValue,
+                    family: familyValue,
+                    familyPsychiatric: familyPsychiatricValue,
+                    drugs: drugsValue,
+                    alcohol: alcoholValue,
+                    abuseMeds: abuseMedsValue,
+                    caffeine: caffeineValue,
+                    exercise: exerciseValue,
+                    patient: {"id": patient.id}
+                };
+
+                const sc = JSON.stringify(newSocialContext, null, 2);
                 response = await postData('/socialContext', sc);
             }
 

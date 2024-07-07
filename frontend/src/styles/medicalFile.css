@@ -263,3 +263,25 @@ aside{
 .statistics-table tbody tr:hover {
     background-color: #e5f4fe;
 }
+
+/*.explain-statistics{*/
+/*    margin-top: 5px;*/
+/*    background-color: transparent;*/
+/*    line-height: 1.5;*/
+/*}*/
+
+.explain-statistics {
+    margin-top: 10px;
+    background-color: transparent;
+    padding: 15px;
+    color: var(--black);
+}
+
+p.explain-statistics{
+    color: var(--black);
+}
+
+.statistic-name {
+    font-weight: bold;
+    color: var(--charcoal);
+}

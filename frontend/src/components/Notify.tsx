@@ -1,7 +1,8 @@
 import {deleteData} from "../functions/EndPoints.ts";
+import {ReactNode} from "react";
 
 interface Props {
-    text: string;
+    text: ReactNode;
     onClose: () => void;
     type: string;
     requestId: number;
@@ -20,7 +21,7 @@ function Notify({ text, onClose, type, requestId }: Props) {
         return (
             <div className="alert-box">
                 <button className="cancel-alert-button" onClick={handleDeleteRequest}>×</button>
-                <span className="alert-text">{text}</span>
+                <p className="alert-text">{text}</p>
             </div>
         );
     }

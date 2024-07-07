@@ -20,24 +20,24 @@ function PatientHome({patient} : Props){
     return (
         <>
             <Header/>
-            {showPsychiatristNotify && (
-                <Notify
-                    text="Aplicația funcționează la parametrii normali alături de un medic psihiatru."
-                    onClose={handleClosePsychiatristNotify}
-                    type="warning"
-                    requestId={-1}
-                />
-            )}
-            {showPsychotherapistNotify && (
-                <Notify
-                    text="Aplicația funcționează la parametrii normali alături de un psihoterapeut."
-                    onClose={handleClosePsychotherapistNotify}
-                    type="warning"
-                    requestId={-1}
-                />
-            )}
             <main>
                 <span className="intro">Terapia nu e doar pentru cei care au gânduri urâte.</span>
+                {showPsychiatristNotify && (
+                    <Notify
+                        text="Aplicația funcționează la parametrii normali alături de un medic psihiatru."
+                        onClose={handleClosePsychiatristNotify}
+                        type="warning"
+                        requestId={-1}
+                    />
+                )}
+                {showPsychotherapistNotify && (
+                    <Notify
+                        text="Aplicația funcționează la parametrii normali alături de un psihoterapeut."
+                        onClose={handleClosePsychotherapistNotify}
+                        type="warning"
+                        requestId={-1}
+                    />
+                )}
                 <div className="horizontal-1">
                     <div className="vertical-1">
                         <Feeling patient={patient}/>

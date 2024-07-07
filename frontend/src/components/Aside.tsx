@@ -1,8 +1,6 @@
 import React from "react";
 import {Link} from "react-router-dom";
 import {updateData} from "../functions/EndPoints.ts";
-import {Psychiatrist} from "../classes/Psychiatrist.ts";
-import {Psychotherapist} from "../classes/Psychotherapist.ts";
 import {ConvertPDF} from "../functions/ConvertPDF.ts";
 
 interface Props {
@@ -36,19 +34,9 @@ const Aside: React.FC<Props> = ({ patientId, patientFirstName, patientLastName ,
         if (!window.confirm(confirmMessage)) {
             return;
         }
-        var specialistId;
-        var dr = false;
-        if(psychiatristDataString){
-            const psychiatrist = Psychiatrist.jsonToPsychiatrist(psychiatristDataString);
-            specialistId = psychiatrist.id;
-            dr = true;
-        }
-        if(psychotherapistDataString){
-            const psychotherapist = Psychotherapist.jsonToPsychotherapist(psychotherapistDataString);
-            specialistId = psychotherapist.id;
-        }
+        const dr = (psychiatristDataString !== null);
 
-        const url = (dr ? "/patient/psychiatrist/" : "/patient/psychotherapist/") + specialistId;
+        const url = (dr ? "/patient/psychiatrist/" : "/patient/psychotherapist/") + patientId;
         const response = await updateData(url, null);
         if (response) {
             alert("Date salvate.");

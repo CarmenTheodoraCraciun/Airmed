@@ -4,6 +4,8 @@ const baseURL = "http://localhost:8080";
 
 // POST
 export async function postData(url: string, jsonData: string) {
+    // console.log(url);
+    // console.log(jsonData)
     try {
         return await fetch(baseURL + url, {
             method: 'POST',
@@ -117,8 +119,8 @@ export async function checkUniquePNC(pnc: string){
 
 // PUT
 export async function updateData(url: string, jsonData: any) {
-    console.log(url);
-    console.log(jsonData);
+    // console.log(url);
+    // console.log(jsonData);
     try {
         var response;
         if(jsonData) {

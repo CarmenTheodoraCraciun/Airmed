@@ -88,7 +88,7 @@ function Header(){
         headerLinks = (
             <>
             {(patient.psychotherapist !== null || patient.psychiatrist !== null) && (
-                <>
+                <div className="alert-container">
                     <button className="header-btn" onClick={handleAlertClick}>Trimite alertă</button>
                     {showAlertBox && (
                         <div className="send-alert-box">
@@ -107,7 +107,7 @@ function Header(){
                             </div>
                         </div>
                     )}
-                </>
+                </div>
             )}
             <ul className="header-ul">
                 <li>

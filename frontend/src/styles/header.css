@@ -177,6 +177,9 @@ header{
     color: var(--bg-white);
     box-shadow: inset 0 -100px 0 0 var(--air-force-blue);
 }
+button:focus, button:focus-visible {
+    outline: 4px auto -webkit-focus-ring-color;
+}
 
 .header-btn:active {
     transform: scale(0.9);
@@ -185,6 +188,7 @@ header{
 /*Alert box*/
 .alert-container {
     position: relative;
+    display: inline-block;
 }
 
 .alert-box {

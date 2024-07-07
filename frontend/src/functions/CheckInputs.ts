@@ -43,10 +43,10 @@ export function isValidPNC(pnc: string): boolean {
     const dayDigits = pnc.substring(5, 7);
     const dayValue = parseInt(dayDigits, 10);
     const day = (dayValue >= 1 && dayValue <= 31);
-    // JJ = 01 - 46 + 51 + 52
+    // JJ = 01 - 48 + 51 + 52
     const jDigits = pnc.substring(7, 9);
     const jValue = parseInt(jDigits, 10);
-    const j = ((jValue >= 1 && jValue <= 46) || (jValue === 51) || (jValue === 52));
+    const j = ((jValue >= 1 && jValue <= 48) || (jValue === 51) || (jValue === 52));
     // N = 0 - 9
     return  length && sex && month && day && j && controlDigit(pnc);
 }
