@@ -2,26 +2,20 @@
 ![logo_img.png](logo_img.png)
 ## Bachelor Thesis: Application for Monitoring Mental State
 
-This project represents the culmination of my undergraduate studies within the Faculty of Mathematics and Computer Science at the West University of Timisoara. The goal is to connect psychiatrists, psychotherapists, and individuals with mental illness in Romania. The project's interface is exclusively in Romanian, and any translations of the web application are handled by the user's browser.
+This project represents the application proposed in my bachelor's thesis in the Faculty of Mathematics and Computer Science of the West University of Timișoara. Along with the written paper, the application is my graduation project for my undergraduate studies.
+![image](https://github.com/CarmenTheodoraCraciun/Airmed/assets/92794925/7ba16305-6733-475a-b34a-9eb1a2eb1345)
+The goal is to connect psychiatrists, psychotherapists, and individuals with mental illness in Romania. The project's interface is exclusively in Romanian, and any translations of the web application are handled by the user's browser.
 
 ## Technologies Used
 The project utilizes the following programming languages, frameworks, and technologies:
+- **Backend Server:** Java and Spring Boot framework
+- **Frontend Server:** React.js, TypeScript and CSS
+- **Database:** MySQL via a Docker container
+- **API Testing:** Postman (for testing APIs without the need for the frontend)
 
-- **Backend Server:**
-    - Java
-    - Spring Boot
+![image](https://github.com/CarmenTheodoraCraciun/Airmed/assets/92794925/3e47adbb-4a41-4063-aa88-bde3c959cb93)
 
-- **Frontend Server:**
-    - React.js
-    - TypeScript
-    - CSS
+## The Airmed story
 
-- **Database Hosting:**
-    - Docker (MySQL)
-
-- **API Testing:**
-    - Postman (for testing APIs without the need for the frontend)
-
-- **Prototype**
-  - [Figma](https://www.figma.com/file/9m0lGLcooYt0O3bJ5GkmcL/Licenta?type=design&node-id=15%3A2429&mode=design&t=ytKngfZY4AmIguVY-1)
-
+Airmed is, in Irish mythology, a goddess of healing. In the case of an individual with a mental disorder, the healing process is essential to restore mental balance.
+Through a web application, easy to use by those looking for help, but also comfortable for the "descendants" of the goddess, those specialized in helping in the fight against mental disorders, Airmed is a software that creates and supports the connection between these people.
